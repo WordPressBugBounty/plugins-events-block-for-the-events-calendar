@@ -1,0 +1,41 @@
+.cool-feedback-notice-wrapper.notice.notice-info.is-dismissible {
+    padding: 5px;
+    display: inline-block;
+    width: 100%;
+}
+.cool-feedback-notice-wrapper .logo_container {
+    width:80px;
+    display:inline-block;
+    margin-right: 10px;
+    vertical-align: top;
+}
+.cool-feedback-notice-wrapper .logo_container img {
+    width:100%;
+    height:auto;
+}
+.cool-feedback-notice-wrapper .message_container {
+    width: calc(100% - 120px);
+    display: inline-block;
+    margin: 0;
+    vertical-align: top;
+}
+.cool-feedback-notice-wrapper ul li {
+    float: left;
+    margin: 0px 5px;
+}
+.clrfix{
+    clear:both;
+}
+
+.ebec-review-tab {
+    text-align: center;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1882352941);
+    padding: 10px 0px !important;
+    border-radius: 5px !important;
+  }
+  
+.ebec-review-tab a {
+    text-decoration: none;
+    color: #ffb900;
+    font-size: 20px;
+}
