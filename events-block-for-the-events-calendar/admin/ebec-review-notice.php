@@ -66,7 +66,7 @@ if (!class_exists('ebec_review_notice')) {
             $diff_days= $difference->days;
           
             // check if installation days is greator then week
-          if (isset($diff_days) && $diff_days>=3) {
+          if ($diff_days>=3) {
                 echo $this->ebec_create_notice_content();
                 }
        }  

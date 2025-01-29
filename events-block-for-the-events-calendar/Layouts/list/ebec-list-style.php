@@ -31,7 +31,7 @@ $selectors = '
      font-weight:' . $event_title_weight . ';
      text-transform:' . $event_title_transform . ';
      font-style:' . $event_title_style . ';
-     text-decoration:' . $event_title_decoration . ';
+     text-decoration:' . $event_title_decoration . ' !important;
      line-height:' . ( 'initial' === $event_title_line_height ? 'initial' : $event_title_line_height . 'px' ) . ';
      letter-spacing:' . $event_title_letter_spacing . 'px
  }
@@ -76,7 +76,7 @@ $selectors = '
      font-weight:' . $event_link_weight . ';
      text-transform:' . $event_link_transform . ';
      font-style:' . $event_link_style . ';
-     text-decoration:' . $event_link_decoration . ';
+     text-decoration:' . $event_link_decoration . ' !important;
      line-height:' . ( 'initial' === $event_link_line_height ? 'initial' : $event_link_line_height . 'px' ) . ';
      letter-spacing:' . $event_link_letter_spacing . 'px
  }

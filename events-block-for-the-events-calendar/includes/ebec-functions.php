@@ -154,8 +154,8 @@ function ebec_date_style( $event_id, $settings ) {
 			// get events dates and time
 function ebec_tribe_event_time( $display, $event ) {
 	if ( tribe_event_is_multiday( $event ) ) { // multi-date event
-				$start_date = tribe_get_start_date( $event, null, false );
-				$end_date   = tribe_get_end_date( $event, null, false );
+		$start_date = tribe_get_start_date($event, false, 'F j, Y');
+		$end_date   = tribe_get_end_date($event, false, 'F j, Y');
 		if ( $display ) {
 			printf( esc_html__( '%1$s - %2$s', 'ebec' ), esc_html( $start_date ), esc_html( $end_date ) );
 		} else {

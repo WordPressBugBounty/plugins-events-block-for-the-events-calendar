@@ -5,7 +5,7 @@
  * Plugin URI:  https://eventscalendaraddons.com/?utm_source=ebec_plugin&utm_medium=inside&utm_campaign=get_pro&utm_content=plugin_uri
  * Author:      Cool Plugins
  * Author URI:  https://coolplugins.net/?utm_source=ebec_plugin&utm_medium=readme&utm_campaign=coolplugins&utm_content=author_uri
- * Version: 1.3.2
+ * Version: 1.3.3
  * License: GPL2+
  * License URI: https://www.gnu.org/licenses/gpl-2.0.txt
  * Text Domain: ebec
@@ -18,7 +18,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'EBEC_VERSION', '1.3.2' );
+define( 'EBEC_VERSION', '1.3.3' );
 define( 'EBEC_FILE', __FILE__ );
 define( 'EBEC_PATH', plugin_dir_path( EBEC_FILE ) );
 define( 'EBEC_URL', plugin_dir_url( EBEC_FILE ) );
@@ -57,6 +57,7 @@ final class Ebec_Event_Block {
 		add_action( 'init', array( $this, 'ebec_required_plugins_notice' ) );
 		// Load the plugin after Dependancy Plugin loaded.
 		add_action( 'plugins_loaded', array( $this, 'ebec_file_include' ) );
+		add_action('init', array($this, 'ebec_modify_rest_api_limits'), 20);
 	}
 	public function ebec_activate() {
 		update_option( 'ebec-v', EBEC_VERSION );
@@ -113,6 +114,20 @@ final class Ebec_Event_Block {
 				) . '</p></div>'
 			);
 		}
+	}
+
+	public function ebec_modify_rest_api_limits() {
+		add_filter('tribe_rest_event_max_per_page', function($max) {
+			return -1;
+		});
+
+		add_filter('rest_tribe_events_collection_params', function($params) {
+			if (isset($params['per_page'])) {
+				$params['per_page']['maximum'] = -1;
+			}
+			
+			return $params;
+		});
 	}
 
 }

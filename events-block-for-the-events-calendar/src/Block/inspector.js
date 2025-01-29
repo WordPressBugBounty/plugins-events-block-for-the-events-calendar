@@ -138,7 +138,7 @@ export class Inspector extends Component{
                     checked={ this.props.eventTime}
                     onChange={this.props.eventTimeHandle}
                     />
-                    <p style={{color:"red"}}>Selet Event Date option only works on front-end side</p>
+                    <p style={{color:"red"}}>Select Event Date option only works on front-end side</p>
                     <SelectControl
                         label={ __( 'Events Type (Past/Future Events)','ebec' ) }
                         description={ __( 'Events Type' ) }

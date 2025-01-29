@@ -29,14 +29,14 @@ class EBEC_Register_Block {
 	public function ebec_editor_assets() {
 			$id = get_the_ID();
 		if ( has_block( 'ebec/event-list', $id ) ) {
-			wp_enqueue_style( 'ebec-block-style-front', EBEC_URL . 'assets/css/ebec-style.css', array(), null, null, 'all' );
+			wp_enqueue_style( 'ebec-block-style-front', EBEC_URL . 'assets/css/ebec-style.css', array(), null, 'all' );
 		}
 	}
 
 
 	public function ebec_block_editor_assets() {
 			wp_enqueue_script( 'ebec-block-editor', EBEC_URL . 'dist/index.js', array( 'wp-blocks', 'wp-i18n', 'wp-editor', 'wp-components', 'wp-element' ) );
-			wp_enqueue_style( 'ebec-block-style-editor', EBEC_URL . 'dist/style-index.css', array( 'wp-edit-blocks' ), null, null, 'all' );
+			wp_enqueue_style( 'ebec-block-style-editor', EBEC_URL . 'dist/style-index.css', array( 'wp-edit-blocks' ), null, 'all' );
 	}
 
 
@@ -388,7 +388,7 @@ class EBEC_Register_Block {
 				$block_id      = isset( $attributes['ebec_block_id'] ) ? $attributes['ebec_block_id'] : '';
 				$build_url     = 'https://fonts.googleapis.com/css?family=';
 				$build_url    .= implode( '|', array_filter( $font_family_array ) );
-				wp_enqueue_style( 'ebec-google-font-' . $block_id, "$build_url", array(), null, null, 'all' );
+				wp_enqueue_style( 'ebec-google-font-' . $block_id, "$build_url", array(), null, 'all' );
 				$events         = '';
 				$html           = '';
 				$display_month  = '';

@@ -59,7 +59,7 @@ if ( $attributes['ebec_display_desc'] == 'yes' && ! empty( $description ) && 'mi
 if ( ! empty( $event_value['event_cost'] ) && 'minimal' !== $layout ) {
 	$html .= '<div class="ebec-list-cost">' . esc_html( $event_value['event_cost'] ) . '</div>';
 }
-		$html .= '<div class="ebec-style-1-more" ><a href=' . esc_url( $event_value['event_url'] ) . ' class="ebec-events-read-more" rel="bookmark" >' . esc_html( $attributes['event_link_name'], 'ebec' ) . '</a></div>';
+		$html .= '<div class="ebec-style-1-more" ><a href=' . esc_url( $event_value['event_url'] ) . ' class="ebec-events-read-more" rel="bookmark" >' . esc_html__( $attributes['event_link_name'], 'ebec' ) . '</a></div>';
 	$html     .= '</div>';
 if ( 'minimal' !== $layout ) {
 	$html .= '<div class="ebec-right-wrapper">';

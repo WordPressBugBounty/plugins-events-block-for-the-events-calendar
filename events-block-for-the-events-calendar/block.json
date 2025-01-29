@@ -5,8 +5,9 @@
 	"description": "Events Gutenberg Block For Create List Events In Block Editor.",
 	"keywords": [ "event", "events", "calender" ],
 	"textdomain": "ebec",
-	"editorScript": "file:./dist/blocks.build.js",
-	"style": "file:./dist/blocks.style.build.css",
+	"editorScript": "file:./dist/index.js",
+	"style": "file:./dist/style-index.css",
+
     "attributes":{
         	"ebec_ev_category":{
 				"type":"array",

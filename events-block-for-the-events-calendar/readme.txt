@@ -3,9 +3,9 @@ Contributors:coolplugins,narinder-singh,satindersingh
 Donate link:https://paypal.me/CoolPlugins/10USD/
 Tags: events list, events block, the events calendar blocks, Gutenberg block,events calendar
 Requires at least: 6.0
-Tested up to: 6.6.2
+Tested up to: 6.7.1
 Requires PHP:7.2
-Stable tag:trunk
+Stable tag:1.3.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -95,7 +95,7 @@ Yes, the plugin supports specific date range-based list settings, enabling you t
 The plugin allows you to order events based on time, displaying them in chronological order to help you plan and track events more efficiently.
 
 #### 8. How can I report security bugs?
-You can report security bugs through the Patchstack Vulnerability Disclosure Program. The Patchstack team help validate, triage and handle any security vulnerabilities.
+You can report security bugs through the Patchstack Vulnerability Disclosure Program. The Patchstack team helps validate, triage, and handle any security vulnerabilities. [Report a security vulnerability.](https://patchstack.com/database/vdp/events-block-for-the-events-calendar)
 
 == Installation ==
 
@@ -107,7 +107,13 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 > Remember this is a design add-on. It will only work if you first install the "The Events Calendar (by MODERN TRIBE)" plugin.
 
 
- == Changelog == 
+== Changelog == 
+
+= Version 1.3.3 | 29 January, 2025 =
+-Fixed: 50 + Events loading issue on the editor side.
+-Fixed: Minor Security Issues.
+-Added: Arial font family.
+-Tested: Tested upto WordPress V6.7.1 and The Events Calendar V6.9.1
 
  = Version 1.3.2 | 19 September, 2024 =
 -Fixed: Issue of accessing block.json again and again.

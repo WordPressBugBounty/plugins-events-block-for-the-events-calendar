@@ -36,7 +36,9 @@ registerStore('ebec/events_data',{
     selectors,
     resolvers:{
         getTodos(){
-            apiFetch( { path: '/tribe/events/v1/events/?page=1&per_page=999&start_date=0000-01-01&end_date=9999-12-31' } ).then( ( events_data) => {
+            apiFetch({
+                path: '/tribe/events/v1/events/?start_date=0000-01-01&end_date=9999-12-31'
+            }).then(events_data => {
             
               if(events_data.events.length == 0){
                 dispatch('ebec/events_data').populateTodo("zero");
