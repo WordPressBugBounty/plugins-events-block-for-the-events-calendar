@@ -3,8 +3,48 @@
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
-$longMonthStart  = DateTime::createFromFormat( '!m', $event_value['event_start_date_details_month'] )->format( 'F' );
-$shortMonthStart = DateTime::createFromFormat( '!m', $event_value['event_start_date_details_month'] )->format( 'M' );
+// Event month and year setup
+$monthNum = $event_value['event_start_date_details_month'];
+$year     = $event_value['event_start_date_details_year'];
+
+// Month names translation setup
+$months = [
+    'January'   => __( 'January', 'ebec' ),
+    'February'  => __( 'February', 'ebec' ),
+    'March'     => __( 'March', 'ebec' ),
+    'April'     => __( 'April', 'ebec' ),
+    'May'       => __( 'May', 'ebec' ),
+    'June'      => __( 'June', 'ebec' ),
+    'July'      => __( 'July', 'ebec' ),
+    'August'    => __( 'August', 'ebec' ),
+    'September' => __( 'September', 'ebec' ),
+    'October'   => __( 'October', 'ebec' ),
+    'November'  => __( 'November', 'ebec' ),
+    'December'  => __( 'December', 'ebec' ),
+];
+
+$shortMonths = [
+    'Jan' => __( 'Jan', 'ebec' ),
+    'Feb' => __( 'Feb', 'ebec' ),
+    'Mar' => __( 'Mar', 'ebec' ),
+    'Apr' => __( 'Apr', 'ebec' ),
+    'May' => __( 'May', 'ebec' ),
+    'Jun' => __( 'Jun', 'ebec' ),
+    'Jul' => __( 'Jul', 'ebec' ),
+    'Aug' => __( 'Aug', 'ebec' ),
+    'Sep' => __( 'Sep', 'ebec' ),
+    'Oct' => __( 'Oct', 'ebec' ),
+    'Nov' => __( 'Nov', 'ebec' ),
+    'Dec' => __( 'Dec', 'ebec' ),
+];
+
+// Get month names dynamically
+$englishMonthLong  = wp_date( 'F', mktime( 0, 0, 0, $monthNum, 1 ) );
+$englishMonthShort = wp_date( 'M', mktime( 0, 0, 0, $monthNum, 1 ) );
+
+$longMonthStart  = $months[ $englishMonthLong ] ?? $englishMonthLong;
+$shortMonthStart = $shortMonths[ $englishMonthShort ] ?? $englishMonthShort;
+
 $event_type      = tribe( 'tec.featured_events' )->is_featured( $event_id ) ? 'ebec-featured-event' : 'ebec-simple-event';
 $description     = ! empty( $event_value['event_description'] ) ? $event_value['event_description'] : tribe_events_get_the_excerpt( $event_id );
 if ( 'full' !== $desc_type ) {
@@ -71,4 +111,3 @@ if ( 'minimal' !== $layout ) {
 		$html .= '  </div>';
 }
 	$html .= '</div>';
-

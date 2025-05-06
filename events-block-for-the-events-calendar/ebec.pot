@@ -1,0 +1,96 @@
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: Events Block For The Events Calendar\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-03-06 12:10+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: \n"
+"Language: \n"
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Loco https://localise.biz/\n"
+"X-Loco-Version: 2.7.1; wp-6.7.2\n"
+"X-Domain: ebec"
+
+#: events-block-for-the-event-calender.php:94
+#: events-block-for-the-event-calender.php:108
+#, php-format
+msgid "%1$s %2$s"
+msgstr ""
+
+#: includes/ebec-functions.php:160 includes/ebec-functions.php:162
+#: includes/ebec-functions.php:176 includes/ebec-functions.php:178
+#, php-format
+msgid "%1$s - %2$s"
+msgstr ""
+
+#: includes/ebec-functions.php:182 includes/ebec-functions.php:184
+#, php-format
+msgid "%s"
+msgstr ""
+
+#. Description of the plugin
+msgid ""
+"<a href=\"http://wordpress.org/plugins/the-events-calendar/\">📅 The Events "
+"Calendar Addon</a> - Events Gutenberg Block to Create List Events In Block "
+"Editor."
+msgstr ""
+
+#: includes/ebec-functions.php:166 includes/ebec-functions.php:168
+msgid "All day"
+msgstr ""
+
+#. Author of the plugin
+msgid "Cool Plugins"
+msgstr ""
+
+#. Name of the plugin
+msgid "Events Block For The Events Calendar"
+msgstr ""
+
+#: events-block-for-the-event-calender.php:113
+msgid "Gutenberg Block Editor"
+msgstr ""
+
+#. Author URI of the plugin
+msgid ""
+"https://coolplugins.net/?"
+"utm_source=ebec_plugin&utm_medium=readme&utm_campaign=coolplugins&utm_content=author_uri"
+msgstr ""
+
+#. URI of the plugin
+msgid ""
+"https://eventscalendaraddons.com/?"
+"utm_source=ebec_plugin&utm_medium=inside&utm_campaign=get_pro&utm_content=plugin_uri"
+msgstr ""
+
+#: admin/ebec-review-notice.php:83
+msgid "I already rated it"
+msgstr ""
+
+#: events-block-for-the-event-calender.php:109
+msgid ""
+"In order to use Event Gutenberg Block, Please  select the block editor of"
+msgstr ""
+
+#: events-block-for-the-event-calender.php:95
+msgid ""
+"In order to use Event Gutenberg Block, Please first install the latest "
+"version of"
+msgstr ""
+
+#: admin/ebec-review-notice.php:84
+msgid "No, not good enough, i do not like to rate it!"
+msgstr ""
+
+#: admin/ebec-review-notice.php:85
+msgid "Not Interested"
+msgstr ""
+
+#: events-block-for-the-event-calender.php:99
+msgid "The Events Calendar"
+msgstr ""
