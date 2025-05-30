@@ -78,8 +78,8 @@ if (!class_exists('ebec_review_notice')) {
         $ajax_callback='ebec_dismiss_notice';
         $wrap_cls="notice notice-info is-dismissible";
         $img_path= EBEC_URL.'assets/images/ebec-logo.png';
-        $p_name="Events Block For The Events Calendar";
-        $like_it_text='Rate Now! ★★★★★';
+        $p_name=esc_html( "Events Block For The Events Calendar");
+        $like_it_text=esc_html( 'Rate Now! ★★★★★' );
         $already_rated_text=esc_html__( 'I already rated it', 'ebec' );
         $not_like_it_text=esc_html__( 'No, not good enough, i do not like to rate it!', 'ebec' );
         $not_interested=esc_html__( 'Not Interested', 'ebec' );
