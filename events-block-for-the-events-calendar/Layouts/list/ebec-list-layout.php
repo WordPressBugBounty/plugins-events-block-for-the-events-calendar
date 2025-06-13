@@ -63,7 +63,7 @@ if ( 'full' !== $desc_type ) {
 }
 
 // Layout
-if ( $display_header === true && 'minimal' !== $layout ) {
+if ( $display_header === true && $attributes['event_header_type'] === 'show_header' && 'minimal' !== $layout ) {
 	$html .= '<div class="ebec-month-header ' . esc_attr( $event_type ) . '"><span class="ebec-header-year" >' . esc_html( $longMonthStart ) . ' ' . esc_html( $event_value['event_start_date_details_year'] ) . '</span><span class="ebec-header-line"></span></div>';
 }
 

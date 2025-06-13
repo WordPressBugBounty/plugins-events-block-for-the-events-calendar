@@ -130,13 +130,6 @@
   border: 1px solid #00000020;
 }
 
-.ebec-minimal-list-wrapper .ebec-list-posts.style-1.ebec-simple-event {
-  border-left: 4px solid #5bbd8a;
-}
-
-.ebec-minimal-list-wrapper .ebec-list-posts.style-1.ebec-featured-event {
-  border-left: 4px solid #008cff;
-}
 
 .ebec-minimal-list-wrapper .ebec-list-posts.style-1.ebec-simple-event .ebec-event-date-tag {
   background: #99d6b6;
@@ -247,6 +240,38 @@
       padding: 0;
       margin-bottom: 20px;
     }
+    /* Date Picker CSS */
+    .ebec-start-date-picker .components-datetime__time-field-hours-input,
+    .components-datetime__time-field,
+    .ebec-end-date-picker .components-datetime__time-field-hours-input{
+      margin-bottom: 0px !important;
+    }
+    .ebec-start-date-picker .components-datetime__time-separator,
+    .ebec-end-date-picker .components-datetime__time-separator{
+      padding: 2px 2px 2px 2px;
+      line-height: 0px;
+      border: 0px;
+      background-color: transparent;
+    }
+    .ebec-start-date-picker .components-datetime__time-field-time,
+    .ebec-end-date-picker .components-datetime__time-field-time{
+      align-items: center;
+    }
+    .ebec-start-date-picker .components-base-control__field,
+    .ebec-end-date-picker .components-base-control__field{
+      padding: 0px
+    }
+    .ebec-start-date-picker .components-datetime__time-separator,
+    .ebec-end-date-picker .components-datetime__time-separator{
+      position: absolute;
+      left: 48px;
+    }
+  /* Date Picker CSS END */
+  /* No Event Text CSS */
+    .ebec-no-event-text{
+      margin: 10px 10px;
+    }
+  /* No Event Text CSS END */
     /**
     * Responsive for style 2
     */
@@ -436,7 +461,5 @@
     font-size: 27px;
       font-weight: 900;
   }
-  
-  
-  
-  
+ 
+ 

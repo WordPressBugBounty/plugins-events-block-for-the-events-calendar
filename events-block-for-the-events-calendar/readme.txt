@@ -5,7 +5,7 @@ Tags: events list, events block, the events calendar blocks, Gutenberg block,eve
 Requires at least: 6.0
 Tested up to: 6.8.1
 Requires PHP:7.2
-Stable tag:1.3.6
+Stable tag:1.3.7
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -108,6 +108,14 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 
 
 == Changelog == 
+
+= Version 1.3.7 | 13 June, 2025 =
+-Added: Events addons dashboard.
+-Added: User opt-in option in plugin.
+-Added: Month header setting.
+-Added: Background color style settings in minimal list.
+-Tested upto: WordPress V6.8.1
+-Tested upto: The Events Calendar version 6.13.2.1
 
 = Version 1.3.6 | 30 May, 2025 =
 -Fixed: Minor security fix.

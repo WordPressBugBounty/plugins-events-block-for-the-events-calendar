@@ -112,7 +112,10 @@ class EventBlocks extends Component{
               no_event_text,
               isPreview,
               event_layout,
-              event_desc_type
+              event_desc_type,
+              event_header_type,
+              event_simple_color,
+              event_featured_color
         } = attributes;
         let display_month = "";
         let display_year = "";
@@ -254,6 +257,16 @@ class EventBlocks extends Component{
                 eventLayout={event_layout}
                 eventDescTypeHandle={(v)=>setAttributes({event_desc_type: v})}
                 eventDescType={event_desc_type}
+                eventHeaderType={event_header_type}
+                eventHeaderTypeHandle={(v)=>setAttributes({event_header_type: v})}
+
+                //Simple Event Style
+                eventSimpleColor={event_simple_color}
+                eventSimpleColorHandle={(v)=>setAttributes({event_simple_color: v.hex})}
+
+                //Featured Event Style
+                eventFeaturedColor={event_featured_color}
+                eventFeaturedColorHandle={(v)=>setAttributes({event_featured_color: v.hex})}
               />
                  
               <div id="ebec-events-list-content" className = "ebec-list-wrapper">
@@ -362,6 +375,9 @@ class EventBlocks extends Component{
                     link_name={event_link_name}
                     eventLayout={event_layout}
                     eventDescType={event_desc_type}
+                    eventHeaderType={event_header_type}
+                    eventSimpleColor={event_simple_color}
+                    eventFeaturedColor={event_featured_color}
                   />
             
                   )

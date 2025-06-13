@@ -239,6 +239,18 @@
 				"type":"number",
 				"default":0
 		},
+			"event_header_type":{
+				"type":"string",
+				"default":"show_header"
+		},
+			"event_simple_color":{
+				"type":"string",
+				"default":"#00445e"
+		},
+			"event_featured_color":{
+				"type":"string",
+				"default":"#00445e"
+		},
 			"event_link_name":{
 				"type":"string",
 				"default":"Find out More"

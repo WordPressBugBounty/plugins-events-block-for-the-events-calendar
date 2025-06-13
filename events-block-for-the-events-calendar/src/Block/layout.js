@@ -153,7 +153,7 @@ const Layout = (props) => {
    }
    return(
         <Fragment>
-        { (props.display_header === true && props.eventLayout !== 'minimal') &&
+        { (props.display_header === true && props.eventHeaderType === 'show_header' && props.eventLayout !== 'minimal') &&
         <div className={'ebec-month-header ' +event_type+''}><span className="ebec-header-year">{longMonthStart} {props.start_date_year}</span><span className="ebec-header-line"></span></div>}
         <div id={"event-"+props.id+""} className={"ebec-list-posts style-1 "+event_type+""}>
           <div className="ebec-event-date-tag"><div className="ebec-event-datetimes">
@@ -168,7 +168,7 @@ const Layout = (props) => {
               </span>
             </div>
             {/* <a href={props.url}  className={'ebec-events-title'}>{props.title}</a> */}
-            <a href="#"  className={'ebec-events-title'}>{props.title}</a>
+            <a href="#" className="ebec-events-title" dangerouslySetInnerHTML={{ __html: props.title }} />
             {props.eventLayout !== 'minimal' && 
                <>  
                   { props.hide_venue == "no" && props.venue.length !== 0 &&

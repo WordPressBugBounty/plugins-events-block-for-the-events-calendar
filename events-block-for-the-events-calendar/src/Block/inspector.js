@@ -125,14 +125,21 @@ export class Inspector extends Component{
                             }
                         </>
                     }
-                    {/* <SelectControl
-                        label={ __( 'Display Category','ebec' ) }
-                        description={ __( 'Display Category Settings' ) }
-                        options={ Options }
-                        value={this.props.displayCat}
-						onChange={this.props.displayCatHandle}
-                    /> */}
-
+                     {'minimal' !== this.props.eventLayout &&
+                        <>
+                            <SelectControl
+                                label={ __( 'Month Header','ebec' ) }
+                                description={ __( 'Month Header' ) }
+                                options={ [
+                                    {label: 'Show Header' , value:'show_header'},
+                                    {label: 'Hide Header' , value:'hide_header'},
+                                ] }
+                                value={this.props.eventHeaderType}
+                                onChange={this.props.eventHeaderTypeHandle}
+                                default
+                            />
+                        </>
+                    }
                     <ToggleControl 
                     label={ __('Enable this option if you want to Show Events in between date range','ebec') }
                     checked={ this.props.eventTime}
@@ -149,7 +156,7 @@ export class Inspector extends Component{
                      <p style={{color:"red"}}>Events Type option only works on front-end side</p>
                 </PanelBody>
                         { this.props.eventTime === true &&
-                        <PanelBody title={__("Start Event Panel","ebec")}>
+                        <PanelBody title={__("Start Event Panel","ebec")} className="ebec-start-date-picker">
                         <DateTimePicker
                         label = {__('Start Date','ebec')}
                         currentDate={this.props.eventRangeStart}
@@ -159,7 +166,7 @@ export class Inspector extends Component{
                         </PanelBody>
                      } 
                     { this.props.eventTime == true &&
-                        <PanelBody title={__("End Event Panel","ebec")}>
+                        <PanelBody title={__("End Event Panel","ebec")} className="ebec-end-date-picker">
                         <DateTimePicker
                         currentDate={this.props.eventRangeEnd}
                         onChange={this.props.eventRangeEndHandle}
@@ -171,6 +178,7 @@ export class Inspector extends Component{
                          label="No Event Text (Message to show if no event will available)"
                          value={this.props.noEventText}
                          onChange={this.props.noEventTextHandle}
+                         className="ebec-no-event-text"
                      />
                 <PanelBody title={__("Main Skin Color","ebec")} initialOpen={ false }>           
                     <ColorPicker 
@@ -248,10 +256,28 @@ export class Inspector extends Component{
                     fontWeight={this.props.eventLinkWeight} fontWeightHandle={this.props.eventLinkWeightHandle} 
                     fontTransform={this.props.eventLinkTransform} fontTransformHandle={this.props.eventLinkTransformHandle} fontStyle={this.props.eventLinkStyle} fontStyleHandle={this.props.eventLinkStyleHandle} textDecoration={this.props.eventLinkDecoration} textDecorationHandle={this.props.eventLinkDecorationHandle} eventLineHeight={this.props.eventLinkLineHeight} eventLineHeightHandle={this.props.eventLinkLineHeightHandle} eventLetterSpacing={this.props.eventLinkLetterSpacing} eventLetterSpacingHandle={this.props.eventLinkLetterSpacingHandle}/>
                 </PanelBody>
-                <PanelBody title={__("Please Share Your Valuable Feedback.","ebec")}>
-                    <CardBody className={"ebec-review-tab"}>{__("We hope you liked our plugin created events. Please share your valuable feedback.","ebec")}<br></br><a className="components-button is-primary is-small" href="https://wordpress.org/support/plugin/events-block-for-the-events-calendar/#new-post" target="_blank" >Rate Us ★★★★★</a>
-                    </CardBody>
-                </PanelBody>
+                {'minimal' === this.props.eventLayout &&
+                    <>
+                        {/* Simple Event Panel Style Setting */}    
+                        <PanelBody title={__("Non-Featured Event Style","ebec")} initialOpen={ false }>           
+                            <ColorPicker 
+                            color={this.props.eventSimpleColor}
+                            onChangeComplete={this.props.eventSimpleColorHandle}
+                            disableAlpha
+                            />  
+                        </PanelBody>  
+                        {/* Featured Event Panel Style Setting */}    
+                        <PanelBody title={__("Featured Event Style","ebec")} initialOpen={ false }>           
+                            <ColorPicker 
+                            color={this.props.eventFeaturedColor}
+                            onChangeComplete={this.props.eventFeaturedColorHandle}
+                            disableAlpha
+                        />  
+                        </PanelBody> 
+                    </>
+                }
+                <CardBody className={"ebec-review-tab"}>{__("We hope you liked our plugin created events. Please share your valuable feedback.","ebec")}<br></br><a className="components-button is-primary is-small" href="https://wordpress.org/support/plugin/events-block-for-the-events-calendar/reviews/" target="_blank" >Rate Us ★★★★★</a>
+                </CardBody>
             </InspectorControls>
             </Fragment>
         )

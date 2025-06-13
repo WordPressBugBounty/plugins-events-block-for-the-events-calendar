@@ -62,6 +62,13 @@ $event_link_line_height = isset($attributes['event_link_line_height'])?$attribut
 $event_link_letter_spacing = isset($attributes['event_link_letter_spacing'])?$attributes['event_link_letter_spacing']:"";
 
 
+// Simple Event Style
+$event_simple_color = isset($attributes['event_simple_color'])?$attributes['event_simple_color']:"";
+
+// Featured Event Style
+$event_featured_color = isset($attributes['event_featured_color'])?$attributes['event_featured_color']:"";
+
+
 
 
 

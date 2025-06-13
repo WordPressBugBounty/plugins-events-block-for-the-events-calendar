@@ -5,6 +5,26 @@
  import generateCSS from "../Components/css/generateCSS.js"
  import generateCSSUnit from "../Components/css/generateCSSUnit.js"
 
+ function darkenColor(color, percent) {
+    var num = parseInt(color.replace("#", ""), 16),
+      amt = Math.round(2.55 * percent),
+      R = (num >> 16) - amt,
+      G = ((num >> 8) & 0x00FF) - amt,
+      B = (num & 0x0000FF) - amt;
+  
+    return (
+      "#" +
+      (
+        0x1000000 +
+        (R < 255 ? (R < 0 ? 0 : R) : 255) * 0x10000 +
+        (G < 255 ? (G < 0 ? 0 : G) : 255) * 0x100 +
+        (B < 255 ? (B < 0 ? 0 : B) : 255)
+      )
+        .toString(16)
+        .slice(1)
+    );
+  }
+  
 function contentEventStyle( props ) {
     const {main_skin_color
         ,event_date_color,event_title_color,
@@ -50,7 +70,9 @@ function contentEventStyle( props ) {
         event_link_style,
         event_link_decoration,
         event_link_line_height,
-        event_link_letter_spacing
+        event_link_letter_spacing,
+        event_simple_color,
+        event_featured_color
     } = props.attributes
 
     var selectors = {
@@ -132,6 +154,14 @@ function contentEventStyle( props ) {
         },
         " .ebec-list-venue a ":{
             "color":event_venue_color,
+        },
+        " .ebec-minimal-list-wrapper .ebec-list-posts.style-1.ebec-simple-event .ebec-event-date-tag":{
+            "background-color":event_simple_color,
+            "border-left": "4px solid " + darkenColor(event_simple_color, 20)
+        },
+        " .ebec-minimal-list-wrapper .ebec-list-posts.style-1.ebec-featured-event .ebec-event-date-tag":{
+            "background-color":event_featured_color,
+            "border-left": "4px solid " + darkenColor(event_featured_color, 20)
         }
     }
 

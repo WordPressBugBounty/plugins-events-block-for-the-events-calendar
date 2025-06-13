@@ -294,6 +294,18 @@ class EBEC_Register_Block {
 				'event_desc_type' => array(
 					'type' => 'string',
 					'default' => 'short'
+				),
+				'event_header_type' => array(
+					'type' => 'string',
+					'default' => 'show_header'
+				),
+				'event_simple_color' => array(
+					'type' => 'string',
+					'default' => '#99d6b6'
+				),
+				'event_featured_color' => array(
+					'type' => 'string',
+					'default' => '#66baff'
 				)
 			);
 
