@@ -27,10 +27,10 @@ if (!class_exists('ebec_review_notice')) {
         wp_enqueue_style( 'ebec-feedback-notice-styles' );
     }
     // ajax callback for review notice
-    public function ebec_dismiss_review_notice(){
-        $rs=update_option( 'ebec-alreadyRated','yes' );
-        echo  json_encode( array("success"=>"true") );
-        exit;
+    public function ebec_dismiss_review_notice() {
+        check_ajax_referer( 'ebec_dismiss_notice_nonce', 'security' );
+        update_option( 'ebec-alreadyRated', 'yes' );
+        wp_send_json_success();
     }
    // admin notice  
     public function ebec_admin_notice_for_reviews(){
@@ -66,55 +66,66 @@ if (!class_exists('ebec_review_notice')) {
             $diff_days= $difference->days;
           
             // check if installation days is greator then week
-          if ($diff_days>=3) {
-                echo $this->ebec_create_notice_content();
-                }
+            // if ($diff_days>=3) {
+                $content = $this->ebec_create_notice_content();
+                printf( '%s', $content );
+            // }
        }  
 
        // generated review notice HTML
-       function ebec_create_notice_content(){
+        function ebec_create_notice_content() {
         
-        $ajax_url=admin_url( 'admin-ajax.php' );
-        $ajax_callback='ebec_dismiss_notice';
-        $wrap_cls="notice notice-info is-dismissible";
-        $img_path= EBEC_URL.'assets/images/ebec-logo.png';
-        $p_name=esc_html( "Events Block For The Events Calendar");
-        $like_it_text=esc_html( 'Rate Now! ★★★★★' );
-        $already_rated_text=esc_html__( 'I already rated it', 'ebec' );
-        $not_like_it_text=esc_html__( 'No, not good enough, i do not like to rate it!', 'ebec' );
-        $not_interested=esc_html__( 'Not Interested', 'ebec' );
-        $p_link=esc_url('https://wordpress.org/plugins/events-block-for-the-events-calendar/reviews/#new-post');
-       
-        $message="Thanks for using <b>$p_name</b> WordPress plugin. We hope it meets your expectations! <br/>Please give us a quick rating, it works as a boost for us to keep working on more <a href='https://coolplugins.net' target='_blank'><strong>Cool Plugins</strong></a>!<br/>";
-      
-        $html='<div data-ajax-url="%8$s"  data-ajax-callback="%9$s" class="cool-feedback-notice-wrapper %1$s">
-        <div class="logo_container"><a href="%5$s"><img src="%2$s" alt="%3$s"></a></div>
-        <div class="message_container">%4$s
-        <div class="callto_action">
-        <ul>
-            <li class="love_it"><a href="%5$s" class="like_it_btn button button-primary" target="_new" title="%6$s">%6$s</a></li>
-            <li class="already_rated"><a href="javascript:void(0);" class="already_rated_btn button ebec_dismiss_notice" title="%7$s">%7$s</a></li>
-            <li class="already_rated"><a href="javascript:void(0);" class="already_rated_btn button ebec_dismiss_notice" title="%10$s">%10$s</a></li>
-        </ul>
-        <div class="clrfix"></div>
-        </div>
-        </div>
-        </div>';
-
-        return sprintf($html,
-        $wrap_cls,
-        $img_path,
-        $p_name,
-        $message,
-        $p_link,
-        $like_it_text,
-        $already_rated_text,
-        $ajax_url,// 8
-        $ajax_callback,//9
-        $not_interested//10
-        );
+            $ajax_url      = esc_url( admin_url( 'admin-ajax.php' ) );
+            $ajax_callback = sanitize_key( 'ebec_dismiss_notice' );
+            $wrap_cls      = 'notice notice-info is-dismissible';
+            $img_path      = esc_url( EBEC_URL . 'assets/images/ebec-logo.png' );
+            $p_name        = esc_html( "Events Block For The Events Calendar" );
+            $like_it_text  = esc_html__( 'Rate Now! ★★★★★', 'ebec' );
+            $already_rated_text = esc_html__( 'I already rated it', 'ebec' );
+            $not_interested     = esc_html__( 'Not Interested', 'ebec' );
+            $not_like_it_text   = esc_html__( 'No, not good enough, I do not like to rate it!', 'ebec' );
+            $p_link        = esc_url( 'https://wordpress.org/support/plugin/events-block-for-the-events-calendar/reviews/' );
         
-       }
+            $nonce   = esc_attr( wp_create_nonce( 'ebec_dismiss_notice_nonce' ) );
+        
+            $message = sprintf(
+                wp_kses_post(
+                    'Thanks for using <b>%s</b> WordPress plugin. We hope it meets your expectations! <br/>Please give us a quick rating, it works as a boost for us to keep working on more <a href="https://coolplugins.net" target="_blank"><strong>Cool Plugins</strong></a>!<br/>'
+                ),
+                $p_name
+            );
+        
+            $html = '
+            <div data-ajax-url="%8$s" data-ajax-callback="%9$s" data-nonce="%11$s" class="cool-feedback-notice-wrapper %1$s">
+                <div class="logo_container"><a href="%5$s"><img src="%2$s" alt="%3$s"></a></div>
+                <div class="message_container">%4$s
+                    <div class="callto_action">
+                        <ul>
+                            <li class="love_it"><a href="%5$s" class="like_it_btn button button-primary" target="_new" title="%6$s">%6$s</a></li>
+                            <li class="already_rated"><a href="javascript:void(0);" class="already_rated_btn button ebec_dismiss_notice" title="%7$s">%7$s</a></li>
+                            <li class="already_rated"><a href="javascript:void(0);" class="already_rated_btn button ebec_dismiss_notice" title="%10$s">%10$s</a></li>
+                        </ul>
+                        <div class="clrfix"></div>
+                    </div>
+                </div>
+            </div>';
+        
+            return sprintf(
+                $html,
+                esc_attr( $wrap_cls ),          // %1$s
+                esc_url( $img_path ),           // %2$s
+                esc_attr( $p_name ),            // %3$s
+                $message,                       // %4$s (already wp_kses_post)
+                esc_url( $p_link ),             // %5$s
+                esc_html( $like_it_text ),      // %6$s
+                esc_html( $already_rated_text ),// %7$s
+                esc_url( $ajax_url ),           // %8$s
+                esc_attr( $ajax_callback ),     // %9$s
+                esc_html( $not_interested ),    // %10$s
+                esc_attr( $nonce )              // %11$s
+            );
+        }
+    
 
     } //class end
 

@@ -3,47 +3,29 @@
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
-// Event month and year setup
-$monthNum = $event_value['event_start_date_details_month'];
-$year     = $event_value['event_start_date_details_year'];
+$monthNumber = $event_value['event_start_date_details_month'];
 
-// Month names translation setup
-$months = [
-    'January'   => __( 'January', 'ebec' ),
-    'February'  => __( 'February', 'ebec' ),
-    'March'     => __( 'March', 'ebec' ),
-    'April'     => __( 'April', 'ebec' ),
-    'May'       => __( 'May', 'ebec' ),
-    'June'      => __( 'June', 'ebec' ),
-    'July'      => __( 'July', 'ebec' ),
-    'August'    => __( 'August', 'ebec' ),
-    'September' => __( 'September', 'ebec' ),
-    'October'   => __( 'October', 'ebec' ),
-    'November'  => __( 'November', 'ebec' ),
-    'December'  => __( 'December', 'ebec' ),
-];
+$formatterLong = new IntlDateFormatter(
+    get_locale(), // Current WordPress locale
+    IntlDateFormatter::LONG,
+    IntlDateFormatter::NONE,
+    null,
+    null,
+    'LLLL' // Full month name
+);
+$formatterShort = new IntlDateFormatter(
+    get_locale(),
+    IntlDateFormatter::LONG,
+    IntlDateFormatter::NONE,
+    null,
+    null,
+    'LLL' // Short month name
+);
 
-$shortMonths = [
-    'Jan' => __( 'Jan', 'ebec' ),
-    'Feb' => __( 'Feb', 'ebec' ),
-    'Mar' => __( 'Mar', 'ebec' ),
-    'Apr' => __( 'Apr', 'ebec' ),
-    'May' => __( 'May', 'ebec' ),
-    'Jun' => __( 'Jun', 'ebec' ),
-    'Jul' => __( 'Jul', 'ebec' ),
-    'Aug' => __( 'Aug', 'ebec' ),
-    'Sep' => __( 'Sep', 'ebec' ),
-    'Oct' => __( 'Oct', 'ebec' ),
-    'Nov' => __( 'Nov', 'ebec' ),
-    'Dec' => __( 'Dec', 'ebec' ),
-];
+$dateObject = DateTime::createFromFormat('!m', $monthNumber);
 
-// Get month names dynamically
-$englishMonthLong  = wp_date( 'F', mktime( 0, 0, 0, $monthNum, 1 ) );
-$englishMonthShort = wp_date( 'M', mktime( 0, 0, 0, $monthNum, 1 ) );
-
-$longMonthStart  = $months[ $englishMonthLong ] ?? $englishMonthLong;
-$shortMonthStart = $shortMonths[ $englishMonthShort ] ?? $englishMonthShort;
+$longMonthStart  = $formatterLong->format($dateObject);
+$shortMonthStart = $formatterShort->format($dateObject);
 
 $event_type      = tribe( 'tec.featured_events' )->is_featured( $event_id ) ? 'ebec-featured-event' : 'ebec-simple-event';
 $description     = ! empty( $event_value['event_description'] ) ? $event_value['event_description'] : tribe_events_get_the_excerpt( $event_id );
@@ -78,7 +60,7 @@ if ( $display_header === true && $attributes['event_header_type'] === 'show_head
              ' . ebec_date_style( $event, $attributes ) . '
              </span>
              </div>';
-	$html .= '<a href=' . esc_url( $event_value['event_url'] ) . ' class="ebec-events-title" >' . esc_html( $event_value['event_title'] ) . '</a>';
+	$html .= '<a href=' . esc_url( $event_value['event_url'] ) . ' class="ebec-events-title" >' . wp_kses_post( $event_value['event_title'] ) . '</a>';
 if ( $attributes['ebec_venue'] == 'no' && tribe_has_venue( $event_id ) && 'minimal' !== $layout ) {
 	$html .= '<div class="ebec-list-venue" >';
 	if ( $event_value['have_venue_address'] ) {
