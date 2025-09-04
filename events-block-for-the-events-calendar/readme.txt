@@ -48,8 +48,8 @@ This addon fills in the gap by adding the Events Block feature to The Events Cal
 3. Events List block search preview
 
 ✍ Special THANKS!
-Special thanks to the famous The Events Calendar plugin authors and its parent company Modern Tribe, Inc. for creating an awesome plugin for events management.
-All of these addons are not developed by or affiliated with The Events Calendar (by Modern Tribe) team, these are third-party addons for The Events Calendar and they add extra features inside The Events Calendar free plugin.
+Special thanks to the famous The Events Calendar plugin authors and its parent company StellarWP, Inc. for creating an awesome plugin for events management.
+All of these addons are not developed by or affiliated with The Events Calendar (by StellarWP) team, these are third-party addons for The Events Calendar and they add extra features inside The Events Calendar free plugin.
 
 == Frequently Asked Questions ==
 
@@ -84,7 +84,7 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 * **Install via Zip file:-** In this method, first you need to download our plugin from the WordPress plugins directory. Download **Events Block For Gutenberg**. After this, inside your WP-admin panel, click on **Plugins > Add New > Upload Button**. Now choose the plugin zip file that you just downloaded from the WordPress plugins directory & activate it.
 * **Install the plugin via FTP:-** In this method, first you need to download the plugin zip file from the WordPress plugins directory. After this, open your FTP manager and **go to > wp-content/plugins folder**. Here you need to upload the extracted version of the Events Block For Gutenberg addon(remember, do not upload the zip file directly here). After this, you can activate the plugin from the **wp-admin > plugins page**.
 
-> Remember this is a design add-on. It will only work if you first install the "The Events Calendar (by MODERN TRIBE)" plugin.
+> Remember this is a design add-on. It will only work if you first install the "The Events Calendar (by StellarWP)" plugin.
 
 == Changelog == 
 
