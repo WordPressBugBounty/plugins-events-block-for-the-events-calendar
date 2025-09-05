@@ -66,10 +66,10 @@ if (!class_exists('ebec_review_notice')) {
             $diff_days= $difference->days;
           
             // check if installation days is greator then week
-            // if ($diff_days>=3) {
+            if ($diff_days>=3) {
                 $content = $this->ebec_create_notice_content();
                 printf( '%s', $content );
-            // }
+            }
        }  
 
        // generated review notice HTML
@@ -78,7 +78,7 @@ if (!class_exists('ebec_review_notice')) {
             $ajax_url      = esc_url( admin_url( 'admin-ajax.php' ) );
             $ajax_callback = sanitize_key( 'ebec_dismiss_notice' );
             $wrap_cls      = 'notice notice-info is-dismissible';
-            $img_path      = esc_url( EBEC_URL . 'assets/images/ebec-logo.png' );
+            $img_path      = esc_url( EBEC_URL . 'assets/images/ebec-logo.svg' );
             $p_name        = esc_html( "Events Block For The Events Calendar" );
             $like_it_text  = esc_html__( 'Rate Now! ★★★★★', 'ebec' );
             $already_rated_text = esc_html__( 'I already rated it', 'ebec' );
@@ -90,7 +90,7 @@ if (!class_exists('ebec_review_notice')) {
         
             $message = sprintf(
                 wp_kses_post(
-                    'Thanks for using <b>%s</b> WordPress plugin. We hope it meets your expectations! <br/>Please give us a quick rating, it works as a boost for us to keep working on more <a href="https://coolplugins.net" target="_blank"><strong>Cool Plugins</strong></a>!<br/>'
+                    'Thanks for using <b>%s</b> WordPress plugin. We hope it meets your expectations! <br/>Please give us a quick rating, it works as a boost for us to keep working on more <a href="https://coolplugins.net/?utm_source=ebec_plugin&utm_medium=inside&utm_campaign=author_page&utm_content=review_notice" target="_blank"><strong>Cool Plugins</strong></a>!<br/>'
                 ),
                 $p_name
             );
