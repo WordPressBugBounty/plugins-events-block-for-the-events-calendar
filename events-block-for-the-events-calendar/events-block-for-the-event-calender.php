@@ -5,7 +5,7 @@
  * Plugin URI:  https://eventscalendaraddons.com/?utm_source=ebec_plugin&utm_medium=inside&utm_campaign=get_pro&utm_content=plugin_uri
  * Author:      Cool Plugins
  * Author URI:  https://coolplugins.net/?utm_source=ebec_plugin&utm_medium=inside&utm_campaign=author_page&utm_content=plugins_list
- * Version: 1.3.9
+ * Version: 1.3.10
  * License: GPL2+
  * License URI: https://www.gnu.org/licenses/gpl-2.0.txt
  * Text Domain: ebec
@@ -18,7 +18,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'EBEC_VERSION', '1.3.9' );
+define( 'EBEC_VERSION', '1.3.10' );
 define( 'EBEC_FILE', __FILE__ );
 define( 'EBEC_PATH', plugin_dir_path( EBEC_FILE ) );
 define( 'EBEC_URL', plugin_dir_url( EBEC_FILE ) );
@@ -97,7 +97,7 @@ final class Ebec_Event_Block {
 			cool_plugins_events_addon_settings_page( 'the-events-calendar', 'cool-plugins-events-addon', '📅 Events Addons For The Events Calendar' );
 			
 			require_once EBEC_PATH . '/admin/feedback/admin-feedback-form.php';
-			require_once EBEC_PATH . '/admin/ebec-review-notice.php';
+			require_once EBEC_PATH . '/admin/feedback-notice/ebec-review-notice.php';
 			new ebec_review_notice();
 		}
 		if ( class_exists( 'Tribe__Events__Main' ) || defined( 'Tribe__Events__Main::VERSION' ) ) {

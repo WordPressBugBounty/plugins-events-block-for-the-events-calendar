@@ -5,7 +5,7 @@ Tags: events list, events block, the events calendar blocks, Gutenberg block, ev
 Requires at least: 6.0
 Tested up to: 6.8.2
 Requires PHP: 7.2
-Stable tag: 1.3.9
+Stable tag: 1.3.10
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -87,6 +87,10 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 > Remember this is a design add-on. It will only work if you first install the "The Events Calendar (by StellarWP)" plugin.
 
 == Changelog == 
+= Version 1.3.10 | 20 September, 2025 =
+- **Improved:** Rating div styling.
+- **Tested upto:** The Events Calendar version 6.15.4
+
 = Version 1.3.9 | 05 September, 2025 =
 - **Fixed:**  Review notice.
 - **Tested upto:** The Events Calendar version 6.15.1.1
