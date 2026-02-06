@@ -3,29 +3,34 @@
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
-$monthNumber = $event_value['event_start_date_details_month'];
+if (class_exists('IntlDateFormatter')) {
+	$monthNumber = $event_value['event_start_date_details_month'];
 
-$formatterLong = new IntlDateFormatter(
-    get_locale(), // Current WordPress locale
-    IntlDateFormatter::LONG,
-    IntlDateFormatter::NONE,
-    null,
-    null,
-    'LLLL' // Full month name
-);
-$formatterShort = new IntlDateFormatter(
-    get_locale(),
-    IntlDateFormatter::LONG,
-    IntlDateFormatter::NONE,
-    null,
-    null,
-    'LLL' // Short month name
-);
+	$formatterLong = new IntlDateFormatter(
+		get_locale(), // Current WordPress locale
+		IntlDateFormatter::LONG,
+		IntlDateFormatter::NONE,
+		null,
+		null,
+		'LLLL' // Full month name
+	);
+	$formatterShort = new IntlDateFormatter(
+		get_locale(),
+		IntlDateFormatter::LONG,
+		IntlDateFormatter::NONE,
+		null,
+		null,
+		'LLL' // Short month name
+	);
 
-$dateObject = DateTime::createFromFormat('!m', $monthNumber);
+	$dateObject = DateTime::createFromFormat('!m', $monthNumber);
 
-$longMonthStart  = $formatterLong->format($dateObject);
-$shortMonthStart = $formatterShort->format($dateObject);
+	$longMonthStart  = $formatterLong->format($dateObject);
+	$shortMonthStart = $formatterShort->format($dateObject);
+} else {
+	$longMonthStart  = DateTime::createFromFormat( '!m', $event_value['event_start_date_details_month'] )->format( 'F' );
+	$shortMonthStart = DateTime::createFromFormat( '!m', $event_value['event_start_date_details_month'] )->format( 'M' );
+}
 
 $event_type      = tribe( 'tec.featured_events' )->is_featured( $event_id ) ? 'ebec-featured-event' : 'ebec-simple-event';
 $description     = ! empty( $event_value['event_description'] ) ? $event_value['event_description'] : tribe_events_get_the_excerpt( $event_id );
