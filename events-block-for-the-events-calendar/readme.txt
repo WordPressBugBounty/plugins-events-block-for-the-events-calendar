@@ -5,9 +5,9 @@ Tags: events list, events block, the events calendar blocks, Gutenberg block, ev
 Requires at least: 6.0
 Tested up to: 6.9
 Requires PHP: 7.2
-Stable tag: 1.3.12
+Stable tag: 1.4
 License: GPLv2 or later
-License URI: http://www.gnu.org/licenses/gpl-2.0.html
+License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
 The Events Block for The Events Calendar lets you showcase your events from The Events Calendar right within the Gutenberg pages.
 
@@ -42,10 +42,7 @@ This addon fills in the gap by adding the Events Block feature to The Events Cal
 * **[Events Calendar Modules for Divi](https://wordpress.org/plugins/events-calendar-modules-for-divi/)** - Display The Events Calendar Events directly inside Divi with Customizable List or Grid Layouts.
 * **[Events Widgets Pro](https://eventscalendaraddons.com/plugin/events-widgets-pro/?utm_source=ebec_plugin&utm_medium=readme&utm_campaign=get_pro&utm_content=ectbe_more_addons)** - Show events list, grid, carousel, and more in Elementor pages using The Events Calendar Elementor Widgets.
 
-== Screenshots ==
-1. Events List Block Demo
-2. Events List block usage steps inside Gutenberg Block.
-3. Events List block search preview
+**Use of 3rd Party Services:** This plugin connects to the Cool Plugins API to display information about related plugins inside the dashboard. It also offers optional usage tracking and optional feedback submission on deactivation. Data is sent only after explicit user consent. No hidden tracking is performed, and no frontend visitor or site user data is collected. For more details, please review our [Data Usage Policy](https://my.coolplugins.net/terms/usage-tracking/), [TOS](https://my.coolplugins.net/terms/), and [Privacy Policy](https://my.coolplugins.net/terms/privacy-policy/).
 
 ✍ Special THANKS!
 Special thanks to the famous The Events Calendar plugin authors and its parent company StellarWP, Inc. for creating an awesome plugin for events management.
@@ -86,7 +83,19 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 
 > Remember this is a design add-on. It will only work if you first install the "The Events Calendar (by StellarWP)" plugin.
 
+== Screenshots ==
+1. Events List Block Demo
+2. Events List block usage steps inside Gutenberg Block.
+3. Events List block search preview
+
 == Changelog == 
+
+= Version 1.4 | 21 February, 2026 =
+- **Improvements:** Improved dashboard design and usability.
+- **Improvements:** Code optimizations and refinements.
+- **Fixed:** Issues reported by “Plugin Check” plugin.
+- **Updated:** readme file.
+- **Tested upto:** The Events Calendar version  6.15.16
 
 = Version 1.3.12 | 10 December, 2025 =
 - **Fixed:** IntlDateFormatter missing error in event list layout.
@@ -177,18 +186,5 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 
 == Upgrade Notice ==
 = Version 1.3.0 | 18 March, 2024 =
-- **Added:**
- - Event description setting for short and full content.
- - Added Layout setting.
- - Minimal Layout Added.
-- **Fixed:**
- - Fixed date format issue on the editor and front end.
- - Fixed excerpt content issue.
- - Fixed responsive styling issue.
- - Fixed multiple block Google fonts issue.
- - Fixed between date range issue on the editor side.
- - Fixed read more, event venue, and cost styling issues on the frontend.
- - Fixed line height issue on editor and front end.
- - Fixed venue editor issue on the editor side.
-
+Added: description setting (short/full), layout setting, minimal layout. Fixed: date format, excerpt, responsive styling, Google fonts, date range, read more/venue/cost styling, line height, venue editor.
 

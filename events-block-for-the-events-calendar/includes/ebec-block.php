@@ -29,14 +29,14 @@ class EBEC_Register_Block {
 	public function ebec_editor_assets() {
 			$id = get_the_ID();
 		if ( has_block( 'ebec/event-list', $id ) ) {
-			wp_enqueue_style( 'ebec-block-style-front', EBEC_URL . 'assets/css/ebec-style.css', array(), null, 'all' );
+			wp_enqueue_style( 'ebec-block-style-front', EBEC_URL . 'assets/css/ebec-style.css', array(), EBEC_VERSION, 'all' );
 		}
 	}
 
 
 	public function ebec_block_editor_assets() {
-			wp_enqueue_script( 'ebec-block-editor', EBEC_URL . 'dist/index.js', array( 'wp-blocks', 'wp-i18n', 'wp-editor', 'wp-components', 'wp-element' ) );
-			wp_enqueue_style( 'ebec-block-style-editor', EBEC_URL . 'dist/style-index.css', array( 'wp-edit-blocks' ), null, 'all' );
+			wp_enqueue_script( 'ebec-block-editor', EBEC_URL . 'dist/index.js', array( 'wp-blocks', 'wp-i18n', 'wp-editor', 'wp-components', 'wp-element' ), EBEC_VERSION, true );
+			wp_enqueue_style( 'ebec-block-style-editor', EBEC_URL . 'dist/style-index.css', array( 'wp-edit-blocks' ), EBEC_VERSION, 'all' );
 	}
 
 
@@ -384,8 +384,11 @@ class EBEC_Register_Block {
 					'order'          => $attributes['ebec_order'],
 					'orderby'        => 'event_date',
 					'posts_per_page' => $attributes['ebec_max_events'],
+					//phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key
 					'meta_key'       => $attributes['key'],
+					//phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query
 					'meta_query'     => $attributes['meta_date'],
+					//phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_tax_query
 					'tax_query'      => $tax_query,
 				)
 			);
@@ -400,25 +403,25 @@ class EBEC_Register_Block {
 				$block_id      = isset( $attributes['ebec_block_id'] ) ? $attributes['ebec_block_id'] : '';
 				$build_url     = 'https://fonts.googleapis.com/css?family=';
 				$build_url    .= implode( '|', array_filter( $font_family_array ) );
-				wp_enqueue_style( 'ebec-google-font-' . $block_id, "$build_url", array(), null, 'all' );
+				wp_enqueue_style( 'ebec-google-font-' . $block_id, "$build_url", array(), EBEC_VERSION, 'all' );
 				$events         = '';
-				$html           = '';
-				$display_month  = '';
-				$display_year   = '';
-				$display_header = true;
-				$events         = $all_events;
-				$layout         = isset( $attributes['event_layout'] ) ? $attributes['event_layout'] : 'default';
-				$layout_cls     = 'ebec-' . $layout . '-list';
-				$desc_type      = isset( $attributes['event_desc_type'] ) ? $attributes['event_desc_type'] : 'short';
+				$ebec_html       = '';
+				$display_month   = '';
+				$display_year    = '';
+				$display_header  = true;
+				$events          = $all_events;
+				$layout          = isset( $attributes['event_layout'] ) ? $attributes['event_layout'] : 'default';
+				$layout_cls      = 'ebec-' . $layout . '-list';
+				$desc_type       = isset( $attributes['event_desc_type'] ) ? $attributes['event_desc_type'] : 'short';
 				include EBEC_PATH . '/includes/ebec-style-setting.php';
 				include EBEC_PATH . '/Layouts/list/ebec-list-style.php';
-			if ( isset( $selectors ) ) {
-				wp_add_inline_style( 'ebec-google-font-' . $block_id, $selectors );
+			if ( isset( $ebec_selectors ) ) {
+				wp_add_inline_style( 'ebec-google-font-' . $block_id, $ebec_selectors );
 			}
 
-				$html .= '<!---------- Event List Block Version:' . esc_html(EBEC_VERSION) . ' By Cool Plugins Team-------------->';
-				$html .= '<div id="ebec-events-list-content" class="ebec-list-wrapper ebec-block-' . esc_attr($ebec_block_id) . '">';
-				$html .= '<div id="' . esc_attr($layout_cls) . '-wrp" class="' . esc_attr($layout_cls) . '-wrapper ' . esc_attr($category) . '">';
+				$ebec_html .= '<!---------- Event List Block Version:' . esc_html(EBEC_VERSION) . ' By Cool Plugins Team-------------->';
+				$ebec_html .= '<div id="ebec-events-list-content" class="ebec-list-wrapper ebec-block-' . esc_attr($ebec_block_id) . '">';
+				$ebec_html .= '<div id="' . esc_attr($layout_cls) . '-wrp" class="' . esc_attr($layout_cls) . '-wrapper ' . esc_attr($category) . '">';
 
 			foreach ( $events as $key => $event ) {
 				$event_id = filter_var( $event->ID, FILTER_SANITIZE_NUMBER_INT );
@@ -438,8 +441,8 @@ class EBEC_Register_Block {
 					include EBEC_PATH . '/Layouts/list/ebec-list-layout.php';
 
 			}
-				$html .= '</div></div>';
-				return $html;
+				$ebec_html .= '</div></div>';
+				return $ebec_html;
 		} else {
 			return $error;
 		}

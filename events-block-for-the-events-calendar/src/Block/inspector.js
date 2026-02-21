@@ -47,9 +47,9 @@ export class Inspector extends Component{
         return(
             <Fragment>
             <InspectorControls>
-                <PanelBody title={__("Event Panel","ebec")}>    
+                <PanelBody title={__("Event Panel","events-block-for-the-events-calendar")}>    
                     <SelectControl
-						label={ __( 'Layout','ebec' ) }
+						label={ __( 'Layout','events-block-for-the-events-calendar' ) }
 						description={ __( 'Select events layout' ) }
 						options={ 
                             [
@@ -62,7 +62,7 @@ export class Inspector extends Component{
 					/>
                     <div className="ebec-impressum-select-multiple">
                         <FormTokenField
-                        label={__( 'Select Category','ebec' )}
+                        label={__( 'Select Category','events-block-for-the-events-calendar' )}
                     value={this.props.categorySelect}
                     suggestions={ this.props.category }
                     onChange={ this.props.categorySelectHandle}
@@ -72,14 +72,14 @@ export class Inspector extends Component{
                   
                     </div>
                     <SelectControl
-						label={ __( 'Date Formats','ebec' ) }
+						label={ __( 'Date Formats','events-block-for-the-events-calendar' ) }
 						description={ __( 'yes/no' ) }
 						options={ dateFormatsOptions }
 						value= {this.props.dateFormats}
 						onChange={this.props.dateFormatHandle}
 					/>
                     <NumberControl
-						label={ __( 'Limit the events','ebec' ) }
+						label={ __( 'Limit the events','events-block-for-the-events-calendar' ) }
                         isShiftStepEnabled={ true }
                         shiftStep={1}
 						value={this.props.eventsLimit}
@@ -89,7 +89,7 @@ export class Inspector extends Component{
 					/>
                     <br></br>
                     <SelectControl
-                        label={ __( 'Events Order','ebec' ) }
+                        label={ __( 'Events Order','events-block-for-the-events-calendar' ) }
                         description={ __( ' Events Order' ) }
                         options={ orderOptions }
                         value={this.props.eventOrder}
@@ -98,14 +98,14 @@ export class Inspector extends Component{
                     {'minimal' !== this.props.eventLayout &&
                         <>
                             <SelectControl
-                            label={ __( 'Hide Venue' ,'ebec') }
+                            label={ __( 'Hide Venue' ,'events-block-for-the-events-calendar') }
                             description={ __( 'Hide Venue Settings' ) }
                             options={ Options }
                             value={this.props.venue}
                             onChange={this.props.venueHandle}
                             />
                             <SelectControl
-                                label={ __( 'Display Description','ebec' ) }
+                                label={ __( 'Display Description','events-block-for-the-events-calendar' ) }
                                 description={ __( 'Display Description Settings' ) }
                                 options={ Options }
                                 value={this.props.displayDesc}
@@ -113,7 +113,7 @@ export class Inspector extends Component{
                                 />
                             {'yes' === this.props.displayDesc &&
                                 <SelectControl
-                                label={ __( 'Event Description?','ebec' ) }
+                                label={ __( 'Event Description?','events-block-for-the-events-calendar' ) }
                                 description={ __( 'Event Description Settings' ) }
                                 options={ [
                                     {label: 'Short', value: 'short'},
@@ -128,7 +128,7 @@ export class Inspector extends Component{
                      {'minimal' !== this.props.eventLayout &&
                         <>
                             <SelectControl
-                                label={ __( 'Month Header','ebec' ) }
+                                label={ __( 'Month Header','events-block-for-the-events-calendar' ) }
                                 description={ __( 'Month Header' ) }
                                 options={ [
                                     {label: 'Show Header' , value:'show_header'},
@@ -141,13 +141,13 @@ export class Inspector extends Component{
                         </>
                     }
                     <ToggleControl 
-                    label={ __('Enable this option if you want to Show Events in between date range','ebec') }
+                    label={ __('Enable this option if you want to Show Events in between date range','events-block-for-the-events-calendar') }
                     checked={ this.props.eventTime}
                     onChange={this.props.eventTimeHandle}
                     />
                     <p style={{color:"red"}}>Select Event Date option only works on front-end side</p>
                     <SelectControl
-                        label={ __( 'Events Type (Past/Future Events)','ebec' ) }
+                        label={ __( 'Events Type (Past/Future Events)','events-block-for-the-events-calendar' ) }
                         description={ __( 'Events Type' ) }
                         options={ timeOptions }
                         value={this.props.eventType}
@@ -156,9 +156,9 @@ export class Inspector extends Component{
                      <p style={{color:"red"}}>Events Type option only works on front-end side</p>
                 </PanelBody>
                         { this.props.eventTime === true &&
-                        <PanelBody title={__("Start Event Panel","ebec")} className="ebec-start-date-picker">
+                        <PanelBody title={__("Start Event Panel","events-block-for-the-events-calendar")} className="ebec-start-date-picker">
                         <DateTimePicker
-                        label = {__('Start Date','ebec')}
+                        label = {__('Start Date','events-block-for-the-events-calendar')}
                         currentDate={this.props.eventRangeStart}
                         onChange={this.props.eventRangeStartHandle}
                         is12Hour={ true }
@@ -166,7 +166,7 @@ export class Inspector extends Component{
                         </PanelBody>
                      } 
                     { this.props.eventTime == true &&
-                        <PanelBody title={__("End Event Panel","ebec")} className="ebec-end-date-picker">
+                        <PanelBody title={__("End Event Panel","events-block-for-the-events-calendar")} className="ebec-end-date-picker">
                         <DateTimePicker
                         currentDate={this.props.eventRangeEnd}
                         onChange={this.props.eventRangeEndHandle}
@@ -180,7 +180,7 @@ export class Inspector extends Component{
                          onChange={this.props.noEventTextHandle}
                          className="ebec-no-event-text"
                      />
-                <PanelBody title={__("Main Skin Color","ebec")} initialOpen={ false }>           
+                <PanelBody title={__("Main Skin Color","events-block-for-the-events-calendar")} initialOpen={ false }>           
                     <ColorPicker 
                         color={this.props.skinColor}
                         onChangeComplete={this.props.skinColorHandle}
@@ -189,7 +189,7 @@ export class Inspector extends Component{
                 </PanelBody>  
 
                  {/* Date Panel Style Setting */}     
-                <PanelBody title={__("Event Date Style","ebec")} initialOpen={ false }>           
+                <PanelBody title={__("Event Date Style","events-block-for-the-events-calendar")} initialOpen={ false }>           
                     <ColorPicker 
                         color={this.props.eventDateColor}
                         onChangeComplete={this.props.eventDateColorHandle}
@@ -201,7 +201,7 @@ export class Inspector extends Component{
                 </PanelBody> 
 
                    {/* Title Panel Style Setting */}    
-                <PanelBody title={__("Event Title Style","ebec")} initialOpen={ false }>           
+                <PanelBody title={__("Event Title Style","events-block-for-the-events-calendar")} initialOpen={ false }>           
                     <ColorPicker 
                         color={this.props.eventTitleColor}
                         onChangeComplete={this.props.eventTitleColorHandle}
@@ -214,7 +214,7 @@ export class Inspector extends Component{
                    {/* Venue Panel Style Setting */}
                      {'minimal' !== this.props.eventLayout &&
                         <>
-                            <PanelBody title={__("Event Venue Style","ebec")} initialOpen={ false }>           
+                            <PanelBody title={__("Event Venue Style","events-block-for-the-events-calendar")} initialOpen={ false }>           
                                 <ColorPicker 
                                     color={this.props.eventVenueColor}
                                     onChangeComplete={this.props.eventVenueColorHandle}
@@ -226,7 +226,7 @@ export class Inspector extends Component{
                             </PanelBody> 
 
                             {/* Description Panel Style Setting */} 
-                            <PanelBody title={__("Event Desciption Style","ebec")} initialOpen={ false }>           
+                            <PanelBody title={__("Event Description Style","events-block-for-the-events-calendar")} initialOpen={ false }>           
                                 <ColorPicker 
                                     color={this.props.eventDescriptionColor}
                                     onChangeComplete={this.props.eventDescriptionColorHandle}
@@ -241,7 +241,7 @@ export class Inspector extends Component{
                      }
 
                      {/* Link Panel Style Setting */}
-                <PanelBody title={__("Find out More Style","ebec")} initialOpen={ false }>           
+                <PanelBody title={__("Find out More Style","events-block-for-the-events-calendar")} initialOpen={ false }>           
                 <TextControl 
                     label="Find out More Text"
                     value={this.props.eventLinkName}
@@ -259,7 +259,7 @@ export class Inspector extends Component{
                 {'minimal' === this.props.eventLayout &&
                     <>
                         {/* Simple Event Panel Style Setting */}    
-                        <PanelBody title={__("Non-Featured Event Style","ebec")} initialOpen={ false }>           
+                        <PanelBody title={__("Non-Featured Event Style","events-block-for-the-events-calendar")} initialOpen={ false }>           
                             <ColorPicker 
                             color={this.props.eventSimpleColor}
                             onChangeComplete={this.props.eventSimpleColorHandle}
@@ -267,7 +267,7 @@ export class Inspector extends Component{
                             />  
                         </PanelBody>  
                         {/* Featured Event Panel Style Setting */}    
-                        <PanelBody title={__("Featured Event Style","ebec")} initialOpen={ false }>           
+                        <PanelBody title={__("Featured Event Style","events-block-for-the-events-calendar")} initialOpen={ false }>           
                             <ColorPicker 
                             color={this.props.eventFeaturedColor}
                             onChangeComplete={this.props.eventFeaturedColorHandle}
@@ -276,7 +276,7 @@ export class Inspector extends Component{
                         </PanelBody> 
                     </>
                 }
-                <CardBody className={"ebec-review-tab"}>{__("We hope you liked our plugin created events. Please share your valuable feedback.","ebec")}<br></br><a className="components-button is-primary is-small" href="https://wordpress.org/support/plugin/events-block-for-the-events-calendar/reviews/" target="_blank" >Rate Us ★★★★★</a>
+                <CardBody className={"ebec-review-tab"}>{__("We hope you liked our plugin created events. Please share your valuable feedback.","events-block-for-the-events-calendar")}<br></br><a className="components-button is-primary is-small" href="https://wordpress.org/support/plugin/events-block-for-the-events-calendar/reviews/" target="_blank" >Rate Us ★★★★★</a>
                 </CardBody>
             </InspectorControls>
             </Fragment>

@@ -88,7 +88,7 @@ if (!class_exists('EBEC_cronjob')) {
 
                 $schedules['every_30_days'] = array(
                     'interval' => 30 * 24 * 60 * 60, // 2,592,000 seconds
-                    'display'  => __('Once every 30 days'),
+                    'display'  => __('Once every 30 days', 'events-block-for-the-events-calendar'),
                 );
             }
 
@@ -97,5 +97,5 @@ if (!class_exists('EBEC_cronjob')) {
 
     }
 
-    $cron_init = new EBEC_cronjob();
+    $ebec_cron_init = new EBEC_cronjob();
 }

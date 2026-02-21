@@ -44,7 +44,7 @@ export class Typography extends Component{
         return(
             <Fragment>
                 <RangeControl
-                label={__("Font Size (in Pixel)","ebec")}
+                label={__("Font Size (in Pixel)",'events-block-for-the-events-calendar')}
                 value={this.props.fontSize}
                 onChange={this.props.fontSizeHandle}
                 min={0}
@@ -52,44 +52,44 @@ export class Typography extends Component{
                 />
 
                 <SelectControl
-                    label={ __( 'Family','ebec' ) }
+                    label={ __( 'Family','events-block-for-the-events-calendar' ) }
                     options={fontFamilyOption}
                     value={this.props.fontFamily}
                     onChange={this.props.fontFamilyHandle}
 				/>
                 <SelectControl
-                    label={ __( 'Weight','ebec' ) }
+                    label={ __( 'Weight','events-block-for-the-events-calendar' ) }
                     options={fontWeightOption}
                     value={this.props.fontWeight}
                     onChange={this.props.fontWeightHandle}
 				/>
                 <SelectControl
-                    label={ __( 'Transform','ebec' ) }
+                    label={ __( 'Transform','events-block-for-the-events-calendar' ) }
                     options={fontTransformOption}
                     value={this.props.fontTransform}
                     onChange={this.props.fontTransformHandle}
 				/>
                 <SelectControl
-                    label={ __( 'Style','ebec' ) }
+                    label={ __( 'Style','events-block-for-the-events-calendar' ) }
                     options={fontStyleOption}
                     value={this.props.fontStyle}
                     onChange={this.props.fontStyleHandle}
 				/>
                 <SelectControl
-                    label={ __( ' Decoration','ebec' ) }
+                    label={ __( ' Decoration','events-block-for-the-events-calendar' ) }
                     options={textDecorationOption}
                     value={this.props.textDecoration}
                     onChange={this.props.textDecorationHandle}
 				/>
                 <RangeControl
-                    label={__("Line Height (in Pixel)","ebec")}
+                    label={__("Line Height (in Pixel)",'events-block-for-the-events-calendar')}
                     value={this.props.eventLineHeight}
                     onChange={this.props.eventLineHeightHandle}
                     min={0}
                     max={100}
                 />
                 <RangeControl
-                    label={__("Letter Spacing (in Pixel)","ebec")}
+                    label={__("Letter Spacing (in Pixel)",'events-block-for-the-events-calendar')}
                     value={this.props.eventLetterSpacing}
                     onChange={this.props.eventLetterSpacingHandle}
                     min={-5}

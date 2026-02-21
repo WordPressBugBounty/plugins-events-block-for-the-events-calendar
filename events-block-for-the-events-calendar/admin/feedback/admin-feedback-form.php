@@ -50,24 +50,24 @@ class ebec_feedback{
 		}
 		$deactivate_reasons = array(
 			'didnt_work_as_expected'         => array(
-				'title'             => __( 'The plugin didn\'t work as expected.', 'cool-plugins' ),
+				'title'             => __( 'The plugin didn\'t work as expected.', 'events-block-for-the-events-calendar' ),
 				'input_placeholder' => 'What did you expect?',
 			),
 			'found_a_better_plugin'          => array(
-				'title'             => __( 'I found a better plugin.', 'cool-plugins' ),
-				'input_placeholder' => __( 'Please share which plugin.', 'cool-plugins' ),
+				'title'             => __( 'I found a better plugin.', 'events-block-for-the-events-calendar' ),
+				'input_placeholder' => __( 'Please share which plugin.', 'events-block-for-the-events-calendar' ),
 			),
 			'couldnt_get_the_plugin_to_work' => array(
-				'title'             => __( 'The plugin is not working.', 'cool-plugins' ),
+				'title'             => __( 'The plugin is not working.', 'events-block-for-the-events-calendar' ),
 				'input_placeholder' => 'Please share your issue. So we can fix that for other users.',
 			),
 			'temporary_deactivation'         => array(
-				'title'             => __( 'It\'s a temporary deactivation.', 'cool-plugins' ),
+				'title'             => __( 'It\'s a temporary deactivation.', 'events-block-for-the-events-calendar' ),
 				'input_placeholder' => '',
 			),
 			'other'                          => array(
-				'title'             => __( 'Other reason.', 'cool-plugins' ),
-				'input_placeholder' => __( 'Please share the reason.', 'cool-plugins' ),
+				'title'             => __( 'Other reason.', 'events-block-for-the-events-calendar' ),
+				'input_placeholder' => __( 'Please share the reason.', 'events-block-for-the-events-calendar' ),
 			),
 		);
 
@@ -77,7 +77,7 @@ class ebec_feedback{
 			<div class="cp-feedback-wrapper">
 
 			<div class="cp-feedback-header">
-				<div class="cp-feedback-title"><?php echo esc_html__( 'Quick Feedback', 'cool-plugins' ); ?></div>
+				<div class="cp-feedback-title"><?php echo esc_html__( 'Quick Feedback', 'events-block-for-the-events-calendar' ); ?></div>
 				<div class="cp-feedback-title-link">A plugin by <a href="https://coolplugins.net/?utm_source=<?php echo esc_attr($this->plugin_slug);?>_plugin&utm_medium=inside&utm_campaign=coolplugins&utm_content=deactivation_feedback" target="_blank">CoolPlugins.net</a></div>
 			</div>
 
@@ -86,7 +86,7 @@ class ebec_feedback{
 			</div>
 
 			<div class="cp-feedback-form-wrapper">
-				<div class="cp-feedback-form-title"><?php echo esc_html__( 'If you have a moment, please share the reason for deactivating this plugin.', 'cool-plugins' ); ?></div>
+				<div class="cp-feedback-form-title"><?php echo esc_html__( 'If you have a moment, please share the reason for deactivating this plugin.', 'events-block-for-the-events-calendar' ); ?></div>
 				<form class="cp-feedback-form" method="post">
 					<?php
 					wp_nonce_field( '_cool-plugins_deactivate_feedback_nonce' );
@@ -107,7 +107,7 @@ class ebec_feedback{
 					<?php endforeach; ?>
 					
 					<div class="cp-feedback-terms">
-					<input class="cp-feedback-terms-input" id="cp-feedback-terms-input" type="checkbox"><label for="cp-feedback-terms-input"><?php echo esc_html__( 'I agree to share anonymous usage data and basic site details (such as server, PHP, and WordPress versions) to support Events Block For The Events Calendar improvement efforts. Additionally, I allow Cool Plugins to store all information provided through this form and to respond to my inquiry.', 'cool-plugins' ); ?></label>
+					<input class="cp-feedback-terms-input" id="cp-feedback-terms-input" type="checkbox"><label for="cp-feedback-terms-input"><?php echo esc_html__( 'I agree to share anonymous usage data and basic site details (such as server, PHP, and WordPress versions) to support Events Block For The Events Calendar improvement efforts. Additionally, I allow Cool Plugins to store all information provided through this form and to respond to my inquiry.', 'events-block-for-the-events-calendar' ); ?></label>
 					</div>
 
 					<div class="cp-feedback-button-wrapper">
@@ -130,6 +130,7 @@ class ebec_feedback{
 	
 		// Server and WP environment details
 		$server_info = [
+			//phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash
 			'server_software'        => isset($_SERVER['SERVER_SOFTWARE']) ? sanitize_text_field($_SERVER['SERVER_SOFTWARE']) : 'N/A',
 			'mysql_version'          => $wpdb ? sanitize_text_field($wpdb->db_version() ?: 'N/A') : 'N/A',
 			'php_version'            => sanitize_text_field(phpversion() ?: 'N/A'),
@@ -185,36 +186,39 @@ class ebec_feedback{
 
 
 	function submit_deactivation_response() {
+		//phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash
 		if (!isset($_POST['_wpnonce']) || !wp_verify_nonce(sanitize_text_field($_POST['_wpnonce']), '_cool-plugins_deactivate_feedback_nonce')) {
 			wp_send_json_error('Nonce verification failed');
 			exit;
 		} else {
+			//phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash
 			$reason             = isset( $_POST['reason'] ) ? sanitize_text_field( $_POST['reason'] ) : '';
 			$deactivate_reasons = array(
 				'didnt_work_as_expected'         => array(
-					'title'             => __( 'The plugin didn\'t work as expected', 'cool-plugins' ),
+					'title'             => __( 'The plugin didn\'t work as expected', 'events-block-for-the-events-calendar' ),
 					'input_placeholder' => 'What did you expect?',
 				),
 				'found_a_better_plugin'          => array(
-					'title'             => __( 'I found a better plugin', 'cool-plugins' ),
-					'input_placeholder' => __( 'Please share which plugin.', 'cool-plugins' ),
+					'title'             => __( 'I found a better plugin', 'events-block-for-the-events-calendar' ),
+					'input_placeholder' => __( 'Please share which plugin.', 'events-block-for-the-events-calendar' ),
 				),
 				'couldnt_get_the_plugin_to_work' => array(
-					'title'             => __( 'The plugin is not working', 'cool-plugins' ),
+					'title'             => __( 'The plugin is not working', 'events-block-for-the-events-calendar' ),
 					'input_placeholder' => 'Please share your issue. So we can fix that for other users.',
 				),
 				'temporary_deactivation'         => array(
-					'title'             => __( 'It\'s a temporary deactivation.', 'cool-plugins' ),
+					'title'             => __( 'It\'s a temporary deactivation.', 'events-block-for-the-events-calendar' ),
 					'input_placeholder' => '',
 				),
 				'other'                          => array(
-					'title'             => __( 'Other', 'cool-plugins' ),
-					'input_placeholder' => __( 'Please share the reason.', 'cool-plugins' ),
+					'title'             => __( 'Other', 'events-block-for-the-events-calendar' ),
+					'input_placeholder' => __( 'Please share the reason.', 'events-block-for-the-events-calendar' ),
 				),
 			);
 
 			$plugin_initial =  get_option( 'ebec_initial_save_version' );
 			$deativation_reason = array_key_exists( $reason, $deactivate_reasons ) ? $reason : 'other';
+			//phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash
 			$sanitized_message = empty($_POST['message']) || sanitize_text_field( $_POST['message'] ) == '' ? 'N/A' : sanitize_text_field( $_POST['message'] );
 			$admin_email       = sanitize_email( get_option( 'admin_email' ) );
 			$site_url          = esc_url( site_url() );

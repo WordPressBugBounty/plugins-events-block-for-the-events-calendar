@@ -157,15 +157,17 @@ function ebec_tribe_event_time( $display, $event ) {
 		$start_date = tribe_get_start_date($event, false, 'F j, Y');
 		$end_date   = tribe_get_end_date($event, false, 'F j, Y');
 		if ( $display ) {
-			printf( esc_html__( '%1$s - %2$s', 'ebec' ), esc_html( $start_date ), esc_html( $end_date ) );
+			/* translators: 1: Start date, 2: End date */
+			printf( esc_html__( '%1$s - %2$s', 'events-block-for-the-events-calendar' ), esc_html( $start_date ), esc_html( $end_date ) );
 		} else {
-			return sprintf( esc_html__( '%1$s - %2$s', 'ebec' ), esc_html( $start_date ), esc_html( $end_date ) );
+			/* translators: 1: Start date, 2: End date */
+			return sprintf( esc_html__( '%1$s - %2$s', 'events-block-for-the-events-calendar' ), esc_html( $start_date ), esc_html( $end_date ) );
 		}
 	} elseif ( tribe_event_is_all_day( $event ) ) { // all day event
 		if ( $display ) {
-			esc_html_e( 'All day', 'ebec' );
+			esc_html_e( 'All day', 'events-block-for-the-events-calendar' );
 		} else {
-			return esc_html__( 'All day', 'ebec' );
+			return esc_html__( 'All day', 'events-block-for-the-events-calendar' );
 		}
 	} else {
 		$time_format = get_option( 'time_format' );
@@ -173,15 +175,17 @@ function ebec_tribe_event_time( $display, $event ) {
 		$end_date    = tribe_get_end_date( $event, false, $time_format );
 		if ( $start_date !== $end_date ) {
 			if ( $display ) {
-				printf( esc_html__( '%1$s - %2$s', 'ebec' ), esc_html( $start_date ), esc_html( $end_date ) );
+				/* translators: 1: Start date, 2: End date */
+				printf( esc_html__( '%1$s - %2$s', 'events-block-for-the-events-calendar' ), esc_html( $start_date ), esc_html( $end_date ) );
 			} else {
-				return sprintf( esc_html__( '%1$s - %2$s', 'ebec' ), esc_html( $start_date ), esc_html( $end_date ) );
+				/* translators: 1: Start date, 2: End date */
+				return sprintf( esc_html__( '%1$s - %2$s', 'events-block-for-the-events-calendar' ), esc_html( $start_date ), esc_html( $end_date ) );
 			}
 		} else {
 			if ( $display ) {
-				printf( esc_html__( '%s', 'ebec' ), esc_html( $start_date ) );
+				printf( '%s', esc_html( $start_date ) );
 			} else {
-				return sprintf( esc_html__( '%s', 'ebec' ), esc_html( $start_date ) );
+				return sprintf( '%s', esc_html( $start_date ) );
 			}
 		}
 	}

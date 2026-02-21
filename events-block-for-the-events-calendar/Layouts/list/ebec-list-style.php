@@ -2,106 +2,106 @@
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
-if ( ! function_exists( 'darkenColor' ) ) {
-    function darkenColor($color, $percent) {
-        $num = hexdec(ltrim($color, '#'));
-        $amt = round(2.55 * $percent);
-        $R = ($num >> 16) - $amt;
-        $G = (($num >> 8) & 0x00FF) - $amt;
-        $B = ($num & 0x0000FF) - $amt;
+if ( ! function_exists( 'ebec_darken_color' ) ) {
+    function ebec_darken_color( $color, $percent ) {
+        $num = hexdec( ltrim( $color, '#' ) );
+        $amt = round( 2.55 * $percent );
+        $R   = ( $num >> 16 ) - $amt;
+        $G   = ( ( $num >> 8 ) & 0x00FF ) - $amt;
+        $B   = ( $num & 0x0000FF ) - $amt;
 
-        return sprintf("#%02x%02x%02x", max(0, $R), max(0, $G), max(0, $B));
+        return sprintf( '#%02x%02x%02x', max( 0, $R ), max( 0, $G ), max( 0, $B ) );
     }
 }
 // dynamic css
-$selectors = '
+$ebec_selectors = '
 .ebec-block-' . $ebec_block_id . ' .ebec-header-year 
   {
-      color:' . $main_skin_color . '
+      color:' . $ebec_main_skin_color . '
    }
  .ebec-block-' . $ebec_block_id . ' .ebec-header-line  {
-     background-color:' . $main_skin_color . ' !important
+     background-color:' . $ebec_main_skin_color . ' !important
  }
  .ebec-block-' . $ebec_block_id . ' .ebec-event-datetimes .ev-mo {
-     color:' . $main_skin_color . '
+     color:' . $ebec_main_skin_color . '
  }
  .ebec-block-' . $ebec_block_id . ' .ebec-event-datetimes .ebec-ev-day  {
-     color:' . $main_skin_color . '
+     color:' . $ebec_main_skin_color . '
  }
  .ebec-list-wrapper>:not(.ebec-minimal-list-wrapper) .ebec-list-posts{
-    border-left-color:' . $main_skin_color . '!important
+    border-left-color:' . $ebec_main_skin_color . '!important
  }
   .ebec-block-' . $ebec_block_id . ' .ebec-event-details  {
-     border-left-color:' . $main_skin_color . '!important
+     border-left-color:' . $ebec_main_skin_color . '!important
  }
  .ebec-block-' . $ebec_block_id . ' .ebec-events-title  {
-     color:' . $event_title_color . ';
-     font-size:' . $event_title_font . 'px;
-     font-family:' . $event_title_family . ';
-     font-weight:' . $event_title_weight . ';
-     text-transform:' . $event_title_transform . ';
-     font-style:' . $event_title_style . ';
-     text-decoration:' . $event_title_decoration . ' !important;
-     line-height:' . ( 'initial' === $event_title_line_height ? 'initial' : $event_title_line_height . 'px' ) . ';
-     letter-spacing:' . $event_title_letter_spacing . 'px
+     color:' . $ebec_event_title_color . ';
+     font-size:' . $ebec_event_title_font . 'px;
+     font-family:' . $ebec_event_title_family . ';
+     font-weight:' . $ebec_event_title_weight . ';
+     text-transform:' . $ebec_event_title_transform . ';
+     font-style:' . $ebec_event_title_style . ';
+     text-decoration:' . $ebec_event_title_decoration . ' !important;
+     line-height:' . ( 'initial' === $ebec_event_title_line_height ? 'initial' : $ebec_event_title_line_height . 'px' ) . ';
+     letter-spacing:' . $ebec_event_title_letter_spacing . 'px
  }
  .ebec-block-' . $ebec_block_id . ' .ebec-date-area {
-     color:' . $event_date_color . ';
-     font-size:' . $event_date_font . 'px;
-     font-family:' . $event_date_family . ';
-     font-weight:' . $event_date_weight . ';
-     text-transform:' . $event_date_transform . ';
-     font-style:' . $event_date_style . ';
-     text-decoration:' . $event_date_decoration . ';
-     line-height:' . ( 'initial' === $event_date_line_height ? 'initial' : $event_date_line_height . 'px' ) . ';
-     letter-spacing:' . $event_date_letter_spacing . 'px
+     color:' . $ebec_event_date_color . ';
+     font-size:' . $ebec_event_date_font . 'px;
+     font-family:' . $ebec_event_date_family . ';
+     font-weight:' . $ebec_event_date_weight . ';
+     text-transform:' . $ebec_event_date_transform . ';
+     font-style:' . $ebec_event_date_style . ';
+     text-decoration:' . $ebec_event_date_decoration . ';
+     line-height:' . ( 'initial' === $ebec_event_date_line_height ? 'initial' : $ebec_event_date_line_height . 'px' ) . ';
+     letter-spacing:' . $ebec_event_date_letter_spacing . 'px
  }
   .ebec-block-' . $ebec_block_id . ' .ebec-list-venue  {
-     color:' . $event_venue_color . ';
-     font-size:' . $event_venue_font . 'px;
-     font-family:' . $event_venue_family . ';
-     font-weight:' . $event_venue_weight . ';
-     text-transform:' . $event_venue_transform . ';
-     font-style:' . $event_venue_style . ';
-     text-decoration:' . $event_venue_decoration . ';
-     line-height:' . ( 'initial' === $event_venue_line_height ? 'initial' : $event_venue_line_height . 'px' ) . ';
-     letter-spacing:' . $event_venue_letter_spacing . 'px
+     color:' . $ebec_event_venue_color . ';
+     font-size:' . $ebec_event_venue_font . 'px;
+     font-family:' . $ebec_event_venue_family . ';
+     font-weight:' . $ebec_event_venue_weight . ';
+     text-transform:' . $ebec_event_venue_transform . ';
+     font-style:' . $ebec_event_venue_style . ';
+     text-decoration:' . $ebec_event_venue_decoration . ';
+     line-height:' . ( 'initial' === $ebec_event_venue_line_height ? 'initial' : $ebec_event_venue_line_height . 'px' ) . ';
+     letter-spacing:' . $ebec_event_venue_letter_spacing . 'px
  }
   .ebec-block-' . $ebec_block_id . ' .ebec-event-content  {
-     color:' . $event_description_color . ';
-     font-size:' . $event_description_font . 'px;
-     font-family:' . $event_description_family . ';
-     font-weight:' . $event_description_weight . ';
-     text-transform:' . $event_description_transform . ';
-     font-style:' . $event_description_style . ';
-     text-decoration:' . $event_description_decoration . ';
-     letter-spacing:' . $event_description_letter_spacing . 'px;
-     line-height:' . ( 'initial' === $event_description_line_height ? 'initial' : $event_description_line_height . 'px' ) . ';
+     color:' . $ebec_event_description_color . ';
+     font-size:' . $ebec_event_description_font . 'px;
+     font-family:' . $ebec_event_description_family . ';
+     font-weight:' . $ebec_event_description_weight . ';
+     text-transform:' . $ebec_event_description_transform . ';
+     font-style:' . $ebec_event_description_style . ';
+     text-decoration:' . $ebec_event_description_decoration . ';
+     letter-spacing:' . $ebec_event_description_letter_spacing . 'px;
+     line-height:' . ( 'initial' === $ebec_event_description_line_height ? 'initial' : $ebec_event_description_line_height . 'px' ) . ';
  }
 
   .ebec-block-' . $ebec_block_id . ' .ebec-events-read-more  {
-     color:' . $event_link_color . ';
-     font-size:' . $event_link_font . 'px;
-     font-family:' . $event_link_family . ';
-     font-weight:' . $event_link_weight . ';
-     text-transform:' . $event_link_transform . ';
-     font-style:' . $event_link_style . ';
-     text-decoration:' . $event_link_decoration . ' !important;
-     line-height:' . ( 'initial' === $event_link_line_height ? 'initial' : $event_link_line_height . 'px' ) . ';
-     letter-spacing:' . $event_link_letter_spacing . 'px
+     color:' . $ebec_event_link_color . ';
+     font-size:' . $ebec_event_link_font . 'px;
+     font-family:' . $ebec_event_link_family . ';
+     font-weight:' . $ebec_event_link_weight . ';
+     text-transform:' . $ebec_event_link_transform . ';
+     font-style:' . $ebec_event_link_style . ';
+     text-decoration:' . $ebec_event_link_decoration . ' !important;
+     line-height:' . ( 'initial' === $ebec_event_link_line_height ? 'initial' : $ebec_event_link_line_height . 'px' ) . ';
+     letter-spacing:' . $ebec_event_link_letter_spacing . 'px
  }
  .ebec-block-' . $ebec_block_id . ' .ebec-list-venue a{
-   color:' . $event_venue_color . ';
+   color:' . $ebec_event_venue_color . ';
  }
 
  .ebec-block-' . $ebec_block_id . ' .ebec-list-cost {
-   color:' . $main_skin_color . ';
+   color:' . $ebec_main_skin_color . ';
  }
    .ebec-minimal-list-wrapper .ebec-list-posts.style-1.ebec-simple-event .ebec-event-date-tag{
-   background-color:' . $event_simple_color . ';
-   border-left: 4px solid ' . darkenColor($event_simple_color, 20) . ';
+   background-color:' . $ebec_event_simple_color . ';
+   border-left: 4px solid ' . ebec_darken_color( $ebec_event_simple_color, 20 ) . ';
  }
  .ebec-minimal-list-wrapper .ebec-list-posts.style-1.ebec-featured-event .ebec-event-date-tag{
-   background-color:' . $event_featured_color . ';
-   border-left: 4px solid ' . darkenColor($event_featured_color, 20) . ';
+   background-color:' . $ebec_event_featured_color . ';
+   border-left: 4px solid ' . ebec_darken_color( $ebec_event_featured_color, 20 ) . ';
  }';
