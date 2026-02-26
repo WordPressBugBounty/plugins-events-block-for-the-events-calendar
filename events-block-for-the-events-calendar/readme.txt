@@ -1,11 +1,11 @@
 === Events Block For The Events Calendar ===
-Contributors:coolplugins,narinder-singh,satindersingh
+Contributors:coolplugins,narinder-singh,satindersingh,eventscalendaraddons
 Donate link:https://paypal.me/CoolPlugins/10USD/
 Tags: events list, events block, the events calendar blocks, Gutenberg block, events calendar
 Requires at least: 6.0
 Tested up to: 6.9
 Requires PHP: 7.2
-Stable tag: 1.4.1
+Stable tag: 1.4.2
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -89,6 +89,11 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 3. Events List block search preview
 
 == Changelog == 
+
+= 1.4.2 | FEB 26, 2026 =
+* Fixed: Minor styling issues for better UI consistency.
+* Improved: Code structure and performance optimization.
+
 = 1.4.1 | FEB 21, 2026 =
 * Fixed: Issue with plugins image path.
 
