@@ -5,7 +5,7 @@ Tags: events list, events block, the events calendar blocks, Gutenberg block, ev
 Requires at least: 6.0
 Tested up to: 6.9
 Requires PHP: 7.2
-Stable tag: 1.4.2
+Stable tag: 1.4.3
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -90,12 +90,16 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 
 == Changelog == 
 
+= 1.4.3 | MAR 10, 2026 =
+- **Improved:** Dashboard header usability.
+- **Tested upto:** The Events Calendar version  6.15.17.1
+
 = 1.4.2 | FEB 26, 2026 =
-* Fixed: Minor styling issues for better UI consistency.
-* Improved: Code structure and performance optimization.
+- **Fixed:** Minor styling issues for better UI consistency.
+- **Improved:** Code structure and performance optimization.
 
 = 1.4.1 | FEB 21, 2026 =
-* Fixed: Issue with plugins image path.
+- **Fixed:** Issue with plugins image path.
 
 = Version 1.4 | 21 February, 2026 =
 - **Improvements:** Improved dashboard design and usability.

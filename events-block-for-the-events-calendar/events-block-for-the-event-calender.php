@@ -5,7 +5,7 @@
  * Plugin URI:  https://eventscalendaraddons.com/?utm_source=ebec_plugin&utm_medium=inside&utm_campaign=get_pro&utm_content=plugin_uri
  * Author:      Cool Plugins
  * Author URI:  https://coolplugins.net/?utm_source=ebec_plugin&utm_medium=inside&utm_campaign=author_page&utm_content=plugins_list
- * Version: 1.4.2
+ * Version: 1.4.3
  * License: GPLv2 or later
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain: events-block-for-the-events-calendar
@@ -19,7 +19,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'EBEC_VERSION', '1.4.2' );
+define( 'EBEC_VERSION', '1.4.3' );
 define( 'EBEC_FILE', __FILE__ );
 define( 'EBEC_PATH', plugin_dir_path( EBEC_FILE ) );
 define( 'EBEC_URL', plugin_dir_url( EBEC_FILE ) );
