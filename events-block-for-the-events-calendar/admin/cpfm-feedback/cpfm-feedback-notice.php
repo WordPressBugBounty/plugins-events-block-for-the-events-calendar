@@ -63,7 +63,7 @@ class CPFM_Feedback_Notice {
         }
        
         //phpcs:ignore WordPress.Security.NonceVerification.Recommended
-       $current_page   = isset($_GET['page'])? sanitize_key($_GET['page']):'';
+       $current_page   = isset($_GET['page'])? sanitize_key(wp_unslash($_GET['page'])):'';
 
         
         $allowed_pages = [];
@@ -120,8 +120,6 @@ class CPFM_Feedback_Notice {
         $category   = isset($_POST['category']) ? sanitize_text_field( wp_unslash( $_POST['category'] ) ): '';
         $opt_in_raw = isset($_POST['opt_in']) ? sanitize_text_field( wp_unslash( $_POST['opt_in'] ) ) : '';
         $opt_in = ($opt_in_raw === 'yes') ? 'yes' : 'no';
-        $category_notices   = self::$registered_notices;
-        $registered_notices = isset($GLOBALS['cool_plugins_feedback'])? $GLOBALS['cool_plugins_feedback']:$category_notices;
 
         if (!$category || !isset(self::$registered_notices[$category])) {
 
@@ -159,7 +157,7 @@ class CPFM_Feedback_Notice {
 
         $screen         = get_current_screen();
         //phpcs:ignore WordPress.Security.NonceVerification.Recommended
-        $current_page   = isset($_GET['page']) ? sanitize_key($_GET['page']) : '';
+        $current_page   = isset($_GET['page']) ? sanitize_key(wp_unslash($_GET['page'])) : '';
 
        
         $unread_count   = 0;

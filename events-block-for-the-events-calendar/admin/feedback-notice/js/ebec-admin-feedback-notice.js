@@ -10,10 +10,12 @@ jQuery(document).ready(function($) {
             'action': ajaxCallback,
             'security': nonce
         }, function(data) {
-            if (data.success) {
+            if (data && data.success) {
                 wrapper.slideUp('fast', function () {
                     $(this).remove(); // completely remove from DOM
                 });
+            } else {
+                console.warn('Dismiss failed', data);
             }
         }, "json");
 

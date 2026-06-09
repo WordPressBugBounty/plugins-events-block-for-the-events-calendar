@@ -20,11 +20,15 @@ function generateCSS ( selectors, id, isResponsive = false, responsiveType = "" 
 				continue;
 			}
 
-			if( typeof sel[j] != "undefined" && checkString ) {
+			if ( typeof sel[j] !== "undefined" && checkString ) {
+
+				let safeValue = String( sel[j] ).replace(/[;"{}<>]/g, '');
+			
 				if ( 'font-family' === j ) {
-					css += j + ": " + "'" + sel[j] + "'" + ";"
+					safeValue = safeValue.replace(/'/g, "\\'");
+					css += j + ": '" + safeValue + "';";
 				} else {
-					css += j + ": " + sel[j] + ";"
+					css += j + ": " + safeValue + ";";
 				}
 			}
 		}

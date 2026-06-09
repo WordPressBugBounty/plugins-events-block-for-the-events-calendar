@@ -5,7 +5,7 @@ const Layout = (props) => {
    const regex = /(<([^>]+)>)/gi;
    let FontFamily = props.title_family_font+"|"+props.venue_family_font+"|"+props.description_family_font+"|"+props.date_family_font+"|"+props.link_family_font
    let title_link = document.createElement('link')
-   title_link.href = 'https://fonts.googleapis.com/css?family='+FontFamily
+   title_link.href = 'https://fonts.googleapis.com/css?family=' + encodeURIComponent(FontFamily)
    title_link.rel = "stylesheet";
    title_link.type =  "text/css";
    document.head.appendChild(title_link);

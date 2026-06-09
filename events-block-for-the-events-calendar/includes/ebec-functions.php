@@ -8,8 +8,21 @@ if ( ! defined( 'ABSPATH' ) ) {
  *  Filter Start Time And End Time
  */
 function ebec_fetch_start_end_time( $setting ) {
-	$start_range_date = new DateTime( $setting['ebec_date_range_start'] );
-	$end_range_date   = new DateTime( $setting['ebec_date_range_end'] );
+	try {
+		$start_range_date = ! empty( $setting['ebec_date_range_start'] )
+			? new DateTime( sanitize_text_field( $setting['ebec_date_range_start'] ) )
+			: new DateTime( '0000-01-01 00:00:00' );
+	} catch ( Exception $e ) {
+		$start_range_date = new DateTime( '0000-01-01 00:00:00' );
+	}
+
+	try {
+		$end_range_date = ! empty( $setting['ebec_date_range_end'] )
+			? new DateTime( sanitize_text_field( $setting['ebec_date_range_end'] ) )
+			: new DateTime( '9999-12-31 23:59:59' );
+	} catch ( Exception $e ) {
+		$end_range_date = new DateTime( '9999-12-31 23:59:59' );
+	}
 	if ( $setting['ebec_type'] == 'past' ) {
 		if ( $setting['ebec_event_source'] == false ) {
 			$end_range_date   = new DateTime();

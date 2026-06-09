@@ -19,6 +19,13 @@ if (!class_exists('ebec_review_notice')) {
     // ajax callback for review notice
     public function ebec_dismiss_review_notice() {
         check_ajax_referer( 'ebec_dismiss_notice_nonce', 'security' );
+        if ( ! current_user_can( 'manage_options' ) ) {
+            wp_send_json_error(
+                array(
+                    'message' => esc_html__( 'Unauthorized', 'events-block-for-the-events-calendar' ),
+                )
+            );
+        }
         update_option( 'ebec-alreadyRated', 'yes' );
         wp_send_json_success();
     }
@@ -48,12 +55,16 @@ if (!class_exists('ebec_review_notice')) {
                 return;
             }
 
-            // grab plugin installation date and compare it with current date
-            $display_date = gmdate( 'Y-m-d h:i:s' );
-            $install_date= new DateTime( $installation_date );
-            $current_date = new DateTime( $display_date );
-            $difference = $install_date->diff($current_date);
-            $diff_days= $difference->days;
+             // grab plugin installation date and compare it with current date
+             $display_date = gmdate( 'Y-m-d h:i:s' );
+             $diff_days    = 0;  
+             try {
+                 $install_date = new DateTime( $installation_date );
+                 $current_date = new DateTime( $display_date );
+                 $diff_days    = $install_date->diff( $current_date )->days;
+             } catch ( Exception $e ) {
+                 return;
+             }
           
             // check if installation days is greator then week
             if ($diff_days>=3) {
@@ -75,7 +86,7 @@ if (!class_exists('ebec_review_notice')) {
             $already_rated_text = esc_html__( 'Already Reviewed', 'events-block-for-the-events-calendar' );
             $not_interested     = esc_html__( 'Not Interested', 'events-block-for-the-events-calendar' );
             $p_link        = esc_url( 'https://wordpress.org/support/plugin/events-block-for-the-events-calendar/reviews/' );
-            $nonce         = esc_attr( wp_create_nonce( 'ebec_dismiss_notice_nonce' ) );
+            $nonce         = wp_create_nonce( 'ebec_dismiss_notice_nonce' );
         
             $message = sprintf(
                 wp_kses_post(

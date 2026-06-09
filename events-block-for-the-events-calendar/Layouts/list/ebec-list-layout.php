@@ -62,16 +62,17 @@ if ( $display_header === true && $attributes['event_header_type'] === 'show_head
 	$ebec_html .= '<div class="ebec-event-details" >';
 	$ebec_html .= '<div class="ebec-event-datetime">
              <span class="ebec-minimal-list-time">
-             ' . ebec_date_style( $event, $attributes ) . '
+            ' . ebec_date_style( absint( $event_id ), $attributes ) . '
              </span>
              </div>';
-	$ebec_html .= '<a href=' . esc_url( $event_value['event_url'] ) . ' class="ebec-events-title" >' . wp_kses_post( $event_value['event_title'] ) . '</a>';
+	$ebec_html .= '<a href="' . esc_url( $event_value['event_url'] ) . '" class="ebec-events-title" >' . wp_kses_post( $event_value['event_title'] ) . '</a>';
 if ( $attributes['ebec_venue'] == 'no' && tribe_has_venue( $event_id ) && 'minimal' !== $layout ) {
 	$ebec_html .= '<div class="ebec-list-venue" >';
 	if ( $event_value['have_venue_address'] ) {
 		$ebec_html .= '<span class="ebec-icon"><i class="ebec-icon-location" aria-hidden="true"></i></span>';
 	}
-	$ebec_html .= implode( ',', $event_value['venue_details'] );
+	$ebec_venue_details = array_filter( (array) $event_value['venue_details'], 'is_string' );
+	$ebec_html .= implode( ',', array_map( 'wp_kses_post', $ebec_venue_details ) );
 	$ebec_html .= '</div>';
 }
 
@@ -86,13 +87,13 @@ if ( $attributes['ebec_display_desc'] == 'yes' && ! empty( $ebec_description ) &
 if ( ! empty( $event_value['event_cost'] ) && 'minimal' !== $layout ) {
 	$ebec_html .= '<div class="ebec-list-cost">' . esc_html( $event_value['event_cost'] ) . '</div>';
 }
-		$ebec_html .= '<div class="ebec-style-1-more" ><a href=' . esc_url( $event_value['event_url'] ) . ' class="ebec-events-read-more" rel="bookmark" >' . esc_html( $attributes['event_link_name'] ) . '</a></div>';
+		$ebec_html .= '<div class="ebec-style-1-more" ><a href="' . esc_url( $event_value['event_url'] ) . '" class="ebec-events-read-more" rel="bookmark" >' . esc_html( $attributes['event_link_name'] ) . '</a></div>';
 	$ebec_html     .= '</div>';
 if ( 'minimal' !== $layout ) {
 	$ebec_html .= '<div class="ebec-right-wrapper">';
 	if ( $event_value['image'] != null ) {
-		$ebec_html .= '<a class="ebec-static-small-list-ev-img" href=' . esc_url( $event_value['event_url'] ) . '>
-				<img src=' . esc_url( $event_value['image'] ) . '></img><span class="ebec-image-overlay ebec-overlay-type-extern"><span class="ebec-image-overlay-inside"></span></span>
+		$ebec_html .= '<a class="ebec-static-small-list-ev-img" href="' . esc_url( $event_value['event_url'] ) . '">
+				<img src="' . esc_url( $event_value['image'] ) . '"></img><span class="ebec-image-overlay ebec-overlay-type-extern"><span class="ebec-image-overlay-inside"></span></span>
 				</a>';
 	}
 		$ebec_html .= '  </div>';

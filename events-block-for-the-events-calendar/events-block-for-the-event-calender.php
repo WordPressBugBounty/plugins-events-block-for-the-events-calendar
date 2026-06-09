@@ -5,7 +5,7 @@
  * Plugin URI:  https://eventscalendaraddons.com/?utm_source=ebec_plugin&utm_medium=inside&utm_campaign=get_pro&utm_content=plugin_uri
  * Author:      Cool Plugins
  * Author URI:  https://coolplugins.net/?utm_source=ebec_plugin&utm_medium=inside&utm_campaign=author_page&utm_content=plugins_list
- * Version: 1.4.3
+ * Version: 1.4.4
  * License: GPLv2 or later
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain: events-block-for-the-events-calendar
@@ -19,7 +19,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'EBEC_VERSION', '1.4.3' );
+define( 'EBEC_VERSION', '1.4.4' );
 define( 'EBEC_FILE', __FILE__ );
 define( 'EBEC_PATH', plugin_dir_path( EBEC_FILE ) );
 define( 'EBEC_URL', plugin_dir_url( EBEC_FILE ) );
@@ -98,7 +98,7 @@ final class Ebec_Event_Block {
 		if (isset($_GET['page'])) {
 			
 			// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Checking page parameter to conditionally hide notices, no data processing
-			$page_param = isset($_GET['page']) ? sanitize_key(wp_unslash($_GET['page'])) : '';
+			$page_param = sanitize_key( wp_unslash( $_GET['page'] ) );
 
 			$allowed_pages = array(
 				'cool-plugins-events-addon',
@@ -276,15 +276,10 @@ final class Ebec_Event_Block {
 	function ebec_Install_gutenbrg_Notice() {
 		if ( current_user_can( 'activate_plugins' ) ) {
 			printf(
-				'<div class="error CTEC_Msz ect-required-plugin-notice"><p>' .
-				/* translators: 1: Message asking user to select block editor, 2: Link to Gutenberg Block Editor settings */
-				esc_html( __( '%1$s %2$s', 'events-block-for-the-events-calendar' ) ),
-				esc_html( __( 'In order to use Event Gutenberg Block, Please  select the block editor of', 'events-block-for-the-events-calendar' ) ),
-				sprintf(
-					'<a href="%s">%s</a>',
-					esc_url( 'options-writing.php' ),
-					esc_html( __( 'Gutenberg Block Editor', 'events-block-for-the-events-calendar' ) ),
-				) . '</p></div>'
+				'<div class="error CTEC_Msz ect-required-plugin-notice"><p>%s <a href="%s">%s</a></p></div>',
+				esc_html__( 'In order to use Event Gutenberg Block, Please select the block editor of', 'events-block-for-the-events-calendar' ),
+				esc_url( admin_url( 'options-writing.php' ) ),
+				esc_html__( 'Gutenberg Block Editor', 'events-block-for-the-events-calendar' )
 			);
 		}
 	}

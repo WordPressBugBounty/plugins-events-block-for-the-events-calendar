@@ -47,7 +47,7 @@ class EventBlocks extends Component{
     render(){
         var element = document.getElementById( "event-block-style-" + this.props.clientId )
 		if( element ) {
-			element.innerHTML = contentEventStyle( this.props )
+			element.textContent  = contentEventStyle( this.props )
 		}
         const {attributes,setAttributes,events}= this.props
         const{ebec_ev_category,

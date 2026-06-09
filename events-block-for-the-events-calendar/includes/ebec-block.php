@@ -157,7 +157,7 @@ class EBEC_Register_Block {
 				),
 				'event_date_line_height' => array(
 					'type' => 'number',
-					'default' => 'initial'
+					'default' => 18
 				),
 				'event_date_letter_spacing' => array(
 					'type' => 'number',
@@ -269,7 +269,7 @@ class EBEC_Register_Block {
 				),
 				'event_link_line_height' => array(
 					'type' => 'number',
-					'default' => 'initial'
+					'default' => 1.5
 				),
 				'event_link_letter_spacing' => array(
 					'type' => 'number',
@@ -338,9 +338,15 @@ class EBEC_Register_Block {
 	public function ebec_render_function( $attributes ) {
 
 			$tax_query         = '';
-			$ebec_block_id     = isset( $attributes['ebec_block_id'] ) ? $attributes['ebec_block_id'] : '';
+			$ebec_block_id     = isset( $attributes['ebec_block_id'] ) ? sanitize_key(wp_unslash(($attributes['ebec_block_id']))) : '';
 			$error             = "<div class='ebec_error'>" . esc_html( $attributes['no_event_text'] ) . '</div>';
-			$category          = implode( ',', $attributes['ebec_ev_category'] );
+			$category = implode(
+				',',
+				array_map(
+					'sanitize_title',
+					(array) ( isset( $attributes['ebec_ev_category'] ) ? $attributes['ebec_ev_category'] : array() )
+				)
+			);
 			$time_range        = ebec_fetch_start_end_time( $attributes );
 			$start_time        = (array) $time_range[0];
 			$end_time          = (array) $time_range[1];
@@ -354,7 +360,7 @@ class EBEC_Register_Block {
 			$attributes['key']       = '_EventStartDate';
 			$attributes['meta_date'] = '';
 			$meta_date_date          = '';
-		if ( $meta_date_compare != '' ) {
+		if ( '' !== $meta_date_compare ) {
 			$meta_date_date          = current_time( 'Y-m-d H:i:s' );
 			$attributes['key']       = '_EventStartDate';
 			$attributes['meta_date'] = array(
@@ -367,23 +373,34 @@ class EBEC_Register_Block {
 			);
 		}
 		if ( ! empty( $attributes['ebec_ev_category'] ) ) {
-			if ( ! in_array( 'all', $attributes['ebec_ev_category'] ) ) {
+			$event_categories = array_map(
+				'sanitize_key',
+				(array) $attributes['ebec_ev_category']
+			);
+
+			if ( ! in_array( 'all', $event_categories, true ) ) {
 				$tax_query = array(
 					array(
 						'taxonomy' => 'tribe_events_cat',
 						'field'    => 'slug',
-						'terms'    => $attributes['ebec_ev_category'],
+						'terms'    => $event_categories,
 					),
 				);
 			}
 		}
+		$order = ( isset( $attributes['ebec_order'] ) && in_array( strtoupper( $attributes['ebec_order'] ), array( 'ASC', 'DESC' ), true ) )
+					? strtoupper( $attributes['ebec_order'] )
+					: 'ASC';
+		$max_events = isset( $attributes['ebec_max_events'] )
+					? absint( $attributes['ebec_max_events'] )
+					: 10;
 			$all_events = tribe_get_events(
 				array(
 					'start_date'     => $start_time['date'],
 					'end_date'       => $end_time['date'],
-					'order'          => $attributes['ebec_order'],
+					'order'          => $order,
 					'orderby'        => 'event_date',
-					'posts_per_page' => $attributes['ebec_max_events'],
+					'posts_per_page' => $max_events,
 					//phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key
 					'meta_key'       => $attributes['key'],
 					//phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query
@@ -400,17 +417,36 @@ class EBEC_Register_Block {
 				$attributes['event_date_family'],
 				$attributes['event_link_family'],
 			);
-				$block_id      = isset( $attributes['ebec_block_id'] ) ? $attributes['ebec_block_id'] : '';
-				$build_url     = 'https://fonts.googleapis.com/css?family=';
-				$build_url    .= implode( '|', array_filter( $font_family_array ) );
-				wp_enqueue_style( 'ebec-google-font-' . $block_id, "$build_url", array(), EBEC_VERSION, 'all' );
+				$block_id      = isset( $attributes['ebec_block_id'] ) ? sanitize_key(wp_unslash($attributes['ebec_block_id'])) : '';
+				$sanitized_fonts = array_map(
+					function( $font ) {
+						return rawurlencode( sanitize_text_field( $font ) );
+					},
+					array_filter( $font_family_array )
+				);
+			
+				$build_url  = 'https://fonts.googleapis.com/css?family=';
+				$build_url .= implode( '|', $sanitized_fonts );
+				wp_enqueue_style(
+					'ebec-google-font-' . $block_id,
+					esc_url( $build_url ),
+					array(),
+					EBEC_VERSION,
+					'all'
+				);
 				$events         = '';
 				$ebec_html       = '';
 				$display_month   = '';
 				$display_year    = '';
 				$display_header  = true;
 				$events          = $all_events;
-				$layout          = isset( $attributes['event_layout'] ) ? $attributes['event_layout'] : 'default';
+				$allowed_layouts = array( 'default', 'minimal' );
+
+				$layout = isset( $attributes['event_layout'] )
+					? sanitize_text_field( $attributes['event_layout'] )
+					: 'default';
+				
+				$layout = in_array( $layout, $allowed_layouts, true ) ? $layout : 'default';
 				$layout_cls      = 'ebec-' . $layout . '-list';
 				$desc_type       = isset( $attributes['event_desc_type'] ) ? $attributes['event_desc_type'] : 'short';
 				include EBEC_PATH . '/includes/ebec-style-setting.php';
@@ -424,7 +460,7 @@ class EBEC_Register_Block {
 				$ebec_html .= '<div id="' . esc_attr($layout_cls) . '-wrp" class="' . esc_attr($layout_cls) . '-wrapper ' . esc_attr($category) . '">';
 
 			foreach ( $events as $key => $event ) {
-				$event_id = filter_var( $event->ID, FILTER_SANITIZE_NUMBER_INT );
+				$event_id = absint( $event->ID );
 				if ( $display_year == tribe_get_start_date( $event_id, false, 'Y' ) ) {
 					if ( $display_month == tribe_get_start_date( $event_id, false, 'm' ) ) {
 						$display_header = false;
