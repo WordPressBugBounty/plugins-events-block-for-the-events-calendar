@@ -373,17 +373,12 @@ class EBEC_Register_Block {
 			);
 		}
 		if ( ! empty( $attributes['ebec_ev_category'] ) ) {
-			$event_categories = array_map(
-				'sanitize_key',
-				(array) $attributes['ebec_ev_category']
-			);
-
-			if ( ! in_array( 'all', $event_categories, true ) ) {
+			if ( ! in_array( 'all', $attributes['ebec_ev_category'] ) ) {
 				$tax_query = array(
 					array(
 						'taxonomy' => 'tribe_events_cat',
 						'field'    => 'slug',
-						'terms'    => $event_categories,
+						'terms'    => $attributes['ebec_ev_category'],
 					),
 				);
 			}
