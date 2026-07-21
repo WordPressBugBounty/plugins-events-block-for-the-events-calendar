@@ -44,6 +44,7 @@ export class Typography extends Component{
         return(
             <Fragment>
                 <RangeControl
+                 __next40pxDefaultSize={ true }
                 label={__("Font Size (in Pixel)",'events-block-for-the-events-calendar')}
                 value={this.props.fontSize}
                 onChange={this.props.fontSizeHandle}
@@ -52,36 +53,42 @@ export class Typography extends Component{
                 />
 
                 <SelectControl
+                    __next40pxDefaultSize={ true }
                     label={ __( 'Family','events-block-for-the-events-calendar' ) }
                     options={fontFamilyOption}
                     value={this.props.fontFamily}
                     onChange={this.props.fontFamilyHandle}
 				/>
                 <SelectControl
+                    __next40pxDefaultSize={ true }
                     label={ __( 'Weight','events-block-for-the-events-calendar' ) }
                     options={fontWeightOption}
                     value={this.props.fontWeight}
                     onChange={this.props.fontWeightHandle}
 				/>
                 <SelectControl
+                    __next40pxDefaultSize={ true }
                     label={ __( 'Transform','events-block-for-the-events-calendar' ) }
                     options={fontTransformOption}
                     value={this.props.fontTransform}
                     onChange={this.props.fontTransformHandle}
 				/>
                 <SelectControl
-                    label={ __( 'Style','events-block-for-the-events-calendar' ) }
+                   __next40pxDefaultSize={ true }
+                   label={ __( 'Style','events-block-for-the-events-calendar' ) }
                     options={fontStyleOption}
                     value={this.props.fontStyle}
                     onChange={this.props.fontStyleHandle}
 				/>
                 <SelectControl
+                    __next40pxDefaultSize={ true }
                     label={ __( ' Decoration','events-block-for-the-events-calendar' ) }
                     options={textDecorationOption}
                     value={this.props.textDecoration}
                     onChange={this.props.textDecorationHandle}
 				/>
                 <RangeControl
+                    __next40pxDefaultSize={ true }
                     label={__("Line Height (in Pixel)",'events-block-for-the-events-calendar')}
                     value={this.props.eventLineHeight}
                     onChange={this.props.eventLineHeightHandle}
@@ -89,6 +96,7 @@ export class Typography extends Component{
                     max={100}
                 />
                 <RangeControl
+                     __next40pxDefaultSize={ true }
                     label={__("Letter Spacing (in Pixel)",'events-block-for-the-events-calendar')}
                     value={this.props.eventLetterSpacing}
                     onChange={this.props.eventLetterSpacingHandle}

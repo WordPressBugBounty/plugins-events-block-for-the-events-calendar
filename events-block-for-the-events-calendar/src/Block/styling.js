@@ -94,7 +94,7 @@ function contentEventStyle( props ) {
         " .ebec-event-details" : {
             "border-left-color":main_skin_color
         },
-        " .ebec-events-title" : {
+        " .ebec-list-posts .ebec-events-title" : {
             "color":event_title_color,
             "font-size":event_title_font+'px',
             "font-family":event_title_family,
@@ -141,7 +141,7 @@ function contentEventStyle( props ) {
             "line-height":"initial" === event_description_line_height ? 'initial' : event_description_line_height+'px',
         },
 
-        " .ebec-events-read-more" : {
+        " .style-1 .ebec-events-read-more" : {
             "color":event_link_color,
             "font-size":event_link_font+'px',
             "font-family":event_link_family,

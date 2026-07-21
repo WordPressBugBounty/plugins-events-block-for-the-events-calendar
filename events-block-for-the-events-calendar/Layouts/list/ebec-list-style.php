@@ -34,10 +34,10 @@ $ebec_selectors = '
   .ebec-block-' . sanitize_html_class( $ebec_block_id ) . ' .ebec-event-details  {
      border-left-color:' . esc_attr( $ebec_main_skin_color ) . '!important
  }
- .ebec-block-' . sanitize_html_class( $ebec_block_id ) . ' .ebec-events-title  {
+ .ebec-block-' . sanitize_html_class( $ebec_block_id ) . ' .ebec-list-posts .ebec-events-title  {
      color:' . sanitize_hex_color( $ebec_event_title_color ) . ';
      font-size:' . absint( $ebec_event_title_font ) . 'px;
-     font-family:' . esc_attr( $ebec_event_title_family ) . ';
+     font-family:\'' . esc_attr( $ebec_event_title_family ) . '\';
      font-weight:' . esc_attr( $ebec_event_title_weight ) . ';
      text-transform:' . esc_attr( $ebec_event_title_transform ) . ';
      font-style:' . esc_attr( $ebec_event_title_style ) . ';
@@ -48,7 +48,7 @@ $ebec_selectors = '
  .ebec-block-' . sanitize_html_class( $ebec_block_id ) . ' .ebec-date-area {
      color:' . sanitize_hex_color( $ebec_event_date_color ) . ';
      font-size:' . absint( $ebec_event_date_font ) . 'px;
-     font-family:' . esc_attr( $ebec_event_date_family ) . ';
+     font-family:\'' . esc_attr( $ebec_event_date_family ) . '\';
      font-weight:' . esc_attr( $ebec_event_date_weight ) . ';
      text-transform:' . esc_attr( $ebec_event_date_transform ) . ';
      font-style:' . esc_attr( $ebec_event_date_style ) . ';
@@ -59,7 +59,7 @@ $ebec_selectors = '
   .ebec-block-' . sanitize_html_class( $ebec_block_id ) . ' .ebec-list-venue  {
      color:' . sanitize_hex_color( $ebec_event_venue_color ) . ';
      font-size:' . absint( $ebec_event_venue_font ) . 'px;
-     font-family:' . esc_attr( $ebec_event_venue_family ) . ';
+     font-family:\'' . esc_attr( $ebec_event_venue_family ) . '\';
      font-weight:' . esc_attr( $ebec_event_venue_weight ) . ';
      text-transform:' . esc_attr( $ebec_event_venue_transform ) . ';
      font-style:' . esc_attr( $ebec_event_venue_style ) . ';
@@ -70,7 +70,7 @@ $ebec_selectors = '
   .ebec-block-' . sanitize_html_class( $ebec_block_id ) . ' .ebec-event-content  {
      color:' . sanitize_hex_color( $ebec_event_description_color ) . ';
      font-size:' . absint( $ebec_event_description_font ) . 'px;
-     font-family:' . esc_attr( $ebec_event_description_family ) . ';
+     font-family:\'' . esc_attr( $ebec_event_description_family ) . '\';
      font-weight:' . esc_attr( $ebec_event_description_weight ) . ';
      text-transform:' . esc_attr( $ebec_event_description_transform ) . ';
      font-style:' . esc_attr( $ebec_event_description_style ) . ';
@@ -79,10 +79,10 @@ $ebec_selectors = '
      line-height:' . ( 'initial' === $ebec_event_description_line_height ? 'initial' : esc_attr( $ebec_event_description_line_height ) . 'px' ) . ';
  }
 
-  .ebec-block-' . sanitize_html_class( $ebec_block_id ) . ' .ebec-events-read-more  {
+  .ebec-block-' . sanitize_html_class( $ebec_block_id ) . ' .style-1 .ebec-events-read-more  {
      color:' . sanitize_hex_color( $ebec_event_link_color ) . ';
      font-size:' . absint( $ebec_event_link_font ) . 'px;
-     font-family:' . esc_attr( $ebec_event_link_family ) . ';
+     font-family:\'' . esc_attr( $ebec_event_link_family ) . '\';
      font-weight:' . esc_attr( $ebec_event_link_weight ) . ';
      text-transform:' . esc_attr( $ebec_event_link_transform ) . ';
      font-style:' . esc_attr( $ebec_event_link_style ) . ';

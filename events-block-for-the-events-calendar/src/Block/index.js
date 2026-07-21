@@ -5,6 +5,7 @@ const {__} = wp.i18n;
 
 registerBlockType('ebec/event-list',
 {
+    apiVersion:3,
     title:__("Events Block","events-block-for-the-events-calendar"),
     category:'common',
     // Block Icon

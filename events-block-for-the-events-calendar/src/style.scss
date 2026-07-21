@@ -144,8 +144,10 @@
 /* ECT lAYOUT CSS END */
 
 .ebec-static-small-list-ev-img img {
-    width: -moz-available;
-    width: -webkit-fill-available;
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  height: auto;
   }
   
   // .ebec-month-header:after {
@@ -235,6 +237,10 @@
     margin: 5px auto;
     padding: 0;
     margin-bottom: 20px;
+  }
+  .ebec-list-posts.style-1 .ebec-event-details,
+  .ebec-list-posts.style-1 .ebec-right-wrapper {
+    min-width: 0;
   }
    /* Date Picker CSS */
    .ebec-start-date-picker .components-datetime__time-field-hours-input,

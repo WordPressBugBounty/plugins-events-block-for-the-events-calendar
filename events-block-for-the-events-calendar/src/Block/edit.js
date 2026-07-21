@@ -1,4 +1,4 @@
-import {Component,Fragment} from "@wordpress/element";
+import {Component,Fragment,createRef} from "@wordpress/element";
 import preview from "../components/preview/events.png";
 import {Inspector} from "./inspector.js";
 import apiFetch from '@wordpress/api-fetch';
@@ -6,6 +6,7 @@ import {ServerSideRender,Spinner} from '@wordpress/components';
 import Layout from "./layout.js";
 import { withSelect } from '@wordpress/data';
 import { compose } from '@wordpress/compose'
+import { useBlockProps } from '@wordpress/block-editor';
 import contentEventStyle from './styling.js';
 
 
@@ -21,15 +22,28 @@ class EventBlocks extends Component{
 		this.state = {
 			categoriesList: [],
 		};
+        this.ref = createRef();
 
 	}
+    getDocument() {
+        const iframe = document.querySelector('iframe[name="editor-canvas"]');
+        return (
+            this.ref?.current?.ownerDocument ||
+            iframe?.contentDocument ||
+            document
+        );
+    }
+
 
     
     // Apply style attribute and fetch category
     componentDidMount() {
-        const $style = document.createElement( "style" )
-		$style.setAttribute( "id", "event-block-style-" + this.props.clientId )
-		document.head.appendChild( $style )
+        const doc = this.getDocument();
+    if ( doc ) {
+        const $style = doc.createElement("style");
+        $style.setAttribute("id", "event-block-style-" + this.props.clientId);
+        doc.head.appendChild($style);
+    }
         let categoryList=[];
         apiFetch( { path: '/wp/v2/tribe_events_cat?page=1&per_page=100' } ).then( ( data ) => {
             if(typeof(data)!=undefined && data != null){
@@ -46,9 +60,13 @@ class EventBlocks extends Component{
    
     render(){
         var element = document.getElementById( "event-block-style-" + this.props.clientId )
-		if( element ) {
-			element.textContent  = contentEventStyle( this.props )
-		}
+		const doc = this.getDocument();
+        if ( doc ) {
+            const element = doc.getElementById("event-block-style-" + this.props.clientId);
+            if ( element ) {
+                element.textContent = contentEventStyle(this.props);
+            }
+        }
         const {attributes,setAttributes,events}= this.props
         const{ebec_ev_category,
               ebec_max_events,
@@ -269,7 +287,19 @@ class EventBlocks extends Component{
                 eventFeaturedColorHandle={(v)=>setAttributes({event_featured_color: v.hex})}
               />
                  
-              <div id="ebec-events-list-content" className = "ebec-list-wrapper">
+                 <div
+                { ...( this.props.wrapperBlockProps || {} ) }
+                className={ "ebec-list-wrapper" + ( this.props.wrapperBlockProps && this.props.wrapperBlockProps.className ? " " + this.props.wrapperBlockProps.className : "" ) }
+                ref={ ( node ) => {
+                    this.ref.current = node;
+                    const blockRef = this.props.wrapperBlockProps && this.props.wrapperBlockProps.ref;
+                    if ( typeof blockRef === 'function' ) {
+                        blockRef( node );
+                    } else if ( blockRef ) {
+                        blockRef.current = node;
+                    }
+                } }
+              >
               <div id={`ebec-${event_layout}-list-wrp`} className={`ebec-${event_layout}-list-wrapper ${category}`}>
               {events !== false ?
               (events.length !== 0) 
@@ -392,7 +422,7 @@ class EventBlocks extends Component{
     }
 }
 
-export default compose([ withSelect( ( select, props ) => {
+const EventBlocksWithData = compose([ withSelect( ( select, props ) => {
     const {attributes} = props;
     const{ebec_ev_category,ebec_date_range_start,ebec_date_range_end,ebec_type,ebec_event_source,ebec_order} = attributes
     let start_range_date = !ebec_event_source ? new Date('0000-01-01 00:00:00') : new Date(ebec_date_range_start);
@@ -468,3 +498,8 @@ else{
 
 ])
 (EventBlocks);
+
+export default function Edit( props ) {
+    const blockProps = useBlockProps();
+    return <EventBlocksWithData { ...props } wrapperBlockProps={ blockProps } />;
+}

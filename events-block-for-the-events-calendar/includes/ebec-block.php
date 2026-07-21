@@ -21,30 +21,52 @@ class EBEC_Register_Block {
 		 * @access private
 		 */
 	private function __construct() {
-		add_action( 'enqueue_block_assets', array( $this, 'ebec_editor_assets' ) );
-		add_action( 'enqueue_block_editor_assets', array( $this, 'ebec_block_editor_assets' ) );
 		add_action( 'init', array( $this, 'ebec_register_block' ) );
 	}
 
-	public function ebec_editor_assets() {
-			$id = get_the_ID();
-		if ( has_block( 'ebec/event-list', $id ) ) {
-			wp_enqueue_style( 'ebec-block-style-front', EBEC_URL . 'assets/css/ebec-style.css', array(), EBEC_VERSION, 'all' );
-		}
-	}
-
-
-	public function ebec_block_editor_assets() {
-			wp_enqueue_script( 'ebec-block-editor', EBEC_URL . 'dist/index.js', array( 'wp-blocks', 'wp-i18n', 'wp-editor', 'wp-components', 'wp-element' ), EBEC_VERSION, true );
-			wp_enqueue_style( 'ebec-block-style-editor', EBEC_URL . 'dist/style-index.css', array( 'wp-edit-blocks' ), EBEC_VERSION, 'all' );
-	}
-
-
 		/**
-		 * Register Block
+		 * Register block styles/scripts (handles only) and block from block.json.
+		 * WordPress loads CSS via block.json style / editorStyle — no manual enqueue.
 		 */
 	public function ebec_register_block() {
-		if ( function_exists( 'register_block_type' ) ) {
+		if ( ! function_exists( 'register_block_type_from_metadata' ) ) {
+			return;
+		}
+
+			$asset_file = EBEC_PATH . 'dist/index.asset.php';
+			$asset      = file_exists( $asset_file )
+				? include $asset_file
+				: array(
+					'dependencies' => array(),
+					'version'      => EBEC_VERSION,
+				);
+
+			$script_deps = array_unique(
+				array_merge(
+					isset( $asset['dependencies'] ) ? (array) $asset['dependencies'] : array(),
+					array( 'wp-blocks', 'wp-i18n', 'wp-element', 'wp-components', 'wp-block-editor' )
+				)
+			);
+			$version     = isset( $asset['version'] ) ? $asset['version'] : EBEC_VERSION;
+
+			wp_register_script(
+				'ebec-event-list-editor-script',
+				EBEC_URL . 'dist/index.js',
+				$script_deps,
+				$version,
+				true
+			);
+
+			wp_register_style(
+				'ebec-event-list-style',
+				EBEC_URL . 'dist/style-index.css',
+				array(),
+				$version
+			);
+
+			// editorStyle ensures CSS loads in the apiVersion 3 editor iframe
+			// even on empty posts before the block is inserted.
+			
 
 			$attributes = array(
 				'ebec_ev_category' => array(
@@ -322,14 +344,14 @@ class EBEC_Register_Block {
 					),
 				)
 			);
-			register_block_type(
-				'ebec/event-list',
+
+			register_block_type_from_metadata(
+				EBEC_PATH,
 				array(
 					'render_callback' => array( $this, 'ebec_render_function' ),
 					'attributes'      => $settings,
 				)
 			);
-		}
 	}
 
 		/**
@@ -447,7 +469,9 @@ class EBEC_Register_Block {
 				include EBEC_PATH . '/includes/ebec-style-setting.php';
 				include EBEC_PATH . '/Layouts/list/ebec-list-style.php';
 			if ( isset( $ebec_selectors ) ) {
-				wp_add_inline_style( 'ebec-google-font-' . $block_id, $ebec_selectors );
+				// Attach to the block.json style handle (registered above). WP prints
+				// this when it loads ebec-event-list-style for the rendered block.
+				wp_add_inline_style( 'ebec-event-list-style', $ebec_selectors );
 			}
 
 				$ebec_html .= '<!---------- Event List Block Version:' . esc_html(EBEC_VERSION) . ' By Cool Plugins Team-------------->';

@@ -49,6 +49,7 @@ export class Inspector extends Component{
             <InspectorControls>
                 <PanelBody title={__("Event Panel","events-block-for-the-events-calendar")}>    
                     <SelectControl
+                        __next40pxDefaultSize={ true }
 						label={ __( 'Layout','events-block-for-the-events-calendar' ) }
 						description={ __( 'Select events layout' ) }
 						options={ 
@@ -62,6 +63,7 @@ export class Inspector extends Component{
 					/>
                     <div className="ebec-impressum-select-multiple">
                         <FormTokenField
+                         __next40pxDefaultSize={ true }
                         label={__( 'Select Category','events-block-for-the-events-calendar' )}
                     value={this.props.categorySelect}
                     suggestions={ this.props.category }
@@ -72,6 +74,7 @@ export class Inspector extends Component{
                   
                     </div>
                     <SelectControl
+                        __next40pxDefaultSize={ true }
 						label={ __( 'Date Formats','events-block-for-the-events-calendar' ) }
 						description={ __( 'yes/no' ) }
 						options={ dateFormatsOptions }
@@ -79,6 +82,7 @@ export class Inspector extends Component{
 						onChange={this.props.dateFormatHandle}
 					/>
                     <NumberControl
+                        __next40pxDefaultSize={ true }
 						label={ __( 'Limit the events','events-block-for-the-events-calendar' ) }
                         isShiftStepEnabled={ true }
                         shiftStep={1}
@@ -89,6 +93,7 @@ export class Inspector extends Component{
 					/>
                     <br></br>
                     <SelectControl
+                        __next40pxDefaultSize={ true }
                         label={ __( 'Events Order','events-block-for-the-events-calendar' ) }
                         description={ __( ' Events Order' ) }
                         options={ orderOptions }
@@ -98,6 +103,7 @@ export class Inspector extends Component{
                     {'minimal' !== this.props.eventLayout &&
                         <>
                             <SelectControl
+                             __next40pxDefaultSize={ true }
                             label={ __( 'Hide Venue' ,'events-block-for-the-events-calendar') }
                             description={ __( 'Hide Venue Settings' ) }
                             options={ Options }
@@ -105,6 +111,7 @@ export class Inspector extends Component{
                             onChange={this.props.venueHandle}
                             />
                             <SelectControl
+                                __next40pxDefaultSize={ true }
                                 label={ __( 'Display Description','events-block-for-the-events-calendar' ) }
                                 description={ __( 'Display Description Settings' ) }
                                 options={ Options }
@@ -113,6 +120,7 @@ export class Inspector extends Component{
                                 />
                             {'yes' === this.props.displayDesc &&
                                 <SelectControl
+                                __next40pxDefaultSize={ true }
                                 label={ __( 'Event Description?','events-block-for-the-events-calendar' ) }
                                 description={ __( 'Event Description Settings' ) }
                                 options={ [
@@ -128,6 +136,7 @@ export class Inspector extends Component{
                      {'minimal' !== this.props.eventLayout &&
                         <>
                             <SelectControl
+                                __next40pxDefaultSize={ true }
                                 label={ __( 'Month Header','events-block-for-the-events-calendar' ) }
                                 description={ __( 'Month Header' ) }
                                 options={ [
@@ -147,6 +156,7 @@ export class Inspector extends Component{
                     />
                     <p style={{color:"red"}}>Select Event Date option only works on front-end side</p>
                     <SelectControl
+                        __next40pxDefaultSize={ true }
                         label={ __( 'Events Type (Past/Future Events)','events-block-for-the-events-calendar' ) }
                         description={ __( 'Events Type' ) }
                         options={ timeOptions }
@@ -174,7 +184,8 @@ export class Inspector extends Component{
                         />
                         </PanelBody>
                      } 
-                     <TextControl 
+                     <TextControl
+                         __next40pxDefaultSize={ true } 
                          label="No Event Text (Message to show if no event will available)"
                          value={this.props.noEventText}
                          onChange={this.props.noEventTextHandle}
@@ -243,6 +254,7 @@ export class Inspector extends Component{
                      {/* Link Panel Style Setting */}
                 <PanelBody title={__("Find out More Style","events-block-for-the-events-calendar")} initialOpen={ false }>           
                 <TextControl 
+                    __next40pxDefaultSize={ true }
                     label="Find out More Text"
                     value={this.props.eventLinkName}
                     onChange={this.props.eventLinkNameHandle}

@@ -1,14 +1,38 @@
-import {Fragment} from "@wordpress/element";
+import {Fragment, useEffect} from "@wordpress/element";
 const {__} = wp.i18n
 
 const Layout = (props) => {
    const regex = /(<([^>]+)>)/gi;
-   let FontFamily = props.title_family_font+"|"+props.venue_family_font+"|"+props.description_family_font+"|"+props.date_family_font+"|"+props.link_family_font
-   let title_link = document.createElement('link')
-   title_link.href = 'https://fonts.googleapis.com/css?family=' + encodeURIComponent(FontFamily)
-   title_link.rel = "stylesheet";
-   title_link.type =  "text/css";
-   document.head.appendChild(title_link);
+   const FontFamily = [
+      props.title_family_font,
+      props.venue_family_font,
+      props.description_family_font,
+      props.date_family_font,
+      props.link_family_font,
+   ]
+      .filter( ( font ) => font && font !== 'Default' )
+      .map( ( font ) => encodeURIComponent( font ) )
+      .join( '|' );
+
+   useEffect(() => {
+      if ( ! FontFamily ) {
+         return;
+      }
+      // The block editor renders inside an iframe (editor-canvas). Fonts must be
+      // loaded into that document, not the top-level admin document, otherwise
+      // the font-family CSS has nothing to resolve against inside the iframe.
+      const iframe = document.querySelector('iframe[name="editor-canvas"]');
+      const targetDoc = (iframe && iframe.contentDocument) || document;
+      const fontHref = 'https://fonts.googleapis.com/css?family=' + FontFamily;
+      if (targetDoc.querySelector(`link[href="${fontHref}"]`)) {
+         return;
+      }
+      const title_link = targetDoc.createElement('link');
+      title_link.href = fontHref;
+      title_link.rel = 'stylesheet';
+      title_link.type = 'text/css';
+      targetDoc.head.appendChild(title_link);
+   }, [FontFamily]);
 
    let event_type = props.feature == false ? 'ebec-simple-event' : 'ebec-featured-event';
    let event_time ="";
