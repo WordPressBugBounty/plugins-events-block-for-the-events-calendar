@@ -1,27 +1,19 @@
-import edit from "./edit.js";
-import EctIcon from "../Components/icons.js"
-const {registerBlockType} = wp.blocks;
-const {__} = wp.i18n;
+import edit from './edit.js';
+import EctIcon from '../Components/icons.js';
+import metadata from '../../block.json';
 
-registerBlockType('ebec/event-list',
-{
-    apiVersion:3,
-    title:__("Events Block","events-block-for-the-events-calendar"),
-    category:'common',
-    // Block Icon
+const { registerBlockType } = wp.blocks;
+
+registerBlockType( metadata, {
 	icon: EctIcon,
-    keywords: [
-        __( 'event'),__('calendar'),__('events')
-    ],
-    example: {
-        attributes: {
-                'preview' : true,
-                isPreview: true,
-            },
-        },
-    edit:edit,
-    save(){
-        return null;
-    }
-}
-)
+	example: {
+		attributes: {
+			preview: true,
+			isPreview: true,
+		},
+	},
+	edit,
+	save() {
+		return null;
+	},
+} );

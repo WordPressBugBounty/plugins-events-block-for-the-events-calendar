@@ -57,6 +57,15 @@ class EBEC_Register_Block {
 				true
 			);
 
+			wp_localize_script(
+				'ebec-event-list-editor-script',
+				'ebecBlockData',
+				array(
+					'excerptWords' => defined( 'EBEC_EXCERPT_WORDS' ) ? (int) EBEC_EXCERPT_WORDS : 55,
+					'locale'       => get_locale(),
+				)
+			);
+
 			wp_register_style(
 				'ebec-event-list-style',
 				EBEC_URL . 'dist/style-index.css',
@@ -64,445 +73,259 @@ class EBEC_Register_Block {
 				$version
 			);
 
-			// editorStyle ensures CSS loads in the apiVersion 3 editor iframe
-			// even on empty posts before the block is inserted.
-			
-
-			$attributes = array(
-				'ebec_ev_category' => array(
-					'type' => 'array',
-					'default' => array('all')
-				),
-				'ebec_max_events' => array(
-					'type' => 'string',
-					'default' => '10'
-				),
-				'ebec_block_id' => array(
-					'type' => 'string',
-					'default' => ''
-				),
-				'ebec_venue' => array(
-					'type' => 'string',
-					'default' => 'no'
-				),
-				'ebec_display_cate' => array(
-					'type' => 'string',
-					'default' => 'yes'
-				),
-				'ebec_display_desc' => array(
-					'type' => 'string',
-					'default' => 'yes'
-				),
-				'ebec_type' => array(
-					'type' => 'string',
-					'default' => 'all'
-				),
-				'ebec_hide_read_more_link' => array(
-					'type' => 'string',
-					'default' => 'yes'
-				),
-				'ebec_date_formats' => array(
-					'type' => 'string',
-					'default' => 'MD,YT'
-				),
-				'ebec_order' => array(
-					'type' => 'string',
-					'default' => 'ASC'
-				),
-				'ebec_event_source' => array(
-					'type' => 'boolean',
-					'default' => false
-				),
-				'main_skin_color' => array(
-					'type' => 'string',
-					'default' => '#00445e'
-				),
-				'event_date_color' => array(
-					'type' => 'string',
-					'default' => '#00445e'
-				),
-				'event_title_color' => array(
-					'type' => 'string',
-					'default' => '#00445e'
-				),
-				'event_venue_color' => array(
-					'type' => 'string',
-					'default' => '#00445e'
-				),
-				'event_description_color' => array(
-					'type' => 'string',
-					'default' => '#515d64'
-				),
-				'event_link_color' => array(
-					'type' => 'string',
-					'default' => '#00445e'
-				),
-				'event_date_font' => array(
-					'type' => 'number',
-					'default' => 15
-				),
-				'event_title_font' => array(
-					'type' => 'number',
-					'default' => 26
-				),
-				'event_venue_font' => array(
-					'type' => 'number',
-					'default' => 15
-				),
-				'event_description_font' => array(
-					'type' => 'number',
-					'default' => 13
-				),
-				'event_link_font' => array(
-					'type' => 'number',
-					'default' => 16
-				),
-				'event_date_family' => array(
-					'type' => 'string',
-					'default' => 'Abel'
-				),
-				'event_date_weight' => array(
-					'type' => 'string',
-					'default' => 'bold'
-				),
-				'event_date_transform' => array(
-					'type' => 'string',
-					'default' => 'none'
-				),
-				'event_date_style' => array(
-					'type' => 'string',
-					'default' => 'initial'
-				),
-				'event_date_decoration' => array(
-					'type' => 'string',
-					'default' => 'initial'
-				),
-				'event_date_line_height' => array(
-					'type' => 'number',
-					'default' => 18
-				),
-				'event_date_letter_spacing' => array(
-					'type' => 'number',
-					'default' => 0
-				),
-				'event_title_family' => array(
-					'type' => 'string',
-					'default' => 'Abel'
-				),
-				'event_title_weight' => array(
-					'type' => 'string',
-					'default' => 'bold'
-				),
-				'event_title_transform' => array(
-					'type' => 'string',
-					'default' => 'none'
-				),
-				'event_title_style' => array(
-					'type' => 'string',
-					'default' => 'initial'
-				),
-				'event_title_decoration' => array(
-					'type' => 'string',
-					'default' => 'underline'
-				),
-				'event_title_line_height' => array(
-					'type' => 'number',
-					'default' => 'initial'
-				),
-				'event_title_letter_spacing' => array(
-					'type' => 'number',
-					'default' => 0
-				),
-				'event_venue_family' => array(
-					'type' => 'string',
-					'default' => 'Abel'
-				),
-				'event_venue_weight' => array(
-					'type' => 'string',
-					'default' => 'bold'
-				),
-				'event_venue_transform' => array(
-					'type' => 'string',
-					'default' => 'none'
-				),
-				'event_venue_style' => array(
-					'type' => 'string',
-					'default' => 'initial'
-				),
-				'event_venue_decoration' => array(
-					'type' => 'string',
-					'default' => 'initial'
-				),
-				'event_venue_line_height' => array(
-					'type' => 'number',
-					'default' => 'initial'
-				),
-				'event_venue_letter_spacing' => array(
-					'type' => 'number',
-					'default' => 0
-				),
-				'event_description_family' => array(
-					'type' => 'string',
-					'default' => 'Abel'
-				),
-				'event_description_weight' => array(
-					'type' => 'string',
-					'default' => 'bold'
-				),
-				'event_description_transform' => array(
-					'type' => 'string',
-					'default' => 'none'
-				),
-				'event_description_style' => array(
-					'type' => 'string',
-					'default' => 'initial'
-				),
-				'event_description_decoration' => array(
-					'type' => 'string',
-					'default' => 'initial'
-				),
-				'event_description_line_height' => array(
-					'type' => 'number',
-					'default' => 'initial'
-				),
-				'event_description_letter_spacing' => array(
-					'type' => 'number',
-					'default' => 0
-				),
-				'event_link_family' => array(
-					'type' => 'string',
-					'default' => 'Abel'
-				),
-				'event_link_weight' => array(
-					'type' => 'string',
-					'default' => 'normal'
-				),
-				'event_link_transform' => array(
-					'type' => 'string',
-					'default' => 'none'
-				),
-				'event_link_style' => array(
-					'type' => 'string',
-					'default' => 'initial'
-				),
-				'event_link_decoration' => array(
-					'type' => 'string',
-					'default' => 'initial'
-				),
-				'event_link_line_height' => array(
-					'type' => 'number',
-					'default' => 1.5
-				),
-				'event_link_letter_spacing' => array(
-					'type' => 'number',
-					'default' => 0
-				),
-				'event_link_name' => array(
-					'type' => 'string',
-					'default' => 'Find out More'
-				),
-				'no_event_text' => array(
-					'type' => 'string',
-					'default' => 'There is No Event'
-				),
-				'isPreview' => array(
-					'type' => 'boolean',
-					'default' => false
-				),
-				'event_layout' => array(
-					'type' => 'string',
-					'default' => 'default'
-				),
-				'event_desc_type' => array(
-					'type' => 'string',
-					'default' => 'short'
-				),
-				'event_header_type' => array(
-					'type' => 'string',
-					'default' => 'show_header'
-				),
-				'event_simple_color' => array(
-					'type' => 'string',
-					'default' => '#99d6b6'
-				),
-				'event_featured_color' => array(
-					'type' => 'string',
-					'default' => '#66baff'
-				)
-			);
-
-			$settings = array_merge(
-				$attributes,
-				array(
-					'ebec_date_range_start' => array(
-						'type'    => 'string',
-						'default' => gmdate( 'Y-m-d H:i', current_time( 'timestamp', 0 ) ),
-					),
-					'ebec_date_range_end'   => array(
-						'type'    => 'string',
-						'default' => gmdate( 'Y-m-d H:i', strtotime( '+6 months', current_time( 'timestamp', 0 ) ) ),
-					),
-				)
-			);
-
+			// Attributes live only in block.json — single source of truth.
 			register_block_type_from_metadata(
 				EBEC_PATH,
 				array(
 					'render_callback' => array( $this, 'ebec_render_function' ),
-					'attributes'      => $settings,
 				)
 			);
 	}
 
-		/**
-		 * Render Callback
-		 */
+	/**
+	 * Render Callback
+	 */
 	public function ebec_render_function( $attributes ) {
 
-			$tax_query         = '';
-			$ebec_block_id     = isset( $attributes['ebec_block_id'] ) ? sanitize_key(wp_unslash(($attributes['ebec_block_id']))) : '';
-			$error             = "<div class='ebec_error'>" . esc_html( $attributes['no_event_text'] ) . '</div>';
-			$category = implode(
-				',',
-				array_map(
-					'sanitize_title',
-					(array) ( isset( $attributes['ebec_ev_category'] ) ? $attributes['ebec_ev_category'] : array() )
-				)
-			);
-			$time_range        = ebec_fetch_start_end_time( $attributes );
-			$start_time        = (array) $time_range[0];
-			$end_time          = (array) $time_range[1];
-			$meta_date_compare = '>=';
-			$attributes['key'] = '_EventStartDate';
+		// Runtime date defaults (cannot be static in block.json). Site-local via wp_date().
+		if ( empty( $attributes['ebec_date_range_start'] ) ) {
+			$attributes['ebec_date_range_start'] = wp_date( 'Y-m-d H:i' );
+		}
+		if ( empty( $attributes['ebec_date_range_end'] ) ) {
+			$attributes['ebec_date_range_end'] = wp_date( 'Y-m-d H:i', strtotime( '+6 months' ) );
+		}
+
+		$ebec_block_id = isset( $attributes['ebec_block_id'] ) ? sanitize_key( wp_unslash( $attributes['ebec_block_id'] ) ) : '';
+		$error         = "<div class='ebec_error'>" . esc_html( $attributes['no_event_text'] ) . '</div>';
+		$all_events    = tribe_get_events( $this->build_event_query_args( $attributes ) );
+
+		if ( empty( $all_events ) ) {
+			return $error;
+		}
+
+		$this->enqueue_block_fonts( $attributes, $ebec_block_id );
+
+		return $this->render_event_list( $all_events, $attributes, $ebec_block_id );
+	}
+
+	/**
+	 * Build tribe_get_events() arguments from block attributes.
+	 *
+	 * @param array $attributes Block attributes.
+	 * @return array
+	 */
+	private function build_event_query_args( $attributes ) {
+		$tax_query         = '';
+		$time_range        = ebec_fetch_start_end_time( $attributes );
+		$start_time        = (array) $time_range[0];
+		$end_time          = (array) $time_range[1];
+		$meta_date_compare = '>=';
+		$meta_key          = '_EventStartDate';
+		$meta_date         = '';
+
 		if ( $attributes['ebec_type'] == 'past' ) {
 			$meta_date_compare = '<';
 		} elseif ( $attributes['ebec_type'] == 'all' ) {
 			$meta_date_compare = '';
 		}
-			$attributes['key']       = '_EventStartDate';
-			$attributes['meta_date'] = '';
-			$meta_date_date          = '';
+
 		if ( '' !== $meta_date_compare ) {
-			$meta_date_date          = current_time( 'Y-m-d H:i:s' );
-			$attributes['key']       = '_EventStartDate';
-			$attributes['meta_date'] = array(
+			$meta_date = array(
 				array(
 					'key'     => '_EventEndDate',
-					'value'   => $meta_date_date,
+					'value'   => current_time( 'Y-m-d H:i:s' ),
 					'compare' => $meta_date_compare,
 					'type'    => 'DATETIME',
 				),
 			);
 		}
-		if ( ! empty( $attributes['ebec_ev_category'] ) ) {
-			if ( ! in_array( 'all', $attributes['ebec_ev_category'] ) ) {
-				$tax_query = array(
-					array(
-						'taxonomy' => 'tribe_events_cat',
-						'field'    => 'slug',
-						'terms'    => $attributes['ebec_ev_category'],
-					),
-				);
-			}
-		}
-		$order = ( isset( $attributes['ebec_order'] ) && in_array( strtoupper( $attributes['ebec_order'] ), array( 'ASC', 'DESC' ), true ) )
-					? strtoupper( $attributes['ebec_order'] )
-					: 'ASC';
-		$max_events = isset( $attributes['ebec_max_events'] )
-					? absint( $attributes['ebec_max_events'] )
-					: 10;
-			$all_events = tribe_get_events(
+
+		if ( ! empty( $attributes['ebec_ev_category'] ) && ! in_array( 'all', $attributes['ebec_ev_category'] ) ) {
+			$tax_query = array(
 				array(
-					'start_date'     => $start_time['date'],
-					'end_date'       => $end_time['date'],
-					'order'          => $order,
-					'orderby'        => 'event_date',
-					'posts_per_page' => $max_events,
-					//phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key
-					'meta_key'       => $attributes['key'],
-					//phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query
-					'meta_query'     => $attributes['meta_date'],
-					//phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_tax_query
-					'tax_query'      => $tax_query,
-				)
+					'taxonomy' => 'tribe_events_cat',
+					'field'    => 'slug',
+					'terms'    => $attributes['ebec_ev_category'],
+				),
 			);
-		if ( ! empty( $all_events ) ) {
-			$font_family_array = array(
-				$attributes['event_title_family'],
-				$attributes['event_venue_family'],
-				$attributes['event_description_family'],
-				$attributes['event_date_family'],
-				$attributes['event_link_family'],
-			);
-				$block_id      = isset( $attributes['ebec_block_id'] ) ? sanitize_key(wp_unslash($attributes['ebec_block_id'])) : '';
-				$sanitized_fonts = array_map(
-					function( $font ) {
-						return rawurlencode( sanitize_text_field( $font ) );
-					},
-					array_filter( $font_family_array )
-				);
-			
-				$build_url  = 'https://fonts.googleapis.com/css?family=';
-				$build_url .= implode( '|', $sanitized_fonts );
-				wp_enqueue_style(
-					'ebec-google-font-' . $block_id,
-					esc_url( $build_url ),
-					array(),
-					EBEC_VERSION,
-					'all'
-				);
-				$events         = '';
-				$ebec_html       = '';
-				$display_month   = '';
-				$display_year    = '';
-				$display_header  = true;
-				$events          = $all_events;
-				$allowed_layouts = array( 'default', 'minimal' );
 
-				$layout = isset( $attributes['event_layout'] )
-					? sanitize_text_field( $attributes['event_layout'] )
-					: 'default';
-				
-				$layout = in_array( $layout, $allowed_layouts, true ) ? $layout : 'default';
-				$layout_cls      = 'ebec-' . $layout . '-list';
-				$desc_type       = isset( $attributes['event_desc_type'] ) ? $attributes['event_desc_type'] : 'short';
-				include EBEC_PATH . '/includes/ebec-style-setting.php';
-				include EBEC_PATH . '/Layouts/list/ebec-list-style.php';
-			if ( isset( $ebec_selectors ) ) {
-				// Attach to the block.json style handle (registered above). WP prints
-				// this when it loads ebec-event-list-style for the rendered block.
-				wp_add_inline_style( 'ebec-event-list-style', $ebec_selectors );
-			}
+		}
 
-				$ebec_html .= '<!---------- Event List Block Version:' . esc_html(EBEC_VERSION) . ' By Cool Plugins Team-------------->';
-				$ebec_html .= '<div id="ebec-events-list-content" class="ebec-list-wrapper ebec-block-' . esc_attr($ebec_block_id) . '">';
-				$ebec_html .= '<div id="' . esc_attr($layout_cls) . '-wrp" class="' . esc_attr($layout_cls) . '-wrapper ' . esc_attr($category) . '">';
+		$order = ( isset( $attributes['ebec_order'] ) && in_array( strtoupper( $attributes['ebec_order'] ), array( 'ASC', 'DESC' ), true ) )
+			? strtoupper( $attributes['ebec_order'] )
+			: 'ASC';
+		$max_events = isset( $attributes['ebec_max_events'] )
+			? absint( $attributes['ebec_max_events'] )
+			: 10;
 
-			foreach ( $events as $key => $event ) {
-				$event_id = absint( $event->ID );
-				if ( $display_year == tribe_get_start_date( $event_id, false, 'Y' ) ) {
-					if ( $display_month == tribe_get_start_date( $event_id, false, 'm' ) ) {
-						$display_header = false;
-					} else {
-						$display_month  = tribe_get_start_date( $event_id, false, 'm' );
-						$display_header = true;
-					}
+		return array(
+			'start_date'     => $start_time['date'],
+			'end_date'       => $end_time['date'],
+			'order'          => $order,
+			'orderby'        => 'event_date',
+			'posts_per_page' => $max_events,
+			//phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key
+			'meta_key'       => $meta_key,
+			//phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query
+			'meta_query'     => $meta_date,
+			//phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_tax_query
+			'tax_query'      => $tax_query,
+		);
+	}
+
+	/**
+	 * Enqueue Google Fonts used by the block.
+	 *
+	 * @param array  $attributes Block attributes.
+	 * @param string $block_id   Sanitized block id.
+	 */
+	private function enqueue_block_fonts( $attributes, $block_id ) {
+		$font_family_array = array(
+			$attributes['event_title_family'],
+			$attributes['event_venue_family'],
+			$attributes['event_description_family'],
+			$attributes['event_date_family'],
+			$attributes['event_link_family'],
+		);
+		$sanitized_fonts   = array_map(
+			function( $font ) {
+				return rawurlencode( sanitize_text_field( $font ) );
+			},
+			array_filter( $font_family_array )
+		);
+
+		$build_url  = 'https://fonts.googleapis.com/css?family=';
+		$build_url .= implode( '|', $sanitized_fonts );
+		wp_enqueue_style(
+			'ebec-google-font-' . $block_id,
+			esc_url( $build_url ),
+			array(),
+			EBEC_VERSION,
+			'all'
+		);
+	}
+
+	/**
+	 * Render the full event list markup.
+	 *
+	 * @param array  $events     Event posts.
+	 * @param array  $attributes Block attributes.
+	 * @param string $block_id   Sanitized block id.
+	 * @return string
+	 */
+	private function render_event_list( $events, $attributes, $block_id ) {
+		$category = implode(
+			',',
+			array_map(
+				'sanitize_title',
+				(array) ( isset( $attributes['ebec_ev_category'] ) ? $attributes['ebec_ev_category'] : array() )
+			)
+		);
+
+		$allowed_layouts = array( 'default', 'minimal' );
+		$layout          = isset( $attributes['event_layout'] )
+			? sanitize_text_field( $attributes['event_layout'] )
+			: 'default';
+		$layout          = in_array( $layout, $allowed_layouts, true ) ? $layout : 'default';
+		$layout_cls      = 'ebec-' . $layout . '-list';
+		$desc_type       = isset( $attributes['event_desc_type'] ) ? $attributes['event_desc_type'] : 'short';
+
+		$style          = EBEC_Style_Settings::from_attributes( $attributes );
+		$ebec_selectors = EBEC_Style_Settings::build_selectors( $block_id, $style );
+
+		$ebec_html = '';
+		if ( '' !== $ebec_selectors ) {
+			$ebec_html .= '<style id="ebec-block-style-' . esc_attr( $block_id ) . '">' . $ebec_selectors . '</style>';
+		}
+		$ebec_html .= '<!---------- Event List Block Version:' . esc_html( EBEC_VERSION ) . ' By Cool Plugins Team-------------->';
+		$ebec_html .= '<div id="ebec-events-list-content" class="ebec-list-wrapper ebec-block-' . esc_attr( $block_id ) . '">';
+		$ebec_html .= '<div id="' . esc_attr( $layout_cls ) . '-wrp" class="' . esc_attr( $layout_cls ) . '-wrapper ' . esc_attr( $category ) . '">';
+
+		$display_month  = '';
+		$display_year   = '';
+		$display_header = true;
+
+		foreach ( $events as $event ) {
+			$event_id    = absint( $event->ID );
+			$event_year  = tribe_get_start_date( $event_id, false, 'Y' );
+			$event_month = tribe_get_start_date( $event_id, false, 'm' );
+
+			if ( $display_year === $event_year ) {
+				if ( $display_month === $event_month ) {
+					$display_header = false;
 				} else {
-					$display_year   = tribe_get_start_date( $event_id, false, 'Y' );
-					$display_month  = tribe_get_start_date( $event_id, false, 'm' );
+					$display_month  = $event_month;
 					$display_header = true;
 				}
-					$event_value = $this->ebec_check_event_value( $event_id );
-					include EBEC_PATH . '/Layouts/list/ebec-list-layout.php';
-
+			} else {
+				$display_year   = $event_year;
+				$display_month  = $event_month;
+				$display_header = true;
 			}
-				$ebec_html .= '</div></div>';
-				return $ebec_html;
-		} else {
-			return $error;
+
+			$ebec_html .= $this->render_event_item(
+				$event_id,
+				$this->get_event_data( $event_id ),
+				$attributes,
+				$layout,
+				$desc_type,
+				$display_header
+			);
 		}
+
+		$ebec_html .= '</div></div>';
+		return $ebec_html;
 	}
-	public function ebec_check_event_value( $event_id ) {
+
+	/**
+	 * Render a single event row via the list layout template.
+	 *
+	 * @param int    $event_id        Event ID.
+	 * @param array  $event_value     Prepared event data.
+	 * @param array  $attributes      Block attributes.
+	 * @param string $layout          Layout key.
+	 * @param string $desc_type       Description type.
+	 * @param bool   $display_header  Whether to show month header.
+	 * @return string
+	 */
+	private function render_event_item( $event_id, $event_value, $attributes, $layout, $desc_type, $display_header ) {
+		$context = array(
+			'event_id'        => $event_id,
+			'event_value'     => $event_value,
+			'attributes'      => $attributes,
+			'layout'          => $layout,
+			'desc_type'       => $desc_type,
+			'display_header'  => $display_header,
+		);
+
+		return $this->load_list_layout( $context );
+	}
+
+	/**
+	 * Include the list layout with an isolated $context contract.
+	 *
+	 * @param array $context Explicit template data.
+	 * @return string
+	 */
+	private function load_list_layout( array $context ) {
+		$template = EBEC_PATH . '/Layouts/list/ebec-list-layout.php';
+
+		return ( static function ( array $context ) use ( $template ) {
+			$html = '';
+			include $template;
+			return $html;
+		} )( $context );
+	}
+
+	/**
+	 * Build the event data array used by the list layout.
+	 *
+	 * @param int $event_id Event ID.
+	 * @return array
+	 */
+	public function get_event_data( $event_id ) {
+		$event_value_filter = array();
+
 		$event_value_filter['venue_details'] = tribe_get_venue_details( $event_id );
 		if ( ! empty( $event_value_filter['venue_details']['address'] ) && isset( $event_value_filter['venue_details']['linked_name'] ) ) {
 			$event_value_filter['have_venue_address'] = true;
@@ -521,11 +344,14 @@ class EBEC_Register_Block {
 	}
 }
 
-function ebec_register_block_call() {
+/**
+ * Returns the block registration singleton.
+ *
+ * Prefer EBEC_Register_Block::get_instance() in new code.
+ *
+ * @return EBEC_Register_Block
+ */
+function ebec_get_block_instance() {
 	return EBEC_Register_Block::get_instance();
 }
-	$GLOBALS['ebec_block'] = ebec_register_block_call();
-
-
-
-
+ebec_get_block_instance();

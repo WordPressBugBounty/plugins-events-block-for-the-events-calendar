@@ -1,505 +1,371 @@
-import {Component,Fragment,createRef} from "@wordpress/element";
-import preview from "../components/preview/events.png";
-import {Inspector} from "./inspector.js";
+import { Component, Fragment, createRef } from '@wordpress/element';
+import preview from '../Components/preview/events.png';
+import { Inspector } from './inspector.js';
 import apiFetch from '@wordpress/api-fetch';
-import {ServerSideRender,Spinner} from '@wordpress/components';
-import Layout from "./layout.js";
+import { Spinner } from '@wordpress/components';
+import Layout from './layout.js';
 import { withSelect } from '@wordpress/data';
-import { compose } from '@wordpress/compose'
+import { compose } from '@wordpress/compose';
 import { useBlockProps } from '@wordpress/block-editor';
 import contentEventStyle from './styling.js';
+import { getEditorDocument } from '../utils/getEditorDocument.js';
+import { buildInspectorProps } from '../utils/buildInspectorProps.js';
+import { eventsWithHeaderFlags } from '../utils/eventHeaderFlags.js';
 
+const { __ } = wp.i18n;
 
-const {__} = wp.i18n
+/**
+ * Google-font family names used by the block (for editor preview loading).
+ *
+ * @param {Object} attributes Block attributes.
+ * @return {string[]}
+ */
+function buildFontFamilies( attributes ) {
+	return [
+		attributes.event_title_family,
+		attributes.event_venue_family,
+		attributes.event_description_family,
+		attributes.event_date_family,
+		attributes.event_link_family,
+	].filter( ( font ) => font && font !== 'Default' );
+}
 
+class EventBlocks extends Component {
 
-
-class EventBlocks extends Component{
-
-    constructor() {
-	    super( ...arguments );
+	constructor() {
+		super( ...arguments );
 
 		this.state = {
 			categoriesList: [],
 		};
-        this.ref = createRef();
+		this.ref = createRef();
+		this.doc = null;
 
+		this.handleCategorySelect = ( v ) => this.props.setAttributes( { ebec_ev_category: v } );
+		this.handleEventsLimit = ( v ) => this.props.setAttributes( { ebec_max_events: v } );
+		this.handleVenue = ( v ) => this.props.setAttributes( { ebec_venue: v } );
+		this.handleDisplayDesc = ( v ) => this.props.setAttributes( { ebec_display_desc: v } );
+		this.handleEventType = ( v ) => this.props.setAttributes( { ebec_type: v } );
+		this.handleDateFormat = ( v ) => this.props.setAttributes( { ebec_date_formats: v } );
+		this.handleEventOrder = ( v ) => this.props.setAttributes( { ebec_order: v } );
+		this.handleEventTime = ( v ) => this.props.setAttributes( { ebec_event_source: v } );
+		this.handleEventRangeStart = ( v ) => this.props.setAttributes( { ebec_date_range_start: v } );
+		this.handleEventRangeEnd = ( v ) => this.props.setAttributes( { ebec_date_range_end: v } );
+		this.handleSkinColor = ( v ) => this.props.setAttributes( { main_skin_color: v.hex } );
+		this.handleNoEventText = ( v ) => this.props.setAttributes( { no_event_text: v } );
+		this.handleEventDateColor = ( v ) => this.props.setAttributes( { event_date_color: v.hex } );
+		this.handleEventDateFont = ( v ) => this.props.setAttributes( { event_date_font: v } );
+		this.handleEventDateFamily = ( v ) => this.props.setAttributes( { event_date_family: v } );
+		this.handleEventDateWeight = ( v ) => this.props.setAttributes( { event_date_weight: v } );
+		this.handleEventDateTransform = ( v ) => this.props.setAttributes( { event_date_transform: v } );
+		this.handleEventDateStyle = ( v ) => this.props.setAttributes( { event_date_style: v } );
+		this.handleEventDateDecoration = ( v ) => this.props.setAttributes( { event_date_decoration: v } );
+		this.handleEventDateLineHeight = ( v ) => this.props.setAttributes( { event_date_line_height: v } );
+		this.handleEventDateLetterSpacing = ( v ) => this.props.setAttributes( { event_date_letter_spacing: v } );
+		this.handleEventTitleColor = ( v ) => this.props.setAttributes( { event_title_color: v.hex } );
+		this.handleEventTitleFont = ( v ) => this.props.setAttributes( { event_title_font: v } );
+		this.handleEventTitleFamily = ( v ) => this.props.setAttributes( { event_title_family: v } );
+		this.handleEventTitleWeight = ( v ) => this.props.setAttributes( { event_title_weight: v } );
+		this.handleEventTitleTransform = ( v ) => this.props.setAttributes( { event_title_transform: v } );
+		this.handleEventTitleStyle = ( v ) => this.props.setAttributes( { event_title_style: v } );
+		this.handleEventTitleDecoration = ( v ) => this.props.setAttributes( { event_title_decoration: v } );
+		this.handleEventTitleLineHeight = ( v ) => this.props.setAttributes( { event_title_line_height: v } );
+		this.handleEventTitleLetterSpacing = ( v ) => this.props.setAttributes( { event_title_letter_spacing: v } );
+		this.handleEventVenueColor = ( v ) => this.props.setAttributes( { event_venue_color: v.hex } );
+		this.handleEventVenueFont = ( v ) => this.props.setAttributes( { event_venue_font: v } );
+		this.handleEventVenueFamily = ( v ) => this.props.setAttributes( { event_venue_family: v } );
+		this.handleEventVenueWeight = ( v ) => this.props.setAttributes( { event_venue_weight: v } );
+		this.handleEventVenueTransform = ( v ) => this.props.setAttributes( { event_venue_transform: v } );
+		this.handleEventVenueStyle = ( v ) => this.props.setAttributes( { event_venue_style: v } );
+		this.handleEventVenueDecoration = ( v ) => this.props.setAttributes( { event_venue_decoration: v } );
+		this.handleEventVenueLineHeight = ( v ) => this.props.setAttributes( { event_venue_line_height: v } );
+		this.handleEventVenueLetterSpacing = ( v ) => this.props.setAttributes( { event_venue_letter_spacing: v } );
+		this.handleEventDescriptionColor = ( v ) => this.props.setAttributes( { event_description_color: v.hex } );
+		this.handleEventDescriptionFont = ( v ) => this.props.setAttributes( { event_description_font: v } );
+		this.handleEventDescriptionFamily = ( v ) => this.props.setAttributes( { event_description_family: v } );
+		this.handleEventDescriptionWeight = ( v ) => this.props.setAttributes( { event_description_weight: v } );
+		this.handleEventDescriptionTransform = ( v ) => this.props.setAttributes( { event_description_transform: v } );
+		this.handleEventDescriptionStyle = ( v ) => this.props.setAttributes( { event_description_style: v } );
+		this.handleEventDescriptionDecoration = ( v ) => this.props.setAttributes( { event_description_decoration: v } );
+		this.handleEventDescriptionLineHeight = ( v ) => this.props.setAttributes( { event_description_line_height: v } );
+		this.handleEventDescriptionLetterSpacing = ( v ) => this.props.setAttributes( { event_description_letter_spacing: v } );
+		this.handleEventLinkColor = ( v ) => this.props.setAttributes( { event_link_color: v.hex } );
+		this.handleEventLinkFont = ( v ) => this.props.setAttributes( { event_link_font: v } );
+		this.handleEventLinkFamily = ( v ) => this.props.setAttributes( { event_link_family: v } );
+		this.handleEventLinkWeight = ( v ) => this.props.setAttributes( { event_link_weight: v } );
+		this.handleEventLinkTransform = ( v ) => this.props.setAttributes( { event_link_transform: v } );
+		this.handleEventLinkStyle = ( v ) => this.props.setAttributes( { event_link_style: v } );
+		this.handleEventLinkDecoration = ( v ) => this.props.setAttributes( { event_link_decoration: v } );
+		this.handleEventLinkLineHeight = ( v ) => this.props.setAttributes( { event_link_line_height: v } );
+		this.handleEventLinkLetterSpacing = ( v ) => this.props.setAttributes( { event_link_letter_spacing: v } );
+		this.handleEventLinkName = ( v ) => this.props.setAttributes( { event_link_name: v } );
+		this.handleEventLayout = ( v ) => this.props.setAttributes( { event_layout: v } );
+		this.handleEventDescType = ( v ) => this.props.setAttributes( { event_desc_type: v } );
+		this.handleEventHeaderType = ( v ) => this.props.setAttributes( { event_header_type: v } );
+		this.handleEventSimpleColor = ( v ) => this.props.setAttributes( { event_simple_color: v.hex } );
+		this.handleEventFeaturedColor = ( v ) => this.props.setAttributes( { event_featured_color: v.hex } );
 	}
-    getDocument() {
-        const iframe = document.querySelector('iframe[name="editor-canvas"]');
-        return (
-            this.ref?.current?.ownerDocument ||
-            iframe?.contentDocument ||
-            document
-        );
-    }
 
+	getDocument() {
+		if ( this.doc ) {
+			return this.doc;
+		}
+		const doc = getEditorDocument( this.ref );
+		if ( this.ref?.current?.ownerDocument || doc !== document ) {
+			this.doc = doc;
+		}
+		return doc;
+	}
 
-    
-    // Apply style attribute and fetch category
-    componentDidMount() {
-        const doc = this.getDocument();
-    if ( doc ) {
-        const $style = doc.createElement("style");
-        $style.setAttribute("id", "event-block-style-" + this.props.clientId);
-        doc.head.appendChild($style);
-    }
-        let categoryList=[];
-        apiFetch( { path: '/wp/v2/tribe_events_cat?page=1&per_page=100' } ).then( ( data ) => {
-            if(typeof(data)!=undefined && data != null){
-            categoryList=data.map(function(val,key){
-            return  val.slug;
-            });
-            }
-            categoryList.push('all');
-            this.setState( { categoriesList: categoryList } );
-        } ); 
-
-        this.props.setAttributes( { ebec_block_id: this.props.clientId } )
-}
-   
-    render(){
-        var element = document.getElementById( "event-block-style-" + this.props.clientId )
+	injectBlockStyles() {
 		const doc = this.getDocument();
-        if ( doc ) {
-            const element = doc.getElementById("event-block-style-" + this.props.clientId);
-            if ( element ) {
-                element.textContent = contentEventStyle(this.props);
-            }
-        }
-        const {attributes,setAttributes,events}= this.props
-        const{ebec_ev_category,
-              ebec_max_events,
-			  ebec_venue,
-			  ebec_display_cate,
-			  ebec_display_desc,
-			  ebec_type,              
-			  ebec_hide_read_more_link,
-			  ebec_date_formats,
-			  ebec_order,
-              ebec_event_source,
-              ebec_date_range_start,
-              ebec_date_range_end,
-              main_skin_color,
-              event_date_color,
-              event_title_color,
-              event_venue_color,
-              event_description_color,
-              event_link_color,
-              event_date_font,
-              event_title_font,
-              event_venue_font,
-              event_description_font,
-              event_link_font,
-              event_date_family,
-              event_date_weight,
-              event_date_transform,
-              event_date_style,
-              event_date_decoration,
-              event_date_line_height,
-              event_date_letter_spacing,
-              event_title_family,
-              event_title_weight,
-              event_title_transform,
-              event_title_style,
-              event_title_decoration,
-              event_title_line_height,
-              event_title_letter_spacing,
-              event_venue_family,
-              event_venue_weight,
-              event_venue_transform,
-              event_venue_style,
-              event_venue_decoration,
-              event_venue_line_height,
-              event_venue_letter_spacing,
-              event_description_family,
-              event_description_weight,
-              event_description_transform,
-              event_description_style,
-              event_description_decoration,
-              event_description_line_height,
-              event_description_letter_spacing,
-              event_link_family,
-              event_link_weight,
-              event_link_transform,
-              event_link_style,
-              event_link_decoration,
-              event_link_line_height,
-              event_link_letter_spacing,
-              event_link_name,
-              no_event_text,
-              isPreview,
-              event_layout,
-              event_desc_type,
-              event_header_type,
-              event_simple_color,
-              event_featured_color
-        } = attributes;
-        let display_month = "";
-        let display_year = "";
-        let display_header = true;
-        let category=Array.isArray(ebec_ev_category) ? ebec_ev_category.join(" ") : ebec_ev_category
-        return( 
-            isPreview ? <img width='100%' src={ preview } alt=''/>:
-            <Fragment>
-            <Inspector category={this.state.categoriesList}
-                categorySelect={ebec_ev_category}
-                categorySelectHandle={(v)=> setAttributes({ebec_ev_category:v})}
-                eventsLimit={ebec_max_events}
-                eventsLimitHandle={(v)=> setAttributes({ebec_max_events:v})}
-                venue={ebec_venue}
-                venueHandle={(v)=>setAttributes({ebec_venue:v})}
-                displayCat={ebec_display_cate}
-                displayCatHandle={(v)=>setAttributes({ebec_display_cate:v})}
-                displayDesc={ebec_display_desc}
-                displayDescHandle={(v)=>setAttributes({ebec_display_desc:v})}
-                eventType={ebec_type}
-                eventTypeHandle={(v)=>setAttributes({ebec_type:v})}
-                dateFormats={ebec_date_formats}
-                dateFormatHandle={(v)=>setAttributes({ebec_date_formats:v})}
-                eventOrder={ebec_order}
-                eventOrderHandle={(v)=>setAttributes({ebec_order:v})}
-                eventTime={ebec_event_source}
-                eventTimeHandle={(v)=>setAttributes({ebec_event_source:v})}
-                eventRangeStart={ebec_date_range_start}
-                eventRangeStartHandle={(v)=>setAttributes({ebec_date_range_start:v})}
-                eventRangeEnd={ebec_date_range_end}
-                eventRangeEndHandle={(v)=>setAttributes({ebec_date_range_end:v})}
-                skinColor={main_skin_color}
-                skinColorHandle={(v)=>setAttributes({main_skin_color:v.hex})}
-                noEventText={no_event_text}
-                noEventTextHandle={(v)=>setAttributes({no_event_text:v})}
+		if ( ! doc ) {
+			return;
+		}
+		const element = doc.getElementById( 'event-block-style-' + this.props.clientId );
+		if ( element ) {
+			element.textContent = contentEventStyle( this.props );
+		}
+	}
 
-                //Date Style
-                eventDateColor={event_date_color}
-                eventDateColorHandle={(v)=>setAttributes({event_date_color:v.hex})}
-                eventDateFont={event_date_font}
-                eventDateFontHandle={(v)=>setAttributes({event_date_font:v})}
-                eventDateFamilyFont={event_date_family}
-                eventDateFamilyFontHandle={(v)=>setAttributes({event_date_family:v})}
-                eventDateWeight={event_date_weight}
-                eventDateWeightHandle={(v)=>setAttributes({event_date_weight:v})}
-                eventDateTransform={event_date_transform}
-                eventDateTransformHandle={(v)=>setAttributes({event_date_transform:v})}
-                eventDateStyle={event_date_style}
-                eventDateStyleHandle={(v)=>setAttributes({event_date_style:v})}
-                eventDateDecoration={event_date_decoration}
-                eventDateDecorationHandle={(v)=>setAttributes({event_date_decoration:v})}
-                eventDateLineHeight={event_date_line_height}
-                eventDateLineHeightHandle={(v)=>setAttributes({event_date_line_height:v})}
-                eventDateLetterSpacing={event_date_letter_spacing}
-                eventDateLetterSpacingHandle={(v)=>setAttributes({event_date_letter_spacing:v})}
-                //Title Style
+	componentDidMount() {
+		const doc = this.getDocument();
+		if ( doc ) {
+			const styleEl = doc.createElement( 'style' );
+			styleEl.setAttribute( 'id', 'event-block-style-' + this.props.clientId );
+			doc.head.appendChild( styleEl );
+		}
 
-                eventTitleColor={event_title_color}
-                eventTitleColorHandle={(v)=>setAttributes({event_title_color:v.hex})}
-                eventTitleFont={event_title_font}
-                eventTitleFontHandle={(v)=>setAttributes({event_title_font:v})}
-                eventTitleFamilyFont={event_title_family}
-                eventTitleFamilyFontHandle={(v)=>setAttributes({event_title_family:v})}
-                eventTitleWeight={event_title_weight}
-                eventTitleWeightHandle={(v)=>setAttributes({event_title_weight:v})}
-                eventTitleTransform={event_title_transform}
-                eventTitleTransformHandle={(v)=>setAttributes({event_title_transform:v})}
-                eventTitleStyle={event_title_style}
-                eventTitleStyleHandle={(v)=>setAttributes({event_title_style:v})}
-                eventTitleDecoration={event_title_decoration}
-                eventTitleDecorationHandle={(v)=>setAttributes({event_title_decoration:v})}
-                eventTitleLineHeight={event_title_line_height}
-                eventTitleLineHeightHandle={(v)=>setAttributes({event_title_line_height:v})}
-                eventTitleLetterSpacing={event_title_letter_spacing}
-                eventTitleLetterSpacingHandle={(v)=>setAttributes({event_title_letter_spacing:v})}
+		apiFetch( { path: '/wp/v2/tribe_events_cat?page=1&per_page=100' } ).then( ( data ) => {
+			const categoryList = Array.isArray( data )
+				? data.map( ( val ) => val.slug )
+				: [];
+			categoryList.push( 'all' );
+			this.setState( { categoriesList: categoryList } );
+		} );
 
-                //Venue Style
-                eventVenueColor={event_venue_color}
-                eventVenueColorHandle={(v)=>setAttributes({event_venue_color:v.hex})}
-                eventVenueFont={event_venue_font}
-                eventVenueFontHandle={(v)=>setAttributes({event_venue_font:v})}
-                eventVenueFamilyFont={event_venue_family}
-                eventVenueFamilyFontHandle={(v)=>setAttributes({event_venue_family:v})}
-                eventVenueWeight={event_venue_weight}
-                eventVenueWeightHandle={(v)=>setAttributes({event_venue_weight:v})}
-                eventVenueTransform={event_venue_transform}
-                eventVenueTransformHandle={(v)=>setAttributes({event_venue_transform:v})}
-                eventVenueStyle={event_venue_style}
-                eventVenueStyleHandle={(v)=>setAttributes({event_venue_style:v})}
-                eventVenueDecoration={event_venue_decoration}
-                eventVenueDecorationHandle={(v)=>setAttributes({event_venue_decoration:v})}
-                eventVenueLineHeight={event_venue_line_height}
-                eventVenueLineHeightHandle={(v)=>setAttributes({event_venue_line_height:v})}
-                eventVenueLetterSpacing={event_venue_letter_spacing}
-                eventVenueLetterSpacingHandle={(v)=>setAttributes({event_venue_letter_spacing:v})}
+		this.props.setAttributes( { ebec_block_id: this.props.clientId } );
+		this.injectBlockStyles();
+	}
 
-                //Description Style
-                eventDescriptionColor={event_description_color}
-                eventDescriptionColorHandle={(v)=>setAttributes({event_description_color:v.hex})}
-                eventDescriptionFont={event_description_font}
-                eventDescriptionFontHandle={(v)=>setAttributes({event_description_font:v})}
-                eventDescriptionFamilyFont={event_description_family}
-                eventDescriptionFamilyFontHandle={(v)=>setAttributes({event_description_family:v})}
-                eventDescriptionWeight={event_description_weight}
-                eventDescriptionWeightHandle={(v)=>setAttributes({event_description_weight:v})}
-                eventDescriptionTransform={event_description_transform}
-                eventDescriptionTransformHandle={(v)=>setAttributes({event_description_transform:v})}
-                eventDescriptionStyle={event_description_style}
-                eventDescriptionStyleHandle={(v)=>setAttributes({event_description_style:v})}
-                eventDescriptionDecoration={event_description_decoration}
-                eventDescriptionDecorationHandle={(v)=>setAttributes({event_description_decoration:v})}
-                eventDescriptionLineHeight={event_description_line_height}
-                eventDescriptionLineHeightHandle={(v)=>setAttributes({event_description_line_height:v})}
-                eventDescriptionLetterSpacing={event_description_letter_spacing}
-                eventDescriptionLetterSpacingHandle={(v)=>setAttributes({event_description_letter_spacing:v})}
+	componentDidUpdate( prevProps ) {
+		if ( prevProps.attributes !== this.props.attributes || prevProps.clientId !== this.props.clientId ) {
+			this.injectBlockStyles();
+		}
+	}
 
-                //Link Style
-                eventLinkColor={event_link_color}
-                eventLinkColorHandle={(v)=>setAttributes({event_link_color:v.hex})}
-                eventLinkFont={event_link_font}
-                eventLinkFontHandle={(v)=>setAttributes({event_link_font:v})}
-                eventLinkFamilyFont={event_link_family}
-                eventLinkFamilyFontHandle={(v)=>setAttributes({event_link_family:v})}
-                eventLinkWeight={event_link_weight}
-                eventLinkWeightHandle={(v)=>setAttributes({event_link_weight:v})}
-                eventLinkTransform={event_link_transform}
-                eventLinkTransformHandle={(v)=>setAttributes({event_link_transform:v})}
-                eventLinkStyle={event_link_style}
-                eventLinkStyleHandle={(v)=>setAttributes({event_link_style:v})}
-                eventLinkDecoration={event_link_decoration}
-                eventLinkDecorationHandle={(v)=>setAttributes({event_link_decoration:v})}
-                eventLinkLineHeight={event_link_line_height}
-                eventLinkLineHeightHandle={(v)=>setAttributes({event_link_line_height:v})}
-                eventLinkLetterSpacing={event_link_letter_spacing}
-                eventLinkLetterSpacingHandle={(v)=>setAttributes({event_link_letter_spacing:v})}
-                eventLinkName={event_link_name}
-                eventLinkNameHandle={(v)=>setAttributes({event_link_name:v})}
-                eventLayoutHandle={(v)=>{setAttributes({event_layout: v})}}
-                eventLayout={event_layout}
-                eventDescTypeHandle={(v)=>setAttributes({event_desc_type: v})}
-                eventDescType={event_desc_type}
-                eventHeaderType={event_header_type}
-                eventHeaderTypeHandle={(v)=>setAttributes({event_header_type: v})}
+	renderEventList( attributes, events, eventsStatus ) {
+		const {
+			ebec_ev_category,
+			ebec_venue,
+			ebec_display_desc,
+			ebec_date_formats,
+			event_layout,
+			event_desc_type,
+			event_header_type,
+			event_link_name,
+			no_event_text,
+		} = attributes;
 
-                //Simple Event Style
-                eventSimpleColor={event_simple_color}
-                eventSimpleColorHandle={(v)=>setAttributes({event_simple_color: v.hex})}
+		const categoryClassNames = Array.isArray( ebec_ev_category )
+			? ebec_ev_category.join( ' ' )
+			: ebec_ev_category;
+		const fontFamilies = buildFontFamilies( attributes );
 
-                //Featured Event Style
-                eventFeaturedColor={event_featured_color}
-                eventFeaturedColorHandle={(v)=>setAttributes({event_featured_color: v.hex})}
-              />
-                 
-                 <div
-                { ...( this.props.wrapperBlockProps || {} ) }
-                className={ "ebec-list-wrapper" + ( this.props.wrapperBlockProps && this.props.wrapperBlockProps.className ? " " + this.props.wrapperBlockProps.className : "" ) }
-                ref={ ( node ) => {
-                    this.ref.current = node;
-                    const blockRef = this.props.wrapperBlockProps && this.props.wrapperBlockProps.ref;
-                    if ( typeof blockRef === 'function' ) {
-                        blockRef( node );
-                    } else if ( blockRef ) {
-                        blockRef.current = node;
-                    }
-                } }
-              >
-              <div id={`ebec-${event_layout}-list-wrp`} className={`ebec-${event_layout}-list-wrapper ${category}`}>
-              {events !== false ?
-              (events.length !== 0) 
-               ? 
-               <div>
-               {events.map((event,index)=>{
-                if(ebec_max_events>index){
-                    if(display_year == event.start_date_details.year ){
-                        if(display_month == event.start_date_details.month){
-                            display_header = false
-                        }
-                        else{
-                            display_month = event.start_date_details.month
-                            display_header = true
-                        }
-                    }
-                    else{
-                        display_year = event.start_date_details.year
-                        display_month = event.start_date_details.month
-                        display_header = true
-                    }
+		return (
+			<div id={ `ebec-${ event_layout }-list-wrp` } className={ `ebec-${ event_layout }-list-wrapper ${ categoryClassNames }` }>
+				{ eventsStatus === 'loading' ? (
+					<Spinner />
+				) : ( eventsStatus === 'ready' && events.length > 0 ) ? (
+					<div>
+						{ eventsWithHeaderFlags( events ).map( ( { event, showHeader } ) => (
+							<Layout
+								key={ event.id }
+								id={ event.id }
+								title={ event.title }
+								venue={ event.venue }
+								start_date={ event.start_date }
+								start_date_year={ event.start_date_details.year }
+								start_date_day={ event.start_date_details.day }
+								end_date_year={ event.end_date_details.year }
+								end_date_day={ event.end_date_details.day }
+								end_date={ event.end_date }
+								venue_name={ event.venue.venue }
+								venue_address={ event.venue.address !== undefined ? event.venue.address : '' }
+								venue_city={ event.venue.city !== undefined ? event.venue.city : '' }
+								venue_zip={ event.venue.zip !== undefined ? event.venue.zip : '' }
+								venue_state={ event.venue.state ? event.venue.state : ( event.venue.province ? event.venue.province : '' ) }
+								venue_country={ event.venue.country }
+								venue_url={ event.venue.url }
+								description={ event.description }
+								excerpt={ event.excerpt }
+								image_url={ event.image.url }
+								feature={ event.featured }
+								url={ event.url }
+								allDay={ event.all_day }
+								display_header={ showHeader }
+								hide_venue={ ebec_venue }
+								display_description={ ebec_display_desc }
+								date_format={ ebec_date_formats }
+								event_cost={ event.cost }
+								link_name={ event_link_name }
+								eventLayout={ event_layout }
+								eventDescType={ event_desc_type }
+								eventHeaderType={ event_header_type }
+								fontFamilies={ fontFamilies }
+							/>
+						) ) }
+					</div>
+				) : (
+					<h2>{ __( no_event_text, 'events-block-for-the-events-calendar' ) }</h2>
+				) }
+			</div>
+		);
+	}
 
-                  return( 
-                               
-                  <Layout 
-                    id={event.id}
-                    title={event.title}
-                    venue={event.venue}
-                    start_date = {event.start_date}
-                    start_date_year={event.start_date_details.year}
-                    start_date_month={event.start_date_details.month}
-                    start_date_day={event.start_date_details.day}
-                    end_date_year={event.end_date_details.year}
-                    end_date_month={event.end_date_details.month}
-                    end_date_day={event.end_date_details.day}
-                    end_date = {event.end_date}
-                    venue_name = {event.venue.venue}
-                    venue_address={event.venue.address !== undefined ? event.venue.address : ''}
-                    venue_city={event.venue.city !== undefined ? event.venue.city : ''}
-                    venue_zip={event.venue.zip !== undefined ? event.venue.zip : ''}
-                    venue_state={event.venue.state ? event.venue.state : event.venue.province ? event.venue.province:""}
-                    venue_country={event.venue.country}
-                    venue_url={event.venue.url}
-                    description={event.description}
-                    excerpt={event.excerpt}
-                    image_url={event.image.url}
-                    category={event.categories}
-                    feature={event.featured}
-                    url={event.url}
-                    allDay={event.all_day}
-                    display_header = {display_header}
-                    hide_venue = {ebec_venue}
-                    display_category ={ebec_display_cate}
-                    display_description ={ebec_display_desc}
-                    date_format = {ebec_date_formats} 
-                    event_cost ={event.cost}
-                    main_col = {main_skin_color}
-                    date_col ={event_date_color}
-                    title_col ={event_title_color}
-                    venue_col ={event_venue_color}
-                    description_col={event_description_color}
-                    link_col={event_link_color}
-                    date_font={event_date_font}
-                    title_font={event_title_font}
-                    venue_font={event_venue_font}
-                    description_font={event_description_font}
-                    link_font={event_link_font} 
-                    date_family_font={event_date_family}
-                    date_weight={event_date_weight}
-                    date_transform={event_date_transform}
-                    date_style={event_date_style}
-                    date_decoration={event_date_decoration}
-                    date_line_height={event_date_line_height}
-                    date_letter_spacing={event_date_letter_spacing}
-                    title_family_font={event_title_family}
-                    title_weight={event_title_weight}
-                    title_transform={event_title_transform}
-                    title_style={event_title_style}
-                    title_decoration={event_title_decoration}
-                    title_line_height={event_title_line_height}
-                    title_letter_spacing={event_title_letter_spacing}
-                    venue_family_font={event_venue_family}
-                    venue_weight={event_venue_weight}
-                    venue_transform={event_venue_transform}
-                    venue_style={event_venue_style}
-                    venue_decoration={event_venue_decoration}
-                    venue_line_height={event_venue_line_height}
-                    venue_letter_spacing={event_venue_letter_spacing}
-                    description_family_font={event_description_family}
-                    description_weight={event_description_weight}
-                    description_transform={event_description_transform}
-                    description_style={event_description_style}
-                    description_decoration={event_description_decoration}
-                    description_line_height={event_description_line_height}
-                    description_letter_spacing={event_description_letter_spacing}
-                    link_family_font={event_link_family}
-                    link_weight={event_link_weight}
-                    link_transform={event_link_transform}
-                    link_style={event_link_style}
-                    link_decoration={event_link_decoration}
-                    link_line_height={event_link_line_height}
-                    link_letter_spacing={event_link_letter_spacing}
-                    link_name={event_link_name}
-                    eventLayout={event_layout}
-                    eventDescType={event_desc_type}
-                    eventHeaderType={event_header_type}
-                    eventSimpleColor={event_simple_color}
-                    eventFeaturedColor={event_featured_color}
-                  />
-            
-                  )
-                }
-              })
-            }
-              </div>:<Spinner />:<h2>{__(no_event_text)}</h2>}
-                </div>
-                </div>
-            </Fragment> 
-        )
-    }
+	render() {
+		const { attributes, events, eventsStatus } = this.props;
+
+		if ( attributes.isPreview ) {
+			return <img width="100%" src={ preview } alt="" />;
+		}
+
+		const inspectorProps = buildInspectorProps(
+			attributes,
+			this,
+			this.state.categoriesList
+		);
+
+		return (
+			<Fragment>
+				<Inspector { ...inspectorProps } />
+				<div
+					{ ...( this.props.wrapperBlockProps || {} ) }
+					className={ 'ebec-list-wrapper' + ( this.props.wrapperBlockProps && this.props.wrapperBlockProps.className ? ' ' + this.props.wrapperBlockProps.className : '' ) }
+					ref={ ( node ) => {
+						this.ref.current = node;
+						const blockRef = this.props.wrapperBlockProps && this.props.wrapperBlockProps.ref;
+						if ( typeof blockRef === 'function' ) {
+							blockRef( node );
+						} else if ( blockRef ) {
+							blockRef.current = node;
+						}
+					} }
+				>
+					{ this.renderEventList( attributes, events, eventsStatus ) }
+				</div>
+			</Fragment>
+		);
+	}
 }
 
-const EventBlocksWithData = compose([ withSelect( ( select, props ) => {
-    const {attributes} = props;
-    const{ebec_ev_category,ebec_date_range_start,ebec_date_range_end,ebec_type,ebec_event_source,ebec_order} = attributes
-    let start_range_date = !ebec_event_source ? new Date('0000-01-01 00:00:00') : new Date(ebec_date_range_start);
-    let end_range_date = !ebec_event_source ? new Date('9999-12-31 23:59:59') : new Date(ebec_date_range_end);
-    let filterEvents = "";
-    let startTimeFilter = [];
-    let endTimeFilter = [];
-    let categoryFilter = [];
-    let allEvents = select('ebec/events_data').getTodos();
-    if(allEvents != 'error' && allEvents != 'zero'){
-        if(allEvents.length !== 0){
-            allEvents.map(event=>{
-            let category_flag = false;
-            if(ebec_ev_category !== null ){
-                const ebecCateArr=ebec_ev_category.length > 0 ? ebec_ev_category : ['all'];
-                ebecCateArr.map(event_cat=>{
-                    if(category_flag !== true){
-                        if(event_cat !== 'all'){
-                            event.categories.map(category=>{
-                                if(category.slug == event_cat){
-                                    category_flag =true;
-                                    return categoryFilter.push(event)  
-                                }
-                            })
-                        }
-                        else{
-                            category_flag =true;
-                            return categoryFilter.push(event)
-                        }
-                    }
-                }) 
-            }   
-        })
-        if(categoryFilter.length !== 0){
-            categoryFilter.map(categoryEvent=>{
-                let event_start_date = categoryEvent.start_date
-                if(start_range_date < new Date(event_start_date)){
-                    startTimeFilter.push(categoryEvent);
-                }
-            })
-            if(startTimeFilter.length !== 0 ){
-                startTimeFilter.map(startTimeEvent=>{
-                    let event_end_date = startTimeEvent.end_date
-                    if(end_range_date > new Date(event_end_date)){
-                        endTimeFilter.push(startTimeEvent);
-                    }
-                })
-                if(endTimeFilter.length !== 0 ){
-                    filterEvents = (ebec_order == "ASC") ? endTimeFilter.sort(function(a, b){return b.start_date - a.start_date}) : endTimeFilter.sort(function(a, b){return a.start_date - b.start_date}).reverse();
-                }
-                else{
-                    filterEvents = false
-                }
-            }
-            else{
-                filterEvents = false
-            }
-        }
-        else {
-            filterEvents = false
-        }
-    }
+/**
+ * Format a Date for the Tribe Events REST API.
+ *
+ * @param {Date} date Date instance.
+ * @return {string}
+ */
+function formatTribeDate( date ) {
+	const pad = ( n ) => String( n ).padStart( 2, '0' );
+	if ( Number.isNaN( date.getTime() ) ) {
+		return '1971-01-01 00:00:00';
+	}
+	return `${ date.getFullYear() }-${ pad( date.getMonth() + 1 ) }-${ pad( date.getDate() ) } ${ pad( date.getHours() ) }:${ pad( date.getMinutes() ) }:00`;
 }
-else{
-    filterEvents = false
+
+/**
+ * Build REST query params from block attributes (server-side filtering).
+ *
+ * @param {Object} attributes Block attributes.
+ * @return {Object}
+ */
+const OPEN_RANGE_START = '1971-01-01 00:00:00';
+const OPEN_RANGE_END = '2099-12-31 23:59:59';
+
+function buildEventsQuery( attributes ) {
+	const {
+		ebec_ev_category,
+		ebec_max_events,
+		ebec_date_range_start,
+		ebec_date_range_end,
+		ebec_type,
+		ebec_event_source,
+		ebec_order,
+	} = attributes;
+
+	const now = new Date();
+	let start_date = OPEN_RANGE_START;
+	let end_date = OPEN_RANGE_END;
+
+	if ( ebec_event_source ) {
+		start_date = formatTribeDate( new Date( ebec_date_range_start ) );
+		end_date = formatTribeDate( new Date( ebec_date_range_end ) );
+	}
+
+	if ( ebec_type === 'past' ) {
+		if ( ! ebec_event_source ) {
+			start_date = OPEN_RANGE_START;
+			end_date = formatTribeDate( now );
+		} else if ( new Date( end_date ) > now ) {
+			end_date = formatTribeDate( now );
+		}
+	} else if ( ebec_type === 'future' ) {
+		if ( ! ebec_event_source ) {
+			start_date = OPEN_RANGE_START;
+			end_date = OPEN_RANGE_END;
+		} else if ( new Date( start_date ) < now ) {
+			start_date = formatTribeDate( now );
+		}
+	} else if ( ! ebec_event_source ) {
+		start_date = OPEN_RANGE_START;
+		end_date = OPEN_RANGE_END;
+	}
+
+	// Same _EventEndDate meta_query the PHP frontend adds, independent of
+	// the start_date/end_date range above (see $meta_date_compare in
+	// build_event_query_args()). Keeps ongoing/multi-day events that the
+	// plain start_date filter would otherwise exclude.
+	let ends_after = '';
+	let ends_before = '';
+	if ( ebec_type === 'future' ) {
+		ends_after = formatTribeDate( now );
+	} else if ( ebec_type === 'past' ) {
+		ends_before = formatTribeDate( now );
+	}
+
+	const cats = Array.isArray( ebec_ev_category ) ? ebec_ev_category : [];
+	const categories = cats.filter( ( c ) => c && c !== 'all' ).join( ',' );
+	const limit = Math.min( Math.max( parseInt( ebec_max_events, 10 ) || 10, 1 ), 999 );
+	const order = String( ebec_order || 'ASC' ).toUpperCase() === 'DESC' ? 'desc' : 'asc';
+
+	const per_page = order === 'desc' ? 999 : limit;
+
+	return {
+		per_page,
+		limit,
+		start_date,
+		end_date,
+		ends_after,
+		ends_before,
+		order,
+		categories,
+	};
 }
-    return {
-        events:filterEvents
-    }
 
-}),
+const EventBlocksWithData = compose( [
+	withSelect( ( select, props ) => {
+		const { attributes } = props;
+		const queryKey = JSON.stringify( buildEventsQuery( attributes ) );
+		const result = select( 'ebec/events_data' ).getEvents( queryKey );
 
-
-])
-(EventBlocks);
+		return {
+			eventsStatus: result.status,
+			events: result.events,
+		};
+	} ),
+] )( EventBlocks );
 
 export default function Edit( props ) {
-    const blockProps = useBlockProps();
-    return <EventBlocksWithData { ...props } wrapperBlockProps={ blockProps } />;
+	const blockProps = useBlockProps();
+	return <EventBlocksWithData { ...props } wrapperBlockProps={ blockProps } />;
 }

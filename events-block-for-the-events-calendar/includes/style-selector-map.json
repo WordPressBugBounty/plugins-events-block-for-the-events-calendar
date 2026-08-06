@@ -1,0 +1,94 @@
+{
+	"rules": [
+		{
+			"selector": ".ebec-header-year",
+			"props": [
+				{ "property": "color", "attr": "main_skin_color" }
+			]
+		},
+		{
+			"selector": ".ebec-header-line",
+			"props": [
+				{ "property": "background-color", "attr": "main_skin_color", "important": true }
+			]
+		},
+		{
+			"selector": ".ebec-event-datetimes .ev-mo",
+			"props": [
+				{ "property": "color", "attr": "main_skin_color" }
+			]
+		},
+		{
+			"selector": ".ebec-event-datetimes .ebec-ev-day",
+			"props": [
+				{ "property": "color", "attr": "main_skin_color" }
+			]
+		},
+		{
+			"selector": ">:not(.ebec-minimal-list-wrapper) .ebec-list-posts",
+			"props": [
+				{ "property": "border-left-color", "attr": "main_skin_color", "important": true }
+			]
+		},
+		{
+			"selector": ".ebec-event-details",
+			"props": [
+				{ "property": "border-left-color", "attr": "main_skin_color", "important": true }
+			]
+		},
+		{
+			"selector": ".ebec-list-posts .ebec-events-title",
+			"typography": "event_title",
+			"decorationImportant": true
+		},
+		{
+			"selector": ".ebec-date-area",
+			"typography": "event_date"
+		},
+		{
+			"selector": ".ebec-list-venue",
+			"typography": "event_venue"
+		},
+		{
+			"selector": ".ebec-event-content",
+			"typography": "event_description",
+			"omit": ["font-size", "line-height"]
+		},
+		{
+			"selector": ".ebec-event-content p",
+			"typography": "event_description",
+			"only": ["font-size", "line-height"]
+		},
+		{
+			"selector": ".style-1 .ebec-events-read-more",
+			"typography": "event_link",
+			"decorationImportant": true
+		},
+		{
+			"selector": ".ebec-list-venue a",
+			"props": [
+				{ "property": "color", "attr": "event_venue_color" }
+			]
+		},
+		{
+			"selector": ".ebec-list-cost",
+			"props": [
+				{ "property": "color", "attr": "main_skin_color" }
+			]
+		},
+		{
+			"selector": ".ebec-minimal-list-wrapper .ebec-list-posts.style-1.ebec-simple-event .ebec-event-date-tag",
+			"props": [
+				{ "property": "background-color", "attr": "event_simple_color" },
+				{ "property": "border-left", "attr": "event_simple_color", "darken": 20, "template": "4px solid {value}" }
+			]
+		},
+		{
+			"selector": ".ebec-minimal-list-wrapper .ebec-list-posts.style-1.ebec-featured-event .ebec-event-date-tag",
+			"props": [
+				{ "property": "background-color", "attr": "event_featured_color" },
+				{ "property": "border-left", "attr": "event_featured_color", "darken": 20, "template": "4px solid {value}" }
+			]
+		}
+	]
+}

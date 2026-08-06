@@ -10,25 +10,19 @@ if (!class_exists('EBEC_cronjob')) {
         public function __construct() {
           // Register cron jobs
             add_filter('cron_schedules', array($this, 'ebec_cron_schedules'));
-            add_action('ebec_extra_data_update', array($this, 'ebec_cron_extra_data_autoupdater'));
+            add_action('ebec_extra_data_update', array(__CLASS__, 'ebec_send_data'));
         }
-        
-        function ebec_cron_extra_data_autoupdater() {
-                if (class_exists('EBEC_cronjob')) {
-                    EBEC_cronjob::ebec_send_data();
-                }
-        }
-           
+
        static public function ebec_send_data() {
                    
             $feedback_url = EBEC_FEEDBACK_API . 'wp-json/coolplugins-feedback/v1/site';
             require_once EBEC_PATH . 'admin/feedback/admin-feedback-form.php';
 
-            if (!defined('EBEC_PATH')  || !class_exists('\EBEC\feedback\ebec_feedback') ) {
+            if (!defined('EBEC_PATH')  || !class_exists('\EBEC\feedback\EBEC_Feedback') ) {
                 return;
             }
             
-            $extra_data         = new \EBEC\feedback\ebec_feedback();
+            $extra_data         = new \EBEC\feedback\EBEC_Feedback();
             $extra_data_details = $extra_data->cpfm_get_user_info();
 
 

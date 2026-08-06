@@ -1,9 +1,18 @@
-import {Component,Fragment} from "@wordpress/element";
-import {Typography} from "../Components/typography.js";
-const { InspectorControls,PanelColorSettings } = wp.blockEditor;
-const {PanelBody,DateTimePicker,TextControl,ColorPicker,SelectControl,ToggleControl,RangeControl,RadioControl,FormTokenField } = wp.components;
-import { CardBody,ColorPalette, __experimentalNumberControl as NumberControl   } from '@wordpress/components';
-const {__} = wp.i18n
+import { Component, Fragment } from '@wordpress/element';
+import { Typography } from '../Components/typography.js';
+import { InspectorControls } from '@wordpress/block-editor';
+import {
+	PanelBody,
+	DateTimePicker,
+	TextControl,
+	ColorPicker,
+	SelectControl,
+	ToggleControl,
+	FormTokenField,
+	CardBody,
+	__experimentalNumberControl as NumberControl,
+} from '@wordpress/components';
+const { __ } = wp.i18n;
 export class Inspector extends Component{
     render(){
         const dateFormatsOptions = [
@@ -51,7 +60,6 @@ export class Inspector extends Component{
                     <SelectControl
                         __next40pxDefaultSize={ true }
 						label={ __( 'Layout','events-block-for-the-events-calendar' ) }
-						description={ __( 'Select events layout' ) }
 						options={ 
                             [
                                 {label: 'Default' , value:'default'},
@@ -76,7 +84,6 @@ export class Inspector extends Component{
                     <SelectControl
                         __next40pxDefaultSize={ true }
 						label={ __( 'Date Formats','events-block-for-the-events-calendar' ) }
-						description={ __( 'yes/no' ) }
 						options={ dateFormatsOptions }
 						value= {this.props.dateFormats}
 						onChange={this.props.dateFormatHandle}
@@ -95,7 +102,6 @@ export class Inspector extends Component{
                     <SelectControl
                         __next40pxDefaultSize={ true }
                         label={ __( 'Events Order','events-block-for-the-events-calendar' ) }
-                        description={ __( ' Events Order' ) }
                         options={ orderOptions }
                         value={this.props.eventOrder}
 						onChange={this.props.eventOrderHandle}
@@ -105,7 +111,6 @@ export class Inspector extends Component{
                             <SelectControl
                              __next40pxDefaultSize={ true }
                             label={ __( 'Hide Venue' ,'events-block-for-the-events-calendar') }
-                            description={ __( 'Hide Venue Settings' ) }
                             options={ Options }
                             value={this.props.venue}
                             onChange={this.props.venueHandle}
@@ -113,7 +118,6 @@ export class Inspector extends Component{
                             <SelectControl
                                 __next40pxDefaultSize={ true }
                                 label={ __( 'Display Description','events-block-for-the-events-calendar' ) }
-                                description={ __( 'Display Description Settings' ) }
                                 options={ Options }
                                 value={this.props.displayDesc}
                                 onChange={this.props.displayDescHandle}
@@ -122,7 +126,6 @@ export class Inspector extends Component{
                                 <SelectControl
                                 __next40pxDefaultSize={ true }
                                 label={ __( 'Event Description?','events-block-for-the-events-calendar' ) }
-                                description={ __( 'Event Description Settings' ) }
                                 options={ [
                                     {label: 'Short', value: 'short'},
                                     {label: 'Full', value: 'full'},
@@ -138,14 +141,12 @@ export class Inspector extends Component{
                             <SelectControl
                                 __next40pxDefaultSize={ true }
                                 label={ __( 'Month Header','events-block-for-the-events-calendar' ) }
-                                description={ __( 'Month Header' ) }
                                 options={ [
                                     {label: 'Show Header' , value:'show_header'},
                                     {label: 'Hide Header' , value:'hide_header'},
                                 ] }
                                 value={this.props.eventHeaderType}
                                 onChange={this.props.eventHeaderTypeHandle}
-                                default
                             />
                         </>
                     }
@@ -154,16 +155,13 @@ export class Inspector extends Component{
                     checked={ this.props.eventTime}
                     onChange={this.props.eventTimeHandle}
                     />
-                    <p style={{color:"red"}}>Select Event Date option only works on front-end side</p>
                     <SelectControl
                         __next40pxDefaultSize={ true }
                         label={ __( 'Events Type (Past/Future Events)','events-block-for-the-events-calendar' ) }
-                        description={ __( 'Events Type' ) }
                         options={ timeOptions }
                         value={this.props.eventType}
                         onChange={this.props.eventTypeHandle}
                     />
-                     <p style={{color:"red"}}>Events Type option only works on front-end side</p>
                 </PanelBody>
                         { this.props.eventTime === true &&
                         <PanelBody title={__("Start Event Panel","events-block-for-the-events-calendar")} className="ebec-start-date-picker">

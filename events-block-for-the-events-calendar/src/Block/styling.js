@@ -1,17 +1,24 @@
 /**
- * Returns Dynamic Generated CSS
+ * Returns Dynamic Generated CSS from the shared selector map
+ * (includes/style-selector-map.json — keep in sync with EBEC_Style_Settings).
  */
 
- import generateCSS from "../Components/css/generateCSS.js"
- import generateCSSUnit from "../Components/css/generateCSSUnit.js"
+import generateCSS from "../Components/css/generateCSS.js"
+import generateCSSUnit from "../Components/css/generateCSSUnit.js"
+import styleMap from "../../includes/style-selector-map.json"
 
- function darkenColor(color, percent) {
+/**
+ * Darken a hex color by a percent.
+ * Keep in sync with PHP ebec_darken_color() in includes/ebec-functions.php
+ * (same clamp: channel values limited to 0–255).
+ */
+function darkenColor(color, percent) {
     var num = parseInt(color.replace("#", ""), 16),
       amt = Math.round(2.55 * percent),
       R = (num >> 16) - amt,
       G = ((num >> 8) & 0x00FF) - amt,
       B = (num & 0x0000FF) - amt;
-  
+
     return (
       "#" +
       (
@@ -24,153 +31,93 @@
         .slice(1)
     );
   }
-  
-function contentEventStyle( props ) {
-    const {main_skin_color
-        ,event_date_color,event_title_color,
-        event_venue_color,
-        event_description_color,
-        event_link_color,
-        event_date_font,
-        event_title_font,
-        event_venue_font,
-        event_description_font,
-        event_link_font,
-        event_date_family,
-        event_date_weight,
-        event_date_transform,
-        event_date_style,
-        event_date_decoration,
-        event_date_line_height,
-        event_date_letter_spacing,
-        event_title_family,
-        event_title_weight,
-        event_title_transform,
-        event_title_style,
-        event_title_decoration,
-        event_title_line_height,
-        event_title_letter_spacing,
-        event_venue_family,
-        event_venue_weight,
-        event_venue_transform,
-        event_venue_style,
-        event_venue_decoration,
-        event_venue_line_height,
-        event_venue_letter_spacing,
-        event_description_family,
-        event_description_weight,
-        event_description_transform,
-        event_description_style,
-        event_description_decoration,
-        event_description_line_height,
-        event_description_letter_spacing,
-        event_link_family,
-        event_link_weight,
-        event_link_transform,
-        event_link_style,
-        event_link_decoration,
-        event_link_line_height,
-        event_link_letter_spacing,
-        event_simple_color,
-        event_featured_color
-    } = props.attributes
 
-    var selectors = {
-        " .ebec-header-year" : {
-            "color":main_skin_color
-        },
-        " .ebec-header-line" : {
-            "background-color":main_skin_color
-        },
-        " .ebec-event-datetimes .ev-mo" : {
-            "color":main_skin_color
-        },
-        " .ebec-event-datetimes .ebec-ev-day" : {
-            "color":main_skin_color
-        },
-        " .ebec-list-wrapper>:not(.ebec-minimal-list-wrapper) .ebec-list-posts" : {
-            "border-left-color":main_skin_color
-        },
-        " .ebec-event-details" : {
-            "border-left-color":main_skin_color
-        },
-        " .ebec-list-posts .ebec-events-title" : {
-            "color":event_title_color,
-            "font-size":event_title_font+'px',
-            "font-family":event_title_family,
-            "font-weight":event_title_weight,
-            "text-transform":event_title_transform,
-            "font-style":event_title_style,
-            "text-decoration":event_title_decoration,
-            "line-height":"initial" === event_title_line_height ? 'initial' : event_title_line_height+'px',
-            "letter-spacing":event_title_letter_spacing+'px'
-        },
-        " .ebec-date-area" : {
-            "color":event_date_color,
-            "font-size":event_date_font+'px',
-            "font-family":event_date_family,
-            "font-weight":event_date_weight,
-            "text-transform":event_date_transform,
-            "font-style":event_date_style,
-            "text-decoration":event_date_decoration,
-            "line-height":"initial" === event_date_line_height ? 'initial' : event_date_line_height+'px',
-            "letter-spacing":event_date_letter_spacing+'px'
-        },
-        " .ebec-list-venue" : {
-            "color":event_venue_color,
-            "font-size":event_venue_font+'px',
-            "font-family":event_venue_family,
-            "font-weight":event_venue_weight,
-            "text-transform":event_venue_transform,
-            "font-style":event_venue_style,
-            "text-decoration":event_venue_decoration,
-            "line-height":"initial" === event_venue_line_height ? 'initial' : event_venue_line_height+'px',
-            "letter-spacing":event_venue_letter_spacing+'px'
-        },
-        " .ebec-event-content" : {
-            "color":event_description_color,
-            "font-family":event_description_family,
-            "font-weight":event_description_weight,
-            "text-transform":event_description_transform,
-            "font-style":event_description_style,
-            "text-decoration":event_description_decoration,
-            "letter-spacing":event_description_letter_spacing+'px'
-        },
-        " .ebec-event-content p":{
-            "font-size":event_description_font+'px',
-            "line-height":"initial" === event_description_line_height ? 'initial' : event_description_line_height+'px',
-        },
-
-        " .style-1 .ebec-events-read-more" : {
-            "color":event_link_color,
-            "font-size":event_link_font+'px',
-            "font-family":event_link_family,
-            "font-weight":event_link_weight,
-            "text-transform":event_link_transform,
-            "font-style":event_link_style,
-            "text-decoration":event_link_decoration,
-            "line-height":"initial" === event_link_line_height ? 'initial' : event_link_line_height+'px',
-            "letter-spacing":event_link_letter_spacing+'px'
-        },
-        " .ebec-list-venue a ":{
-            "color":event_venue_color,
-        },
-        " .ebec-minimal-list-wrapper .ebec-list-posts.style-1.ebec-simple-event .ebec-event-date-tag":{
-            "background-color":event_simple_color,
-            "border-left": "4px solid " + darkenColor(event_simple_color, 20)
-        },
-        " .ebec-minimal-list-wrapper .ebec-list-posts.style-1.ebec-featured-event .ebec-event-date-tag":{
-            "background-color":event_featured_color,
-            "border-left": "4px solid " + darkenColor(event_featured_color, 20)
-        }
+function resolvePropValue( prop, attributes ) {
+    const attr = prop.attr;
+    if ( ! attr || attributes[ attr ] === undefined || attributes[ attr ] === '' ) {
+        return undefined;
     }
+    let value = attributes[ attr ];
+    if ( prop.darken ) {
+        value = darkenColor( value, prop.darken );
+    }
+    if ( prop.template ) {
+        value = prop.template.replace( '{value}', value );
+    }
+    if ( prop.important ) {
+        value = value + ' !important';
+    }
+    return value;
+}
 
-    var styling_css = ""
-    var id = `#block-${ props.clientId }`
- 
-    styling_css = generateCSS( selectors, id )
- 
-    return styling_css
+function typographyProps( rule, attributes ) {
+    const prefix = rule.typography;
+    const omit = rule.omit || [];
+    const only = rule.only || [];
+    const lineHeightRaw = attributes[ `${prefix}_line_height` ];
+    const decoration = attributes[ `${prefix}_decoration` ] + ( rule.decorationImportant ? ' !important' : '' );
 
+    const all = {
+        "color": attributes[ `${prefix}_color` ],
+        "font-size": generateCSSUnit( attributes[ `${prefix}_font` ], 'px' ),
+        "font-family": attributes[ `${prefix}_family` ],
+        "font-weight": attributes[ `${prefix}_weight` ],
+        "text-transform": attributes[ `${prefix}_transform` ],
+        "font-style": attributes[ `${prefix}_style` ],
+        "text-decoration": decoration,
+        "line-height": "initial" === lineHeightRaw ? 'initial' : generateCSSUnit( lineHeightRaw, 'px' ),
+        "letter-spacing": generateCSSUnit( attributes[ `${prefix}_letter_spacing` ], 'px' ),
+    };
+
+    const out = {};
+    Object.keys( all ).forEach( ( property ) => {
+        if ( only.length && ! only.includes( property ) ) {
+            return;
+        }
+        if ( omit.includes( property ) ) {
+            return;
+        }
+        out[ property ] = all[ property ];
+    } );
+    return out;
+}
+
+function mapSelectorToKey( selector ) {
+    const trimmed = String( selector || '' ).trim();
+    if ( trimmed.charAt( 0 ) === '>' || trimmed.charAt( 0 ) === '+' || trimmed.charAt( 0 ) === '~' ) {
+        return trimmed;
+    }
+    return ' ' + trimmed;
+}
+
+function contentEventStyle( props ) {
+    const attributes = props.attributes;
+    const selectors = {};
+
+    ( styleMap.rules || [] ).forEach( ( rule ) => {
+        if ( ! rule.selector ) {
+            return;
+        }
+        const key = mapSelectorToKey( rule.selector );
+        let decls = {};
+
+        if ( rule.typography ) {
+            decls = { ...decls, ...typographyProps( rule, attributes ) };
+        }
+        if ( Array.isArray( rule.props ) ) {
+            rule.props.forEach( ( prop ) => {
+                const value = resolvePropValue( prop, attributes );
+                if ( value !== undefined && prop.property ) {
+                    decls[ prop.property ] = value;
+                }
+            } );
+        }
+
+        if ( Object.keys( decls ).length ) {
+            selectors[ key ] = { ...( selectors[ key ] || {} ), ...decls };
+        }
+    } );
+
+    return generateCSS( selectors, `#block-${ props.clientId }` );
 }
 export default contentEventStyle

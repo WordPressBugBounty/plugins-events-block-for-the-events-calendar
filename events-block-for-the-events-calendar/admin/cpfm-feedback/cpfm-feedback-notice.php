@@ -14,34 +14,45 @@ class CPFM_Feedback_Notice {
 
         add_action('admin_footer', [ $this, 'cpfm_render_notice_panel' ]);
     }
+
+    /**
+     * Shared capability gate for notice admin UI / registration.
+     */
+    private static function cpfm_user_can_manage() {
+        return current_user_can( 'manage_options' );
+    }
     
     public static function cpfm_register_notice($key, $args) {
         
-        if (!current_user_can('manage_options')) {
-            
+        if ( ! self::cpfm_user_can_manage() ) {
             return;
         }
         
-        if (!isset(self::$registered_notices[$key])) {
-            self::$registered_notices[$key] = wp_parse_args($args, [
-                'title'   => '',
-                'message' => '',
-                'pages'   => [],
-                'always_show_on' => [],
-            ]);
+        if ( ! isset( self::$registered_notices[ $key ] ) ) {
+            $defaults = array(
+                'title'          => '',
+                'message'        => '',
+                'pages'          => array(),
+                'always_show_on' => array(),
+            );
+            $shell = array_intersect_key( (array) $args, $defaults );
+            self::$registered_notices[ $key ] = wp_parse_args( $shell, $defaults );
+            self::$registered_notices[ $key ]['plugins'] = array();
         }
-        if(!isset(self::$registered_notices[$key]['plugins'])){
-            self::$registered_notices[$key]['plugins'] = array();
+
+        if ( ! isset( self::$registered_notices[ $key ]['plugins'] ) ) {
+            self::$registered_notices[ $key ]['plugins'] = array();
         }
-        
-        self::$registered_notices[$key]['plugins'][] = $args;
+
+        self::$registered_notices[ $key ]['plugins'][] = array(
+            'plugin_name' => isset( $args['plugin_name'] ) ? $args['plugin_name'] : '',
+        );
     }
     
     public function cpfm_listen_for_external_notice_registration() {
         
 
-        if (!current_user_can('manage_options')) {
-
+        if ( ! self::cpfm_user_can_manage() ) {
             return;
         }
 
@@ -60,10 +71,8 @@ class CPFM_Feedback_Notice {
 
     public function cpfm_enqueue_assets() {
 
-        if (!current_user_can('manage_options')) {
-
+        if ( ! self::cpfm_user_can_manage() ) {
             return;
-
         }
        
         //phpcs:ignore WordPress.Security.NonceVerification.Recommended
@@ -114,8 +123,7 @@ class CPFM_Feedback_Notice {
   
     public function cpfm_handle_opt_in_choice() {
 
-        if (!current_user_can('manage_options')) {
-
+        if ( ! self::cpfm_user_can_manage() ) {
             wp_send_json_error('Unauthorized access.');
         }
 
@@ -158,11 +166,10 @@ class CPFM_Feedback_Notice {
 
     public function cpfm_render_notice_panel() {
         
-        if (!current_user_can('manage_options') || !function_exists('get_current_screen')) { 
+        if ( ! self::cpfm_user_can_manage() ) {
             return;
         }
 
-        $screen         = get_current_screen();
         //phpcs:ignore WordPress.Security.NonceVerification.Recommended
         $current_page   = isset($_GET['page']) ? sanitize_key(wp_unslash($_GET['page'])) : '';
 

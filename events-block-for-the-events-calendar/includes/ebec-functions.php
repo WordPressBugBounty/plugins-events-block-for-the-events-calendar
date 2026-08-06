@@ -5,6 +5,78 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
+ * Localized long/short month names for a numeric month (01–12).
+ * Caches IntlDateFormatter instances per locale for the request.
+ *
+ * @param string|int $month_number Month number.
+ * @return array{long:string,short:string}
+ */
+function ebec_localized_month_names( $month_number ) {
+	static $formatters = array();
+
+	$month_number = sprintf( '%02d', (int) $month_number );
+	$date         = DateTime::createFromFormat( '!m', $month_number );
+
+	if ( class_exists( 'IntlDateFormatter' ) ) {
+		$locale = get_locale();
+		if ( ! isset( $formatters[ $locale ] ) ) {
+			$formatters[ $locale ] = array(
+				'long'  => new IntlDateFormatter(
+					$locale,
+					IntlDateFormatter::LONG,
+					IntlDateFormatter::NONE,
+					null,
+					null,
+					'LLLL'
+				),
+				'short' => new IntlDateFormatter(
+					$locale,
+					IntlDateFormatter::LONG,
+					IntlDateFormatter::NONE,
+					null,
+					null,
+					'LLL'
+				),
+			);
+		}
+
+		return array(
+			'long'  => $formatters[ $locale ]['long']->format( $date ),
+			'short' => $formatters[ $locale ]['short']->format( $date ),
+		);
+	}
+
+	return array(
+		'long'  => $date->format( 'F' ),
+		'short' => $date->format( 'M' ),
+	);
+}
+
+/**
+ * Darken a hex color by a percent.
+ * Keep in sync with JS darkenColor() in src/Block/styling.js
+ * (same clamp: channel values limited to 0–255).
+ *
+ * @param string $color   Hex color.
+ * @param int    $percent Percent to darken.
+ * @return string
+ */
+function ebec_darken_color( $color, $percent ) {
+	$num = hexdec( ltrim( $color, '#' ) );
+	$amt = round( 2.55 * $percent );
+	$R   = ( $num >> 16 ) - $amt;
+	$G   = ( ( $num >> 8 ) & 0x00FF ) - $amt;
+	$B   = ( $num & 0x0000FF ) - $amt;
+
+	return sprintf(
+		'#%02x%02x%02x',
+		min( 255, max( 0, $R ) ),
+		min( 255, max( 0, $G ) ),
+		min( 255, max( 0, $B ) )
+	);
+}
+
+/**
  *  Filter Start Time And End Time
  */
 function ebec_fetch_start_end_time( $setting ) {
@@ -160,15 +232,14 @@ function ebec_date_style( $event_id, $settings ) {
         <span class="ebec-ev-yr">' . esc_html( $ev_year ) . '</span>
         </div>';
 	}
-	 return $date_style;
+	return $date_style;
 }
 
-
-			// get events dates and time
+// get events dates and time
 function ebec_tribe_event_time( $display, $event ) {
-	if ( tribe_event_is_multiday( $event ) ) { // multi-date event
-		$start_date = tribe_get_start_date($event, false, 'F j, Y');
-		$end_date   = tribe_get_end_date($event, false, 'F j, Y');
+	if ( tribe_event_is_multiday( $event ) ) {
+		$start_date = tribe_get_start_date( $event, false, 'F j, Y' );
+		$end_date   = tribe_get_end_date( $event, false, 'F j, Y' );
 		if ( $display ) {
 			/* translators: 1: Start date, 2: End date */
 			printf( esc_html__( '%1$s - %2$s', 'events-block-for-the-events-calendar' ), esc_html( $start_date ), esc_html( $end_date ) );
@@ -176,7 +247,7 @@ function ebec_tribe_event_time( $display, $event ) {
 			/* translators: 1: Start date, 2: End date */
 			return sprintf( esc_html__( '%1$s - %2$s', 'events-block-for-the-events-calendar' ), esc_html( $start_date ), esc_html( $end_date ) );
 		}
-	} elseif ( tribe_event_is_all_day( $event ) ) { // all day event
+	} elseif ( tribe_event_is_all_day( $event ) ) {
 		if ( $display ) {
 			esc_html_e( 'All day', 'events-block-for-the-events-calendar' );
 		} else {
