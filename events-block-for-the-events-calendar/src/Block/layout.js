@@ -12,6 +12,18 @@ const SITE_LOCALE = normalizeIntlLocale(
 	typeof ebecBlockData !== 'undefined' ? ebecBlockData.locale : undefined
 );
 
+/**
+ * Intl options for event start/end time, matching the PHP output.
+ *
+ * @param {string} timeFormat Block attribute: '12' or '24'.
+ * @return {Object}
+ */
+function getTimeOptions( timeFormat ) {
+	return '24' === timeFormat
+		? { hour: '2-digit', minute: '2-digit', hourCycle: 'h23' }
+		: { hour: 'numeric', minute: 'numeric', hour12: true };
+}
+
 const preventEditorNav = ( e ) => {
 	e.preventDefault();
 };
@@ -54,6 +66,7 @@ const Layout = ( props ) => {
 		const longMonthEnd = Number.isNaN( dateEnd.getTime() )
 			? longMonthStart
 			: dateEnd.toLocaleString( SITE_LOCALE, { month: 'long' } );
+		const timeOptions = getTimeOptions( props.time_format );
 
 		return {
 			day: props.start_date_day,
@@ -65,12 +78,12 @@ const Layout = ( props ) => {
 			longMonthStart,
 			shortMonthStart,
 			longMonthEnd,
-			startTime: dateStart.toLocaleString( SITE_LOCALE, { hour: 'numeric', minute: 'numeric', hour12: true } ).toLowerCase(),
+			startTime: dateStart.toLocaleString( SITE_LOCALE, timeOptions ).toLowerCase(),
 			endTime: Number.isNaN( dateEnd.getTime() )
 				? ''
-				: dateEnd.toLocaleString( SITE_LOCALE, { hour: 'numeric', minute: 'numeric', hour12: true } ).toLowerCase(),
+				: dateEnd.toLocaleString( SITE_LOCALE, timeOptions ).toLowerCase(),
 		};
-	}, [ props.start_date, props.end_date, props.start_date_day, props.start_date_year ] );
+	}, [ props.start_date, props.end_date, props.start_date_day, props.start_date_year, props.time_format ] );
 
 	const eventTime = useMemo( () => {
 		if ( ! dateParts ) {

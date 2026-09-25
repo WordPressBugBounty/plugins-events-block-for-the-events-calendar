@@ -127,7 +127,8 @@ function ebec_fetch_start_end_time( $setting ) {
  */
 function ebec_date_style( $event_id, $settings ) {
 	$date_style   = '';
-	$ev_time      = ebec_tribe_event_time( false, $event_id );
+	$time_setting = isset( $settings['ebec_time_format'] ) ? $settings['ebec_time_format'] : '12';
+	$ev_time      = ebec_tribe_event_time( false, $event_id, $time_setting );
 	$alldayevents = tribe_event_is_all_day( $event_id );
 	/*Date Format START*/
 	$ev_day        = tribe_get_start_date( $event_id, false, 'd' );
@@ -235,8 +236,18 @@ function ebec_date_style( $event_id, $settings ) {
 	return $date_style;
 }
 
+/**
+ * Map the block "Time Format" setting to a PHP date format string.
+ *
+ * @param string $time_setting '12' or '24'.
+ * @return string
+ */
+function ebec_get_time_format( $time_setting ) {
+	return '24' === $time_setting ? 'H:i' : 'g:i a';
+}
+
 // get events dates and time
-function ebec_tribe_event_time( $display, $event ) {
+function ebec_tribe_event_time( $display, $event, $time_setting = '12' ) {
 	if ( tribe_event_is_multiday( $event ) ) {
 		$start_date = tribe_get_start_date( $event, false, 'F j, Y' );
 		$end_date   = tribe_get_end_date( $event, false, 'F j, Y' );
@@ -254,7 +265,7 @@ function ebec_tribe_event_time( $display, $event ) {
 			return esc_html__( 'All day', 'events-block-for-the-events-calendar' );
 		}
 	} else {
-		$time_format = get_option( 'time_format' );
+		$time_format = ebec_get_time_format( $time_setting );
 		$start_date  = tribe_get_start_date( $event, false, $time_format );
 		$end_date    = tribe_get_end_date( $event, false, $time_format );
 		if ( $start_date !== $end_date ) {

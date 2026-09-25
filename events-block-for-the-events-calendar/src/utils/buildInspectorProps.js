@@ -21,6 +21,8 @@ export function buildInspectorProps( attributes, handlers, categories ) {
 		eventTypeHandle: handlers.handleEventType,
 		dateFormats: attributes.ebec_date_formats,
 		dateFormatHandle: handlers.handleDateFormat,
+		timeFormat: attributes.ebec_time_format,
+		timeFormatHandle: handlers.handleTimeFormat,
 		eventOrder: attributes.ebec_order,
 		eventOrderHandle: handlers.handleEventOrder,
 		eventTime: attributes.ebec_event_source,

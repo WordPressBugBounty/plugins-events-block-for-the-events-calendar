@@ -33,6 +33,11 @@ export class Inspector extends Component{
             {label: "d.Ml (01. Jan Monday)", value: "d.Ml" },
             {label: "dFT (01 January 8:00am-5:00pm)", value: "dFT" }
 		 ];
+        const dateFormatsWithTime = [ 'MD,YT', 'full', 'dFT' ];
+        const timeFormatOptions = [
+            {label: __( '12 Hours (8:00 am - 5:00 pm)','events-block-for-the-events-calendar' ), value: '12'},
+            {label: __( '24 Hours (08:00 - 17:00)','events-block-for-the-events-calendar' ), value: '24'}
+        ];
          const orderOptions=[
 			{label:"ASC",value:"ASC"},
 			{label:"DESC",value:"DESC"}		
@@ -88,6 +93,15 @@ export class Inspector extends Component{
 						value= {this.props.dateFormats}
 						onChange={this.props.dateFormatHandle}
 					/>
+                    {dateFormatsWithTime.includes( this.props.dateFormats ) &&
+                        <SelectControl
+                            __next40pxDefaultSize={ true }
+                            label={ __( 'Time Format','events-block-for-the-events-calendar' ) }
+                            options={ timeFormatOptions }
+                            value={this.props.timeFormat}
+                            onChange={this.props.timeFormatHandle}
+                        />
+                    }
                     <NumberControl
                         __next40pxDefaultSize={ true }
 						label={ __( 'Limit the events','events-block-for-the-events-calendar' ) }

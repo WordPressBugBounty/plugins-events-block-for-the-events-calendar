@@ -3,9 +3,9 @@ Contributors:coolplugins,narinder-singh,satindersingh,eventscalendaraddons
 Donate link:https://paypal.me/CoolPlugins/10USD/
 Tags: events list, events block, the events calendar blocks, Gutenberg block, events calendar
 Requires at least: 6.0
-Tested up to: 7.0
+Tested up to: 7.1
 Requires PHP: 7.2
-Stable tag: 1.4.8
+Stable tag: 1.4.9
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -89,6 +89,9 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 3. Events List block search preview
 
 == Changelog == 
+
+= 1.4.9 | Sep 25, 2026 =
+- **Added:** Time Format setting to show event times in 12-hour or 24-hour format.
 
 = 1.4.8 | Aug 06, 2026 =
 - **Improved:** Code Improvements & Optimization.

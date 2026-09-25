@@ -43,6 +43,11 @@
 			"type": "string",
 			"default": "MD,YT"
 		},
+		"ebec_time_format": {
+			"type": "string",
+			"enum": [ "12", "24" ],
+			"default": "12"
+		},
 		"ebec_order": {
 			"type": "string",
 			"default": "ASC"

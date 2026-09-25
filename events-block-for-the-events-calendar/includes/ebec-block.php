@@ -62,8 +62,7 @@ class EBEC_Register_Block {
 				'ebecBlockData',
 				array(
 					'excerptWords' => defined( 'EBEC_EXCERPT_WORDS' ) ? (int) EBEC_EXCERPT_WORDS : 55,
-					'locale'       => get_locale(),
-				)
+					'locale'       => get_locale(),				)
 			);
 
 			wp_register_style(

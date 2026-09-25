@@ -47,6 +47,7 @@ class EventBlocks extends Component {
 		this.handleDisplayDesc = ( v ) => this.props.setAttributes( { ebec_display_desc: v } );
 		this.handleEventType = ( v ) => this.props.setAttributes( { ebec_type: v } );
 		this.handleDateFormat = ( v ) => this.props.setAttributes( { ebec_date_formats: v } );
+		this.handleTimeFormat = ( v ) => this.props.setAttributes( { ebec_time_format: v } );
 		this.handleEventOrder = ( v ) => this.props.setAttributes( { ebec_order: v } );
 		this.handleEventTime = ( v ) => this.props.setAttributes( { ebec_event_source: v } );
 		this.handleEventRangeStart = ( v ) => this.props.setAttributes( { ebec_date_range_start: v } );
@@ -160,6 +161,7 @@ class EventBlocks extends Component {
 			ebec_venue,
 			ebec_display_desc,
 			ebec_date_formats,
+			ebec_time_format,
 			event_layout,
 			event_desc_type,
 			event_header_type,
@@ -207,6 +209,7 @@ class EventBlocks extends Component {
 								hide_venue={ ebec_venue }
 								display_description={ ebec_display_desc }
 								date_format={ ebec_date_formats }
+								time_format={ ebec_time_format }
 								event_cost={ event.cost }
 								link_name={ event_link_name }
 								eventLayout={ event_layout }
